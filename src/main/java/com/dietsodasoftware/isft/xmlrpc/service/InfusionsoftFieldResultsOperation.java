@@ -1,30 +1,18 @@
 package com.dietsodasoftware.isft.xmlrpc.service;
 
+import com.dietsodasoftware.isft.xmlrpc.model.NamedField;
+
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.dietsodasoftware.isft.xmlrpc.client.annotations.TableName;
-import com.dietsodasoftware.isft.xmlrpc.model.NamedField;
-
-public abstract class InfusionsoftFieldResultsOperation<BT, MT> extends InfusionsoftXmlRpcServiceOperation<InfusionsoftFieldResults<MT>> {
+public abstract class InfusionsoftFieldResultsOperation<BT, MT> extends InfusionsoftModelOperation<MT, InfusionsoftFieldResults<MT>>{
 
 	private final List<String> returnFieldNames;
-	private final String tableName;
-	private final Class<MT> modelTypeClass;
-
 
 	protected InfusionsoftFieldResultsOperation(Class<MT> modelTypeClass){
-		
-		this.modelTypeClass = modelTypeClass;
-		if( modelTypeClass.isAnnotationPresent(TableName.class)){
-			final TableName tableAnnotation = modelTypeClass.getAnnotation(TableName.class);
-			tableName = tableAnnotation.table(); 
-		} else {
-			throw new IllegalArgumentException("Must provide the return type Model class annotated by @TableName on class " + modelTypeClass.getName());
-		}
-		
-		
+        super(modelTypeClass);
+
 		returnFieldNames = new LinkedList<String>();
 	}
 	
@@ -54,22 +42,9 @@ public abstract class InfusionsoftFieldResultsOperation<BT, MT> extends Infusion
 		return (BT)this;
 	}
 	
-	protected Class<MT> getModelTypeClass(){
-		return modelTypeClass;
-	}
-
-	@SuppressWarnings("rawtypes")
-	public List emptyParameters(){
-		return new LinkedList();
-	}
-	
-	public String getTableName(){
-		return tableName;
-	}
-	
 	@Override
 	public InfusionsoftFieldResults<MT> parseResult(Object rawResponse) {
-		return new InfusionsoftFieldResults<MT>(modelTypeClass, (Object[]) rawResponse);
+		return new InfusionsoftFieldResults<MT>(getModelTypeClass(), (Object[]) rawResponse);
 	}
 
 

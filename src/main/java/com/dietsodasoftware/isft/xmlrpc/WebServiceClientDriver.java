@@ -1,16 +1,19 @@
 package com.dietsodasoftware.isft.xmlrpc;
 
-import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftFieldResults;
-import org.apache.xmlrpc.XmlRpcException;
-
 import com.dietsodasoftware.isft.xmlrpc.client.IsftClient;
 import com.dietsodasoftware.isft.xmlrpc.client.IsftProfile;
 import com.dietsodasoftware.isft.xmlrpc.model.Contact;
 import com.dietsodasoftware.isft.xmlrpc.model.ContactAction;
+import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftFieldResults;
 import com.dietsodasoftware.isft.xmlrpc.service.contact.ContactService;
+import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceAddOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceFindByFieldOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceQueryOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceQueryOperation.Like;
+import org.apache.xmlrpc.XmlRpcException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class WebServiceClientDriver {
 	
@@ -28,6 +31,8 @@ public class WebServiceClientDriver {
 		exerciseFindAppointments(client);
 		
 //		exerciseContactService();
+
+        exerciseAddDataService(client);
 		
 	}
 	
@@ -82,6 +87,19 @@ public class WebServiceClientDriver {
 	   }
    
 	}
+
+    private static void exerciseAddDataService(IsftClient client){
+        final Map<String, Object> contactData = new HashMap<String, Object>();
+        contactData.put(Contact.Field.FirstName.name(), "WebServiceClientDriver");
+        contactData.put(Contact.Field.LastName.name(), "DemoCode");
+
+        final Contact contact = new Contact(contactData);
+        final DataServiceAddOperation<Contact> add = new DataServiceAddOperation<Contact>(Contact.class)
+                .useModelPrototype(contact);
+
+        final Integer newId = client.call(add);
+        System.out.println("The new Contact's ID: " + newId);
+    }
 
 	private static void exerciseContactService() throws XmlRpcException{
 		final ContactService cs = new ContactService(APP_NAME, API_KEY);

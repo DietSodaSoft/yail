@@ -14,6 +14,10 @@ public abstract class Model {
 	public Object getFieldValue(NamedField field){
 		return values.get(field.name());
 	}
+
+    public final Map<String, Object> getStruct(){
+        return values;
+    }
 	
 	@Override
 	public String toString(){
