@@ -7,6 +7,7 @@ import com.dietsodasoftware.isft.xmlrpc.model.ContactAction;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftFieldResults;
 import com.dietsodasoftware.isft.xmlrpc.service.contact.ContactService;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceAddOperation;
+import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceDeleteOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceFindByFieldOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceQueryOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceQueryOperation.Like;
@@ -33,8 +34,10 @@ public class WebServiceClientDriver {
 //		exerciseContactService();
 
         exerciseAddDataService(client);
-		
-	}
+        exerciseAddDataService(client);
+
+        exerciseDeleteDataService(client);
+    }
 	
 	private static void exerciseFindByQuery(IsftClient client) throws XmlRpcException {
 		final DataServiceQueryOperation<Contact> finder = 
@@ -99,6 +102,21 @@ public class WebServiceClientDriver {
 
         final Integer newId = client.call(add);
         System.out.println("The new Contact's ID: " + newId);
+    }
+
+    private static void exerciseDeleteDataService(IsftClient client){
+        final DataServiceFindByFieldOperation<Contact> finder = new DataServiceFindByFieldOperation<Contact>(Contact.class)
+                .addReturnFieldName(Contact.Field.Id)
+                .setFieldName(Contact.Field.LastName)
+                .setFieldValue("DemoCode")
+                ;
+
+        for(Contact contact: client.call(finder)){
+            final Integer id = contact.getFieldValue(Contact.Field.Id);
+            final DataServiceDeleteOperation<Contact> delete = new DataServiceDeleteOperation<Contact>(Contact.class, id);
+            final Boolean deleted = client.call(delete);
+            System.out.println("Success deleting id '" +id+ "': " + deleted);
+        }
     }
 
 	private static void exerciseContactService() throws XmlRpcException{

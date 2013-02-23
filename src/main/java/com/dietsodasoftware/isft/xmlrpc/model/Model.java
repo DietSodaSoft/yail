@@ -11,8 +11,8 @@ public abstract class Model {
 		values = Collections.unmodifiableMap(model);
 	}
 	
-	public Object getFieldValue(NamedField field){
-		return values.get(field.name());
+	public <T> T getFieldValue(NamedField field){
+		return (T) values.get(field.name());
 	}
 
     public final Map<String, Object> getStruct(){
