@@ -91,7 +91,7 @@ public class WebServiceClientDriver {
    
 	}
 
-    private static void exerciseAddDataService(IsftClient client){
+    private static void exerciseAddDataService(IsftClient client) throws XmlRpcException {
         final Map<String, Object> contactData = new HashMap<String, Object>();
         contactData.put(Contact.Field.FirstName.name(), "WebServiceClientDriver");
         contactData.put(Contact.Field.LastName.name(), "DemoCode");
@@ -104,7 +104,7 @@ public class WebServiceClientDriver {
         System.out.println("The new Contact's ID: " + newId);
     }
 
-    private static void exerciseDeleteDataService(IsftClient client){
+    private static void exerciseDeleteDataService(IsftClient client) throws XmlRpcException {
         final DataServiceFindByFieldOperation<Contact> finder = new DataServiceFindByFieldOperation<Contact>(Contact.class)
                 .addReturnFieldName(Contact.Field.Id)
                 .setFieldName(Contact.Field.LastName)
