@@ -32,6 +32,6 @@ public class DataServiceDeleteOperation<MT> extends InfusionsoftModelOperation<M
 
     @Override
     public String getRpcName() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return RPC_NAME;
     }
 }
