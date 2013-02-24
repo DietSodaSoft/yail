@@ -5,7 +5,6 @@ import com.dietsodasoftware.isft.xmlrpc.client.IsftProfile;
 import com.dietsodasoftware.isft.xmlrpc.model.Contact;
 import com.dietsodasoftware.isft.xmlrpc.model.ContactAction;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftFieldResults;
-import com.dietsodasoftware.isft.xmlrpc.service.contact.ContactService;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceAddOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceDeleteOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceFindByFieldOperation;
@@ -116,12 +115,4 @@ public class WebServiceClientDriver {
             System.out.println("Success deleting id '" +id+ "': " + deleted);
         }
     }
-
-	private static void exerciseContactService() throws XmlRpcException{
-		final ContactService cs = new ContactService(APP_NAME, API_KEY);
-		
-		final int id = cs.findContactByEmail("francis.jones@infusionsoft.com");
-		System.out.println("Contact has ID: " + id);
-	}
-	
 }
