@@ -1,6 +1,6 @@
 Using the Infusionsoft APIs isn't all that bad.  Using XmlRpc is what is painful.  "Struct."
 
-There are three basic building blocks:
+There are a few basic building blocks:
 * The Profile
 * The Client
 * The Models
