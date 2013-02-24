@@ -49,7 +49,9 @@ DataService.
 The DataService has two basic requests: ones that return Models and ones that return primitives (boolean and integer).
 
 For operations which return models, you can explicitly assemble the fields you want returned, or you can do nothing
-and you'll get them all.
+and you'll get them all.  For the operations which return collections of models, you can page through them by manually
+setting the page number, etc - OR - doing client.call(operation.next()).  You can set the page limit size, the
+fields you want returned, which page you want on the request operation.
 
 This is stuff stripped from WebServiceDriver class.
 
