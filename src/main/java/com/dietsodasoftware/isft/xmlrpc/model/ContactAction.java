@@ -1,12 +1,12 @@
 package com.dietsodasoftware.isft.xmlrpc.model;
 
+import com.dietsodasoftware.isft.xmlrpc.client.annotations.TableName;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
-
-import com.dietsodasoftware.isft.xmlrpc.client.annotations.TableName;
 
 @TableName(table = "ContactAction")
 public class ContactAction extends Model {
@@ -39,7 +39,7 @@ public class ContactAction extends Model {
 		LastUpdated(Date.class),	
 		LastUpdatedBy(Integer.class),	
 		Priority(Integer.class),	
-		IsAppointment(Boolean.class)
+		IsAppointment(Integer.class) // 1 means "yes", 0 means "no"
 		;
 		private final Class<?> typeClass;
 		private Field(Class<?> typeClass){

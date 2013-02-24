@@ -1,10 +1,10 @@
 package com.dietsodasoftware.isft.xmlrpc.service.data;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import com.dietsodasoftware.isft.xmlrpc.model.Model;
 import com.dietsodasoftware.isft.xmlrpc.model.NamedField;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class DataServiceFindByFieldOperation<MT extends Model> extends DataServiceBase<DataServiceFindByFieldOperation<MT>, MT> {
 	
@@ -17,29 +17,24 @@ public class DataServiceFindByFieldOperation<MT extends Model> extends DataServi
 		super(clazz);
 	}
 
-	public DataServiceFindByFieldOperation<MT> setFieldName(NamedField fieldName){
-		return setFieldName(fieldName.name());
+	public DataServiceFindByFieldOperation<MT> setFieldCriteria(NamedField fieldName, Object fieldValue){
+		return setFieldCriteria(fieldName.name(), fieldValue);
 	}
 
-	private DataServiceFindByFieldOperation<MT> setFieldName(String fieldName){
+	private DataServiceFindByFieldOperation<MT> setFieldCriteria(String fieldName, Object fieldValue){
 		this.fieldName = fieldName;
+        this.fieldValue = fieldValue;
+
 		return this;
 	}
 	
-	public DataServiceFindByFieldOperation<MT> setCustomFieldName(String fieldName){
-		this.fieldName = "_" + fieldName;
-		return this;
-	}
-	
-	public DataServiceFindByFieldOperation<MT> setFieldValue(Object fieldValue){
-		this.fieldValue = fieldValue;
-		return this;
+	public DataServiceFindByFieldOperation<MT> setCustomFieldCriteria(String fieldName, Object fieldValue){
+        return setFieldCriteria("_" + fieldName, fieldValue);
 	}
 	
 	public DataServiceFindByFieldOperation<MT> nextPage(){
 		return new DataServiceFindByFieldOperation<MT>(getModelTypeClass())
-		              .setFieldName(fieldName)
-		              .setFieldValue(fieldValue)
+		              .setFieldCriteria(fieldName, fieldValue)
 		              .setLimit(getLimit())
 		              .setPage(getPage() + 1)
 		              .setReturnFieldNames(getReturnFieldNames());
@@ -53,9 +48,8 @@ public class DataServiceFindByFieldOperation<MT extends Model> extends DataServi
 			page = 0;
 		}
 		return new DataServiceFindByFieldOperation<MT>(getModelTypeClass())
-		              .setFieldName(fieldName)
-		              .setFieldValue(fieldValue)
-		              .setLimit(getLimit())
+                      .setFieldCriteria(fieldName, fieldValue)
+                      .setLimit(getLimit())
 		              .setPage(page)
 		              .setReturnFieldNames(getReturnFieldNames());
 	}

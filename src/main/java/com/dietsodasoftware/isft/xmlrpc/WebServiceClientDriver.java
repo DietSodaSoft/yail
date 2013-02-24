@@ -58,8 +58,7 @@ public class WebServiceClientDriver {
 	
 	private static void exerciseFindByField(IsftClient client) throws XmlRpcException{
 		final DataServiceFindByFieldOperation<Contact> findByDate = new DataServiceFindByFieldOperation<Contact>(Contact.class)
-                     .setFieldName(Contact.Field.Id)
-                     .setFieldValue(41)
+                     .setFieldCriteria(Contact.Field.Id, 41)
 //                     .addReturnFieldName(Contact.Field.Id)
 //                     .addReturnFieldName(Contact.Field.DateCreated)
 //                     .addReturnFieldName(Contact.Field.FirstName)
@@ -74,13 +73,13 @@ public class WebServiceClientDriver {
 	
 	private static void exerciseFindAppointments(IsftClient client) throws XmlRpcException{
 		final DataServiceFindByFieldOperation<ContactAction> findByDate = new DataServiceFindByFieldOperation<ContactAction>(ContactAction.class)
-                .setFieldName(ContactAction.Field.IsAppointment)
-                .setFieldValue(Boolean.TRUE)
-                .addReturnFieldName(ContactAction.Field.Id)
-                .addReturnFieldName(ContactAction.Field.ActionDescription)
-                .addReturnFieldName(ContactAction.Field.ActionDate)
-                .addReturnFieldName(ContactAction.Field.EndDate)
-                .addReturnFieldName(ContactAction.Field.IsAppointment);
+                .setFieldCriteria(ContactAction.Field.IsAppointment, 1)
+//                .addReturnFieldName(ContactAction.Field.Id)
+//                .addReturnFieldName(ContactAction.Field.ActionDescription)
+//                .addReturnFieldName(ContactAction.Field.ActionDate)
+//                .addReturnFieldName(ContactAction.Field.EndDate)
+//                .addReturnFieldName(ContactAction.Field.IsAppointment)
+                ;
 
 	   final InfusionsoftFieldResults<ContactAction> result = client.call(findByDate);
 	
@@ -107,8 +106,7 @@ public class WebServiceClientDriver {
     private static void exerciseDeleteDataService(IsftClient client) throws XmlRpcException {
         final DataServiceFindByFieldOperation<Contact> finder = new DataServiceFindByFieldOperation<Contact>(Contact.class)
                 .addReturnFieldName(Contact.Field.Id)
-                .setFieldName(Contact.Field.LastName)
-                .setFieldValue("DemoCode")
+                .setFieldCriteria(Contact.Field.LastName, "DemoCode")
                 ;
 
         for(Contact contact: client.call(finder)){
