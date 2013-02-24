@@ -44,6 +44,19 @@ makes it painfully obvious what you can hope to get back, assuming nothing goes 
 
 ENOUGH FOREPLAY!!  Let's see this thing in action.
 
+The heart and soul of how this works is IsftClien.call().  It is really simple:
+
+	public <T> T call(InfusionsoftXmlRpcServiceOperation<T> operation) throws XmlRpcException{
+
+		// TODO: operation.validateRequest();  Let the operation throw if it hasn't been set up with valid args
+		final List<?> parameters = operation.getXmlRpcParameters(this);
+
+		final Object rawResult = infusionApp.execute(operation.getRpcName(), parameters);
+		final T parsedResult = operation.parseResult(rawResult);
+
+		return parsedResult;
+	}
+
 DataService.
 
 The DataService has two basic requests: ones that return Models and ones that return primitives (boolean and integer).
