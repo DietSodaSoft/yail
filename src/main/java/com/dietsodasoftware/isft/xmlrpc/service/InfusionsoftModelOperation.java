@@ -1,9 +1,15 @@
 package com.dietsodasoftware.isft.xmlrpc.service;
 
 import com.dietsodasoftware.isft.xmlrpc.client.annotations.TableName;
+import com.dietsodasoftware.isft.xmlrpc.model.Model;
+import com.dietsodasoftware.isft.xmlrpc.model.NamedField;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +17,7 @@ import java.util.List;
  * Date: 2/23/13
  * Time: 11:58 AM
  */
-public abstract class InfusionsoftModelOperation<MT, RT> extends InfusionsoftXmlRpcServiceOperation<RT>  {
+public abstract class InfusionsoftModelOperation<MT extends Model, RT> extends InfusionsoftXmlRpcServiceOperation<RT>  {
     private final String tableName;
     private final Class<MT> modelTypeClass;
 
@@ -45,4 +51,32 @@ public abstract class InfusionsoftModelOperation<MT, RT> extends InfusionsoftXml
     public RT parseResult(Object rawResponse) {
         return (RT)rawResponse;
     }
+
+    protected <T extends NamedField> Collection<T> getAllModelFieldNames(){
+        try {
+            @SuppressWarnings("rawtypes")
+            final Map<?,?> emptyModel = new HashMap();
+            return Model.getModelMapConstructor(getModelTypeClass()).newInstance(emptyModel).allFields();
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Unable to determine named fields for Model " + getModelTypeClass().getName() + ".", e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException("Unable to determine named fields for Model " + getModelTypeClass().getName() + ".", e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Unable to determine named fields for Model " + getModelTypeClass().getName() + ".", e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException("Unable to determine named fields for Model " + getModelTypeClass().getName() + ".", e);
+        }
+    }
+
+    protected Collection<String> getAllModelReturnFieldNames(){
+        final Collection<NamedField> fieldNames = getAllModelFieldNames();
+        final Collection<String> fields = new LinkedList<String>();
+        for(NamedField name: fieldNames){
+            fields.add(name.name());
+        }
+
+        return fields;
+    }
+
+
 }

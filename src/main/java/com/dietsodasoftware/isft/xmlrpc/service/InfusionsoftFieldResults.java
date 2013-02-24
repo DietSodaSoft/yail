@@ -1,5 +1,7 @@
 package com.dietsodasoftware.isft.xmlrpc.service;
 
+import com.dietsodasoftware.isft.xmlrpc.model.Model;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
@@ -7,7 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class InfusionsoftFieldResults<T> implements Iterable<T> {
+public class InfusionsoftFieldResults<T extends Model> implements Iterable<T> {
 	
 	private final Object[] resultSet;
 	private final Class<T> modelClass;
@@ -51,18 +53,7 @@ public class InfusionsoftFieldResults<T> implements Iterable<T> {
 		return new ResultsIterator<T>();
 	}
 	
-	public Constructor<T> getModelConstructor(){
-		try {
-			return modelClass.getConstructor(Map.class);
-		} catch (SecurityException e) {
-			throw new RuntimeException("Unable to create instance of " + modelClass + ": must provide single-argument constructor which takes a Map", e);
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException("Unable to create instance of " + modelClass + ": must provide single-argument constructor which takes a Map", e);
-		}
 
-	}
-
-	
 	private class ResultsIterator<IT> implements Iterator<IT>{
 		private final int resultSetCount;
 		private final AtomicInteger index = new AtomicInteger(0);
@@ -77,7 +68,7 @@ public class InfusionsoftFieldResults<T> implements Iterable<T> {
 				resultSetCount = resultSet.length;
 			}
 
-			ctor = (Constructor<IT>) getModelConstructor();
+			ctor = (Constructor<IT>) Model.getModelMapConstructor(modelClass);
 		}
 
 		@Override

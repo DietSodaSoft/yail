@@ -1,14 +1,9 @@
 package com.dietsodasoftware.isft.xmlrpc.service.data;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-
 import com.dietsodasoftware.isft.xmlrpc.model.Model;
-import com.dietsodasoftware.isft.xmlrpc.model.NamedField;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftFieldResultsOperation;
+
+import java.util.Collection;
 
 public abstract class DataServiceBase<BT, MT extends Model> extends InfusionsoftFieldResultsOperation<BT, MT> {
 
@@ -46,32 +41,10 @@ public abstract class DataServiceBase<BT, MT extends Model> extends Infusionsoft
 	public Collection<String> getReturnFieldNames(){
 		final Collection<String> returnFieldNames = super.getReturnFieldNames();
 		if(returnFieldNames.isEmpty()){
-			final Collection<NamedField> fieldNames = getAllModelFieldNames();
-			final Collection<String> fields = new LinkedList<String>(); 
-			for(NamedField name: fieldNames){
-				fields.add(name.name());
-			}
-			
-			return fields;
+            return getAllModelReturnFieldNames();
 		}
 		return returnFieldNames;
 	}
 	
-	protected <T extends NamedField> Collection<T> getAllModelFieldNames(){
-		try {
-			@SuppressWarnings("rawtypes")
-			final Map<?,?> emptyModel = new HashMap();
-			return parseResult(null).getModelConstructor().newInstance(emptyModel).allFields();
-		} catch (IllegalArgumentException e) {
-			throw new RuntimeException("Unable to determine named fields for Model " + getModelTypeClass().getName() + ".", e);
-		} catch (InstantiationException e) {
-			throw new RuntimeException("Unable to determine named fields for Model " + getModelTypeClass().getName() + ".", e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException("Unable to determine named fields for Model " + getModelTypeClass().getName() + ".", e);
-		} catch (InvocationTargetException e) {
-			throw new RuntimeException("Unable to determine named fields for Model " + getModelTypeClass().getName() + ".", e);
-		}
-	}
-
 
 }

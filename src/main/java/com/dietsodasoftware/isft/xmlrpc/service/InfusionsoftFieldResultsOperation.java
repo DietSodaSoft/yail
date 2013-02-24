@@ -1,12 +1,13 @@
 package com.dietsodasoftware.isft.xmlrpc.service;
 
+import com.dietsodasoftware.isft.xmlrpc.model.Model;
 import com.dietsodasoftware.isft.xmlrpc.model.NamedField;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class InfusionsoftFieldResultsOperation<BT, MT> extends InfusionsoftModelOperation<MT, InfusionsoftFieldResults<MT>>{
+public abstract class InfusionsoftFieldResultsOperation<BT, MT extends Model> extends InfusionsoftModelOperation<MT, InfusionsoftFieldResults<MT>>{
 
 	private final List<String> returnFieldNames;
 

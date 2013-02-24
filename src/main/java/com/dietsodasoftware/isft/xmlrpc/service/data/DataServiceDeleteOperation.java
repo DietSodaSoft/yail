@@ -1,5 +1,6 @@
 package com.dietsodasoftware.isft.xmlrpc.service.data;
 
+import com.dietsodasoftware.isft.xmlrpc.model.Model;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftModelOperation;
 
 import java.util.LinkedList;
@@ -11,7 +12,7 @@ import java.util.List;
  * Date: 2/23/13
  * Time: 12:30 PM
  */
-public class DataServiceDeleteOperation<MT> extends InfusionsoftModelOperation<MT, Boolean> {
+public class DataServiceDeleteOperation<MT extends Model> extends InfusionsoftModelOperation<MT, Boolean> {
     private final static String RPC_NAME = "DataService.delete";
 
     private final Integer modelId;

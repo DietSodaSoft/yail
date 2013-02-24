@@ -8,6 +8,7 @@ import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftFieldResults;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceAddOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceDeleteOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceFindByFieldOperation;
+import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceLoadOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceQueryOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceQueryOperation.Like;
 import org.apache.xmlrpc.XmlRpcException;
@@ -27,15 +28,15 @@ public class WebServiceClientDriver {
 		
 		exerciseFindByQuery(client);
 		exerciseFindByField(client);
-		
+
 		exerciseFindAppointments(client);
-		
-//		exerciseContactService();
 
         exerciseAddDataService(client);
         exerciseAddDataService(client);
 
         exerciseDeleteDataService(client);
+
+        exerciseDataServiceLoad(client);
     }
 	
 	private static void exerciseFindByQuery(IsftClient client) throws XmlRpcException {
@@ -115,4 +116,11 @@ public class WebServiceClientDriver {
             System.out.println("Success deleting id '" +id+ "': " + deleted);
         }
     }
+
+    private static void exerciseDataServiceLoad(IsftClient client)  throws XmlRpcException {
+        final DataServiceLoadOperation<Contact, Contact> loader = new DataServiceLoadOperation<Contact, Contact>(Contact.class, 5);
+        final Contact contact = client.call(loader);
+        System.out.println("Loaded Contact: " + contact);
+    }
+
 }

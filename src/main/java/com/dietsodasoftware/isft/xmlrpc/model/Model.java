@@ -1,5 +1,6 @@
 package com.dietsodasoftware.isft.xmlrpc.model;
 
+import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -25,5 +26,15 @@ public abstract class Model {
 	}
 	
 	public abstract <T extends NamedField> Collection<T> allFields();
+
+    public static <T extends Model> Constructor<T> getModelMapConstructor(Class<T> modelClass){
+            try {
+                return modelClass.getConstructor(Map.class);
+            } catch (SecurityException e) {
+                throw new RuntimeException("Unable to create instance of " + modelClass + ": must provide single-argument constructor which takes a Map", e);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException("Unable to create instance of " + modelClass + ": must provide single-argument constructor which takes a Map", e);
+            }
+    }
 
 }
