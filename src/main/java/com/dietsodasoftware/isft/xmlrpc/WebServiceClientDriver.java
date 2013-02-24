@@ -18,8 +18,8 @@ import java.util.Map;
 
 public class WebServiceClientDriver {
 	
-	private static final String APP_NAME = "zt119";
-	private static final String API_KEY = "bb553e1b31910a4dc923c80963aa3040be2ce59e7f332b873148a1c53651067f";
+	private static final String APP_NAME = "please put your app name here";
+	private static final String API_KEY = "get your own tots";
 	
 	public static void main(String [] args) throws XmlRpcException{
 		
