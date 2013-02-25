@@ -1,3 +1,6 @@
+YAIL:  Yet Another Infusionsoft Library
+
+
 Using the Infusionsoft APIs isn't all that bad.  Using XmlRpc is what is painful.  "Struct."
 
 There are a few basic building blocks:
