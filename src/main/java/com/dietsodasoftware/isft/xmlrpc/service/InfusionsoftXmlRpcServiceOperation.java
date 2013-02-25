@@ -22,5 +22,5 @@ public abstract class InfusionsoftXmlRpcServiceOperation<T> {
 
 	public abstract String getRpcName();
 
-	public abstract T parseResult(Object rawResponse);
+	public abstract T parseResult(Object rawResponse) throws InfusionsoftResponseParsingException;
 }

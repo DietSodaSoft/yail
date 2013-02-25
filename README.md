@@ -150,3 +150,15 @@ a primitive 'like' syntax.  The usual return fields, page number, page limit and
             System.out.println(contact);
         }
 
+
+DataService.getAppointmentCal
+
+Very simple.  For an appointment ID, get the Cal entry for it as a string.  As a added convenience, there are
+easily-used methods to parse the response into ical4j's Calendar.
+
+        final DataServiceGetAppointmentCalOperation cal = new DataServiceGetAppointmentCalOperation(39);
+        final String response = client.call(cal);
+        final Calendar appt = DataServiceGetAppointmentCalOperation.asIcal4jCalendar(response);
+
+        System.out.println("Appointment cal: ");
+        System.out.println(appt);

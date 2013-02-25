@@ -1,13 +1,15 @@
 package com.dietsodasoftware.isft.xmlrpc.client;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-
+import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftResponseParsingException;
+import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftXmlRpcException;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
 
 public class IsftClient {
 	private static final String APP_URL = ".infusionsoft.com/api/xmlrpc";
@@ -58,13 +60,17 @@ public class IsftClient {
 		throw new IllegalStateException("I have no idea which key to use");
 	}
 
-	public <T> T call(InfusionsoftXmlRpcServiceOperation<T> operation) throws XmlRpcException{
+	public <T> T call(InfusionsoftXmlRpcServiceOperation<T> operation) throws InfusionsoftXmlRpcException {
 		
 		final List<?> parameters = operation.getXmlRpcParameters(this);
-		
-		final Object rawResult = infusionApp.execute(operation.getRpcName(), parameters);
-		final T parsedResult = operation.parseResult(rawResult);
-		
-		return parsedResult;
+
+        try {
+            final Object rawResult = infusionApp.execute(operation.getRpcName(), parameters);
+            return operation.parseResult(rawResult);
+        } catch (XmlRpcException e) {
+            throw new InfusionsoftXmlRpcException("Failure making XmlRpc invocation", e);
+        } catch (InfusionsoftResponseParsingException e) {
+            throw new InfusionsoftXmlRpcException("Unable to parse XmlRpc response", e);
+        }
 	}
 }

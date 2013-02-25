@@ -5,23 +5,26 @@ import com.dietsodasoftware.isft.xmlrpc.client.IsftProfile;
 import com.dietsodasoftware.isft.xmlrpc.model.Contact;
 import com.dietsodasoftware.isft.xmlrpc.model.ContactAction;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftFieldResults;
+import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftResponseParsingException;
+import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftXmlRpcException;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceAddOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceDeleteOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceFindByFieldOperation;
+import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceGetAppointmentCalOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceLoadOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceQueryOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceQueryOperation.Like;
-import org.apache.xmlrpc.XmlRpcException;
+import net.fortuna.ical4j.model.Calendar;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class WebServiceClientDriver {
-	
-	private static final String APP_NAME = "please put your app name here";
-	private static final String API_KEY = "get your own tots";
-	
-	public static void main(String [] args) throws XmlRpcException{
+
+    private static final String APP_NAME = "please put your app name here";
+    private static final String API_KEY = "get your own tots";
+
+    public static void main(String [] args) throws InfusionsoftXmlRpcException, InfusionsoftResponseParsingException {
 		
 		final IsftProfile profile = IsftProfile.usingApiKey(APP_NAME, API_KEY);
 		final IsftClient client = profile.getClient();
@@ -37,9 +40,11 @@ public class WebServiceClientDriver {
         exerciseDeleteDataService(client);
 
         exerciseDataServiceLoad(client);
+
+        exerciseDataServiceGetAppointmentCal(client);
     }
 	
-	private static void exerciseFindByQuery(IsftClient client) throws XmlRpcException {
+	private static void exerciseFindByQuery(IsftClient client) throws InfusionsoftXmlRpcException {
 		final DataServiceQueryOperation<Contact> finder = 
 				new DataServiceQueryOperation<Contact>(Contact.class)
 		             .fieldLike("FirstName", "A", Like.after)
@@ -56,7 +61,7 @@ public class WebServiceClientDriver {
         
 	}
 	
-	private static void exerciseFindByField(IsftClient client) throws XmlRpcException{
+	private static void exerciseFindByField(IsftClient client) throws InfusionsoftXmlRpcException{
 		final DataServiceFindByFieldOperation<Contact> findByDate = new DataServiceFindByFieldOperation<Contact>(Contact.class)
                      .setFieldCriteria(Contact.Field.Id, 41)
 //                     .addReturnFieldName(Contact.Field.Id)
@@ -71,7 +76,7 @@ public class WebServiceClientDriver {
 
 	}
 	
-	private static void exerciseFindAppointments(IsftClient client) throws XmlRpcException{
+	private static void exerciseFindAppointments(IsftClient client) throws InfusionsoftXmlRpcException{
 		final DataServiceFindByFieldOperation<ContactAction> findByDate = new DataServiceFindByFieldOperation<ContactAction>(ContactAction.class)
                 .setFieldCriteria(ContactAction.Field.IsAppointment, 1)
 //                .addReturnFieldName(ContactAction.Field.Id)
@@ -90,7 +95,7 @@ public class WebServiceClientDriver {
    
 	}
 
-    private static void exerciseAddDataService(IsftClient client) throws XmlRpcException {
+    private static void exerciseAddDataService(IsftClient client) throws InfusionsoftXmlRpcException {
         final Map<String, Object> contactData = new HashMap<String, Object>();
         contactData.put(Contact.Field.FirstName.name(), "WebServiceClientDriver");
         contactData.put(Contact.Field.LastName.name(), "DemoCode");
@@ -103,7 +108,7 @@ public class WebServiceClientDriver {
         System.out.println("The new Contact's ID: " + newId);
     }
 
-    private static void exerciseDeleteDataService(IsftClient client) throws XmlRpcException {
+    private static void exerciseDeleteDataService(IsftClient client) throws InfusionsoftXmlRpcException {
         final DataServiceFindByFieldOperation<Contact> finder = new DataServiceFindByFieldOperation<Contact>(Contact.class)
                 .addReturnFieldName(Contact.Field.Id)
                 .setFieldCriteria(Contact.Field.LastName, "DemoCode")
@@ -117,10 +122,17 @@ public class WebServiceClientDriver {
         }
     }
 
-    private static void exerciseDataServiceLoad(IsftClient client)  throws XmlRpcException {
+    private static void exerciseDataServiceLoad(IsftClient client) throws InfusionsoftXmlRpcException {
         final DataServiceLoadOperation<Contact, Contact> loader = new DataServiceLoadOperation<Contact, Contact>(Contact.class, 5);
         final Contact contact = client.call(loader);
         System.out.println("Loaded Contact: " + contact);
     }
 
+    private static void exerciseDataServiceGetAppointmentCal(IsftClient client) throws InfusionsoftXmlRpcException, InfusionsoftResponseParsingException {
+        final DataServiceGetAppointmentCalOperation cal = new DataServiceGetAppointmentCalOperation(39);
+        final String response = client.call(cal);
+        final Calendar appt = DataServiceGetAppointmentCalOperation.asIcal4jCalendar(response);
+        System.out.println("Appointment cal: ");
+        System.out.println(appt);
+    }
 }
