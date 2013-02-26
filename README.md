@@ -65,7 +65,7 @@ The heart and soul of how this works is **`IsftClient.call()`**.  It is really s
 
 The DataService has a few basic request types:
 
-* Operations returnprimitives (boolean and integer)
+* Operations return primitives (boolean and integer)
 * Operations return Models
 * Operations return collections of Models
 
