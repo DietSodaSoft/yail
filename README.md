@@ -21,7 +21,7 @@ Currently, there are three ways to authenticate:
 *  Using a vendor's key (not currently supported yet)
 *  Using an app's API key (supported because it is easiest)
 
-A profile is meant to be stored securely on the device so that a user provides config once and they are good to
+A profile is meant to be stored securely in the app somewhere so that a user provides config once and they are good to
 go.
 
 
