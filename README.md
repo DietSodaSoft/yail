@@ -1,4 +1,5 @@
 # YAIL:  Yet Another Infusionsoft Library
+*This library is not affiliated with nor supported by Infusionsoft. Direct any questions to me or create an issue here.*
 
 
 Using the Infusionsoft APIs isn't all that bad.  *Using XmlRpc is what is painful.*  **"Struct."**
