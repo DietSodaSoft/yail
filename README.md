@@ -63,14 +63,23 @@ The heart and soul of how this works is **`IsftClient.call()`**.  It is really s
 
 ## DataService.
 
-The DataService has two basic requests: ones that return Models and ones that return primitives (boolean and integer).
+The DataService has a few basic request types:
 
-For operations which return models, you can explicitly assemble the fields you want returned, or you can do nothing
+* Operations returnprimitives (boolean and integer)
+* Operations return Models
+* Operations return collections of Models
+
+For operations which return models or collections models, you can explicitly assemble the fields you want returned, or you can do nothing
 and you'll get them all, but NOT custom fields.  To get custom fields, you must request them explicitly.
 
 For the operations which return collections of models, you can page through them by manually
 setting the page number, etc - OR - doing client.call(operation.next()).  You can set the page limit size, the
 fields you want returned, which page you want on the request operation.
+
+These operations are pretty dumb, though.  For example, if you try to page before page 0, you'll get page 0 again.  Also,
+you can beat the off-by-one by checking to see if you received as many records as your page size is large, and not
+asking for the next page in the event the record count is less than page size.
+
 
 
 This is stuff stripped from WebServiceDriver class.
