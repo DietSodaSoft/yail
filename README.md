@@ -1,43 +1,44 @@
-YAIL:  Yet Another Infusionsoft Library
+# YAIL:  Yet Another Infusionsoft Library
 
 
-Using the Infusionsoft APIs isn't all that bad.  Using XmlRpc is what is painful.  "Struct."
+Using the Infusionsoft APIs isn't all that bad.  *Using XmlRpc is what is painful.*  **"Struct."**
 
 There are a few basic building blocks:
-* The Profile
-* The Client
-* The Models
-* The Web Service Operation
 
+*  The Profile
+*  The Client
+*  The Models
+*  The Web Service Operation
 
-The Profile.
+###The Profile.
 
 The profile is the Infusionsoft app location and whatever you need to authenticate against that app in order to create a
 valid client.
 
 Currently, there are three ways to authenticate:
-* Using an app user's username/password (not currently supported yet)
-* Using a vendor's key (not currently supported yet)
-* Using an app's API key (supported because it is easiest)
+
+*  Using an app user's username/password (not currently supported yet)
+*  Using a vendor's key (not currently supported yet)
+*  Using an app's API key (supported because it is easiest)
 
 A profile is meant to be stored securely on the device so that a user provides config once and they are good to
 go.
 
 
-The Client.
+### The Client.
 
 The client sends a valid, signed XmlRpc request to the Infusionsoft app after asking the operation for it's parameters.  Additionally,
 the client will ask the operation to unmarshall the results.
 
 
-The Models.
+### The Models.
 
 The Infusionsoft APIs vend data about real-world things: contacts, opportunities, tasks, appointments, etc.  Wouldn't
 it be nice if my application can think about these real-world things and not bags key/value pairs?  That's what a
 model is, in case you've never written any code in your entire life.
 
 
-The Web Service Operation
+### The Web Service Operation
 
 The web service operation thinks about two things: what it sends and what is returned.  That's it.  The operation
 provides semantic clarity into what the operation does, but not necessarily how (only if necessary).  The operation
@@ -45,9 +46,9 @@ makes it painfully obvious what you can hope to get back, assuming nothing goes 
 
 
 
-ENOUGH FOREPLAY!!  Let's see this thing in action.
+##ENOUGH FOREPLAY!!  Let's see this thing in action.
 
-The heart and soul of how this works is IsftClien.call().  It is really simple:
+The heart and soul of how this works is **`IsftClient.call()`**.  It is really simple:
 
 	public <T> T call(InfusionsoftXmlRpcServiceOperation<T> operation) throws XmlRpcException{
 
@@ -60,7 +61,7 @@ The heart and soul of how this works is IsftClien.call().  It is really simple:
 		return parsedResult;
 	}
 
-DataService.
+## DataService.
 
 The DataService has two basic requests: ones that return Models and ones that return primitives (boolean and integer).
 
@@ -74,7 +75,7 @@ fields you want returned, which page you want on the request operation.
 
 This is stuff stripped from WebServiceDriver class.
 
-DataService.add
+### DataService.add
 
 This an easy DataService to use.  Give it a model and it saves it (currently creating a model is somewhat awkward, but
 is low-hanging fruit to improve):
@@ -91,7 +92,7 @@ is low-hanging fruit to improve):
           System.out.println("The new Contact's ID: " + newId);
 
 
-DataService.load
+### DataService.load
 
 This is also pretty easy.  Give it a model and an Id, and it returns the selected fields.
 
@@ -100,7 +101,7 @@ This is also pretty easy.  Give it a model and an Id, and it returns the selecte
         System.out.println("Loaded Contact: " + contact);
 
 
-DataService.delete
+### DataService.delete
 
 This is also pretty easy.  Give it a model and an Id, and it gives you a boolean if it deleted successfully or not:
 
@@ -110,7 +111,7 @@ This is also pretty easy.  Give it a model and an Id, and it gives you a boolean
             System.out.println("Success deleting id '" +id+ "': " + deleted);
 
 
-DataService.findByField
+### DataService.findByField
 
 Unlike those discussed above, this returns a collection of Models.  Provide it with a field and the value the field
 should match in the query.   The usual return fields, page number, page limit and returned collection applies.
@@ -126,19 +127,19 @@ should match in the query.   The usual return fields, page number, page limit an
 
 Contacts aren't the only show in town.  Search for Appointments:
 
-		final DataServiceFindByFieldOperation<ContactAction> findByDate = new DataServiceFindByFieldOperation<ContactAction>(ContactAction.class)
+		final DataServiceFindByFieldOperation<ContactAction> appt = new DataServiceFindByFieldOperation<ContactAction>(ContactAction.class)
                 .setFieldCriteria(ContactAction.Field.IsAppointment, 1)
 
-	   final InfusionsoftFieldResults<ContactAction> result = client.call(findByDate);
+	   final InfusionsoftFieldResults<ContactAction> result = client.call(appt);
 
-	   System.out.println("Appointment FindByDate: ");
+	   System.out.println("Appointment Find: ");
 	   for(ContactAction action: client.call(findByDate)){
 		   System.out.println(action);
 	   }
 
+Currently, models include: Campaignee, CampaignStep, Company, Contact, ContactAction (task and appointments), GroupAssign, Lead, MtgLead, ProductInterest, ProductInterestBundle, Stage, StageMove, Status, User, and UserGroup.
 
-
-DataService.query
+### DataService.query
 
 Query is a bit like findByField, but much more general.  You can cascade restrictions on different fields, even including
 a primitive 'like' syntax.  The usual return fields, page number, page limit and returned collection applies.
@@ -154,7 +155,7 @@ a primitive 'like' syntax.  The usual return fields, page number, page limit and
         }
 
 
-DataService.getAppointmentCal
+### DataService.getAppointmentCal
 
 Very simple.  For an appointment ID, get the Cal entry for it as a string.  As a added convenience, there are
 easily-used methods to parse the response into ical4j's Calendar.
@@ -165,3 +166,5 @@ easily-used methods to parse the response into ical4j's Calendar.
 
         System.out.println("Appointment cal: ");
         System.out.println(appt);
+
+I don't completely know what is going on with this one.  I have requested an iCal for several valid appointments, but only one of them succeeds.  I get `XmlRpcException`s for the others.  I'm working on understanding the nuances of this API call.
