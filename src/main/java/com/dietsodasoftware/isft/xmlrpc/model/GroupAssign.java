@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
+ * @link http://developers.infusionsoft.com/dbDocs/GroupAssign.html
+ *
  * Created with IntelliJ IDEA.
  * User: wendel.schultz
  * Date: 2/25/13
