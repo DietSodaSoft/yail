@@ -8,6 +8,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * @link http://developers.infusionsoft.com/dbDocs/ContactAction.html
+ *
+ */
 @TableName(table = "ContactAction")
 public class ContactAction extends Model {
 

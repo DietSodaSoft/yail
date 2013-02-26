@@ -1,5 +1,7 @@
 package com.dietsodasoftware.isft.xmlrpc.model;
 
+import com.dietsodasoftware.isft.xmlrpc.client.annotations.TableName;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -14,6 +16,7 @@ import java.util.Map;
  * Date: 2/25/13
  * Time: 7:20 PM
  */
+@TableName(table = "Company")
 public class Company extends Model {
 
     public Company(Map<String, Object> model) {

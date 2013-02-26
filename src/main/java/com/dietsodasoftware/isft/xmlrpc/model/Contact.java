@@ -1,13 +1,17 @@
 package com.dietsodasoftware.isft.xmlrpc.model;
 
+import com.dietsodasoftware.isft.xmlrpc.client.annotations.TableName;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
-import com.dietsodasoftware.isft.xmlrpc.client.annotations.TableName;
-
+/**
+ * @link http://developers.infusionsoft.com/dbDocs/Contact.html
+ *
+ */
 @TableName(table = "Contact")
 public class Contact extends Model {
 

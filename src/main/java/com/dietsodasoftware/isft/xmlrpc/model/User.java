@@ -1,16 +1,20 @@
 package com.dietsodasoftware.isft.xmlrpc.model;
 
+import com.dietsodasoftware.isft.xmlrpc.client.annotations.TableName;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
 /**
+ * @link http://developers.infusionsoft.com/dbDocs/User.html
  * Created with IntelliJ IDEA.
  * User: wendel.schultz
  * Date: 2/25/13
  * Time: 8:23 PM
  */
+@TableName(table = "User")
 public class User extends Model {
 
     public User(Map<String, Object> model) {
