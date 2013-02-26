@@ -53,10 +53,18 @@ public abstract class InfusionsoftModelOperation<MT extends Model, RT> extends I
     }
 
     protected <T extends NamedField> Collection<T> getAllModelFieldNames(){
+        return createEmptyModel().allFields();
+    }
+
+    protected Collection<String> getAllModelReturnFieldNames(){
+        return createEmptyModel().allFieldsNames();
+    }
+
+    private MT createEmptyModel(){
         try {
             @SuppressWarnings("rawtypes")
             final Map<?,?> emptyModel = new HashMap();
-            return Model.getModelMapConstructor(getModelTypeClass()).newInstance(emptyModel).allFields();
+            return Model.getModelMapConstructor(getModelTypeClass()).newInstance(emptyModel);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Unable to determine named fields for Model " + getModelTypeClass().getName() + ".", e);
         } catch (InstantiationException e) {
@@ -66,16 +74,6 @@ public abstract class InfusionsoftModelOperation<MT extends Model, RT> extends I
         } catch (InvocationTargetException e) {
             throw new RuntimeException("Unable to determine named fields for Model " + getModelTypeClass().getName() + ".", e);
         }
-    }
-
-    protected Collection<String> getAllModelReturnFieldNames(){
-        final Collection<NamedField> fieldNames = getAllModelFieldNames();
-        final Collection<String> fields = new LinkedList<String>();
-        for(NamedField name: fieldNames){
-            fields.add(name.name());
-        }
-
-        return fields;
     }
 
 

@@ -3,6 +3,8 @@ package com.dietsodasoftware.isft.xmlrpc.model;
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public abstract class Model {
@@ -26,6 +28,15 @@ public abstract class Model {
 	}
 	
 	public abstract <T extends NamedField> Collection<T> allFields();
+
+    public List<String> allFieldsNames(){
+        final List<String> fieldNames = new LinkedList<String>();
+        for(NamedField field: allFields()){
+            fieldNames.add(field.name());
+        }
+
+        return fieldNames;
+    }
 
     public static <T extends Model> Constructor<T> getModelMapConstructor(Class<T> modelClass){
             try {
