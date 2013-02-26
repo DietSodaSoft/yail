@@ -41,7 +41,6 @@ public class DataServiceGetAppointmentCalOperation extends InfusionsoftXmlRpcSer
 
     public static final Calendar asIcal4jCalendar(final String rawResponse) throws InfusionsoftResponseParsingException {
         final String responseString = (String)rawResponse;
-        System.out.println(responseString);
         final StringReader reader = new StringReader(responseString);
         final CalendarBuilder builder = new CalendarBuilder();
         try {
