@@ -16,17 +16,25 @@ import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceQueryOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceQueryOperation.Like;
 import net.fortuna.ical4j.model.Calendar;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public class WebServiceClientDriver {
 
-    private static final String APP_NAME = "please put your app name here";
-    private static final String API_KEY = "get your own tots";
+    private static final String APP_PROPERTIES_NAME = "app.properties";
+    private static final String PROP_APP_NAME = "com.dietsodasoftware.yail.appname";
+    private static final String PROP_APP_APIKEY = "com.dietsodasoftware.yail.apikey";
 
-    public static void main(String [] args) throws InfusionsoftXmlRpcException, InfusionsoftResponseParsingException {
-		
-		final IsftProfile profile = IsftProfile.usingApiKey(APP_NAME, API_KEY);
+    public static void main(String [] args) throws InfusionsoftXmlRpcException, InfusionsoftResponseParsingException, IOException {
+
+        final Properties props = readAppProperties();
+        final String appName = props.getProperty(PROP_APP_NAME);
+        final String apiKey = props.getProperty(PROP_APP_APIKEY);
+
+		final IsftProfile profile = IsftProfile.usingApiKey(appName, apiKey);
 		final IsftClient client = profile.getClient();
 		
 		exerciseFindByQuery(client);
@@ -129,10 +137,18 @@ public class WebServiceClientDriver {
     }
 
     private static void exerciseDataServiceGetAppointmentCal(IsftClient client) throws InfusionsoftXmlRpcException, InfusionsoftResponseParsingException {
-        final DataServiceGetAppointmentCalOperation cal = new DataServiceGetAppointmentCalOperation(39);
+        final DataServiceGetAppointmentCalOperation cal = new DataServiceGetAppointmentCalOperation(1);
         final String response = client.call(cal);
         final Calendar appt = DataServiceGetAppointmentCalOperation.asIcal4jCalendar(response);
         System.out.println("Appointment cal: ");
         System.out.println(appt);
+    }
+
+    private static final Properties readAppProperties() throws IOException {
+        final Properties props = new Properties();
+        final InputStream is = WebServiceClientDriver.class.getClassLoader().getResourceAsStream("app.properties");
+        props.load(is);
+
+        return props;
     }
 }
