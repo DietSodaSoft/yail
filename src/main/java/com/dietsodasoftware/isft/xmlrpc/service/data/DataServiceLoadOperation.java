@@ -6,6 +6,7 @@ import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftModelOperation;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -57,4 +58,13 @@ public class DataServiceLoadOperation<MT extends Model, RT> extends Infusionsoft
     public String getRpcName() {
         return RPC_NAME;
     }
+
+    @Override
+    public RT parseResult(Object rawResponse) {
+        if(rawResponse == null){
+            return null;
+        }
+        return (RT) createModelInstance((Map<String,Object>) rawResponse);
+    }
+
 }
