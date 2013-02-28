@@ -5,6 +5,7 @@ import com.dietsodasoftware.isft.xmlrpc.client.annotations.TableName;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,43 +28,56 @@ public class User extends Model {
     }
 
     public enum Field implements NamedField {
-        City(String.class),
-        Email(String.class),
-        EmailAddress2(String.class),
-        EmailAddress3(String.class),
-        FirstName(String.class),
-        HTMLSignature(String.class),
-        Id(Integer.class),
-        LastName(String.class),
-        MiddleName(String.class),
-        Nickname(String.class),
-        Phone1(String.class),
-        Phone1Ext(String.class),
-        Phone1Type(String.class),
-        Phone2(String.class),
-        Phone2Ext(String.class),
-        Phone2Type(String.class),
-        PostalCode(String.class),
-        Signature(String.class),
-        SpouseName(String.class),
-        State(String.class),
-        StreetAddress1(String.class),
-        StreetAddress2(String.class),
-        Suffix(String.class),
-        Title(String.class),
-        ZipFour1(String.class)
+        City(String.class, Access.Read),
+        Email(String.class, Access.Read),
+        EmailAddress2(String.class, Access.Read),
+        EmailAddress3(String.class, Access.Read),
+        FirstName(String.class, Access.Read),
+        HTMLSignature(String.class, Access.Read),
+        Id(Integer.class, Access.Read),
+        LastName(String.class, Access.Read),
+        MiddleName(String.class, Access.Read),
+        Nickname(String.class, Access.Read),
+        Phone1(String.class, Access.Read),
+        Phone1Ext(String.class, Access.Read),
+        Phone1Type(String.class, Access.Read),
+        Phone2(String.class, Access.Read),
+        Phone2Ext(String.class, Access.Read),
+        Phone2Type(String.class, Access.Read),
+        PostalCode(String.class, Access.Read),
+        Signature(String.class, Access.Read),
+        SpouseName(String.class, Access.Read),
+        State(String.class, Access.Read),
+        StreetAddress1(String.class, Access.Read),
+        StreetAddress2(String.class, Access.Read),
+        Suffix(String.class, Access.Read),
+        Title(String.class, Access.Read),
+        ZipFour1(String.class, Access.Read)
         ;
 
 
         private final Class<?> fieldClass;
+        private final List<Access> fieldAccess;
 
-        private Field(Class<?> fieldClass) {
+        private Field(Class<?> fieldClass, Access... fieldAccess) {
+            if(fieldAccess == null){ throw new RuntimeException("Invalid null fieldAccess argument"); }
             this.fieldClass = fieldClass;
+            this.fieldAccess = Arrays.asList(fieldAccess);
         }
 
         @Override
         public Class<?> typeClass() {
             return fieldClass;
+        }
+
+        @Override
+        public boolean hasAccess(Access access){
+            return fieldAccess.contains(access);
+        }
+
+        @Override
+        public Collection<Access> getAccess(){
+            return Collections.unmodifiableList(fieldAccess);
         }
     }
 }

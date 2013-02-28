@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,94 +34,109 @@ public class Contact extends Model {
 	 * Now time for something painful.
 	 */
 	public enum Field implements NamedField {
-		Address1Type(String.class),
-		Address2Street1(String.class),
-		Address2Street2(String.class),
-		Address2Type(String.class),
-		Address3Street1(String.class),
-		Address3Street2(String.class),
-		Address3Type(String.class),
-		Anniversary(Date.class),
-		AssistantName(String.class),
-		AssistantPhone(String.class),
-		BillingInformation(String.class),
-		Birthday(Date.class),
-		City(String.class),
-		City2(String.class),
-		City3(String.class),
-		Company(String.class),
-		AccountId(Integer.class),
-		CompanyID(Integer.class),
-		ContactNotes(String.class),
-		ContactType(String.class),
-		Country(String.class),
-		Country2(String.class),
-		Country3(String.class),
-		CreatedBy(Integer.class),
-		DateCreated(Date.class),
-		Email(String.class),
-		EmailAddress2(String.class),
-		EmailAddress3(String.class),
-		Fax1(String.class),
-		Fax1Type(String.class),
-		Fax2(String.class),
-		Fax2Type(String.class),
-		FirstName(String.class),
-		Groups(String.class),
-		Id(Integer.class),
-		JobTitle(String.class),
-		LastName(String.class),
-		LastUpdated(Date.class),
-		LastUpdatedBy(Integer.class),
-		Leadsource(String.class),
-		LeadSourceId(Integer.class),
-		MiddleName(String.class),
-		Nickname(String.class),
-		OwnerID(Integer.class),
-		Password(String.class),
-		Phone1(String.class),
-		Phone1Ext(String.class),
-		Phone1Type(String.class),
-		Phone2(String.class),
-		Phone2Ext(String.class),
-		Phone2Type(String.class),
-		Phone3(String.class),
-		Phone3Ext(String.class),
-		Phone3Type(String.class),
-		Phone4(String.class),
-		Phone4Ext(String.class),
-		Phone4Type(String.class),
-		Phone5(String.class),
-		Phone5Ext(String.class),
-		Phone5Type(String.class),
-		PostalCode(String.class),
-		PostalCode2(String.class),
-		PostalCode3(String.class),
-		ReferralCode(String.class),
-		SpouseName(String.class),
-		State(String.class),
-		State2(String.class),
-		State3(String.class),
-		StreetAddress1(String.class),
-		StreetAddress2(String.class),
-		Suffix(String.class),
-		Title(String.class),
-		Username(String.class),
-		Validated(String.class),
-		Website(String.class),
-		ZipFour1(String.class),
-		ZipFour2(String.class),
-		ZipFour3(String.class);
-		
-		private final Class<?> typeClass;
-		private Field(Class<?> clazz){
-			this.typeClass = clazz;
-		}
-		
-		@Override
-		public Class<?> typeClass() {
-			return typeClass;
-		}
-	}
+		Address1Type(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Address2Street1(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Address2Street2(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Address2Type(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Address3Street1(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Address3Street2(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Address3Type(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Anniversary(Date.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		AssistantName(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		AssistantPhone(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		BillingInformation(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Birthday(Date.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		City(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		City2(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		City3(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Company(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		AccountId(Integer.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		CompanyID(Integer.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		ContactNotes(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		ContactType(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Country(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Country2(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Country3(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		CreatedBy(Integer.class, Access.Read),
+		DateCreated(Date.class, Access.Read),
+		Email(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		EmailAddress2(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		EmailAddress3(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Fax1(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Fax1Type(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Fax2(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Fax2Type(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		FirstName(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Groups(String.class, Access.Read),
+		Id(Integer.class, Access.Read),
+		JobTitle(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		LastName(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		LastUpdated(Date.class, Access.Read),
+		LastUpdatedBy(Integer.class, Access.Read),
+		Leadsource(String.class, Access.Read, Access.Add, Access.Update),
+		LeadSourceId(Integer.class, Access.Read, Access.Add, Access.Update),
+		MiddleName(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Nickname(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		OwnerID(Integer.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Password(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Phone1(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Phone1Ext(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Phone1Type(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Phone2(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Phone2Ext(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Phone2Type(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Phone3(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Phone3Ext(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Phone3Type(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Phone4(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Phone4Ext(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Phone4Type(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Phone5(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Phone5Ext(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Phone5Type(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		PostalCode(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		PostalCode2(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		PostalCode3(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		ReferralCode(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		SpouseName(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		State(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		State2(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		State3(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		StreetAddress1(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		StreetAddress2(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Suffix(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Title(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Username(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Validated(String.class, Access.Read),
+		Website(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		ZipFour1(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		ZipFour2(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		ZipFour3(String.class, Access.Read, Access.Update, Access.Add, Access.Delete)
+        ;
+
+        private final Class<?> fieldClass;
+        private final List<Access> fieldAccess;
+
+        private Field(Class<?> fieldClass, Access... fieldAccess) {
+            if(fieldAccess == null){ throw new RuntimeException("Invalid null fieldAccess argument"); }
+            this.fieldClass = fieldClass;
+            this.fieldAccess = Arrays.asList(fieldAccess);
+        }
+
+        @Override
+        public Class<?> typeClass() {
+            return fieldClass;
+        }
+
+        @Override
+        public boolean hasAccess(Access access){
+            return fieldAccess.contains(access);
+        }
+
+        @Override
+        public Collection<Access> getAccess(){
+            return Collections.unmodifiableList(fieldAccess);
+        }
+    }
 
 }

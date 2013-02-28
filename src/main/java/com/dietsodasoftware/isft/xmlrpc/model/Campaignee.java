@@ -5,6 +5,7 @@ import com.dietsodasoftware.isft.xmlrpc.client.annotations.TableName;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,21 +29,34 @@ public class Campaignee extends Model {
     }
 
     public enum Field implements NamedField {
-        CampaignId(Integer.class),
-        Status(String.class), // this is an enum in the DB
-        Campaign(String.class),
-        ContactId(Integer.class)
+        CampaignId(Integer.class, Access.Read),
+        Status(String.class, Access.Read), // this is an enum in the DB
+        Campaign(String.class, Access.Read),
+        ContactId(Integer.class, Access.Read)
         ;
 
         private final Class<?> fieldClass;
+        private final List<Access> fieldAccess;
 
-        private Field(Class<?> fieldClass) {
+        private Field(Class<?> fieldClass, Access... fieldAccess) {
+            if(fieldAccess == null){ throw new RuntimeException("Invalid null fieldAccess argument"); }
             this.fieldClass = fieldClass;
+            this.fieldAccess = Arrays.asList(fieldAccess);
         }
 
         @Override
         public Class<?> typeClass() {
             return fieldClass;
+        }
+
+        @Override
+        public boolean hasAccess(Access access){
+            return fieldAccess.contains(access);
+        }
+
+        @Override
+        public Collection<Access> getAccess(){
+            return Collections.unmodifiableList(fieldAccess);
         }
     }
 }

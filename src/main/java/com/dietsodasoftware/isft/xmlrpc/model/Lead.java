@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,36 +30,49 @@ public class Lead extends Model {
     }
 
     public enum Field implements NamedField {
-        Id(Integer.class),
-        OpportunityTitle(String.class),
-        ContactID(Integer.class),
-        AffiliateId(Integer.class),
-        UserID(Integer.class),
-        StageID(Integer.class),
-        StatusID(Integer.class),
-        Leadsource(String.class),
-        Objection(String.class),
-        ProjectedRevenueLow(Double.class),
-        ProjectedRevenueHigh(Double.class),
-        OpportunityNotes(String.class),
-        DateCreated(Date.class),
-        LastUpdated(Date.class),
-        LastUpdatedBy(Integer.class),
-        CreatedBy(Integer.class),
-        EstimatedCloseDate(Date.class),
-        NextActionDate(Date.class),
-        NextActionNotes(String.class)
+        Id(Integer.class, Access.Read),
+        OpportunityTitle(String.class, Access.Read, Access.Update, Access.Delete, Access.Add),
+        ContactID(Integer.class, Access.Read, Access.Update, Access.Delete, Access.Add),
+        AffiliateId(Integer.class, Access.Read, Access.Update, Access.Delete, Access.Add),
+        UserID(Integer.class, Access.Read, Access.Update, Access.Delete, Access.Add),
+        StageID(Integer.class, Access.Read, Access.Update, Access.Delete, Access.Add),
+        StatusID(Integer.class, Access.Read, Access.Update, Access.Delete, Access.Add),
+        Leadsource(String.class, Access.Add, Access.Read),
+        Objection(String.class, Access.Read, Access.Update, Access.Delete, Access.Add),
+        ProjectedRevenueLow(Double.class, Access.Read, Access.Update, Access.Delete, Access.Add),
+        ProjectedRevenueHigh(Double.class, Access.Read, Access.Update, Access.Delete, Access.Add),
+        OpportunityNotes(String.class, Access.Read, Access.Update, Access.Delete, Access.Add),
+        DateCreated(Date.class, Access.Read, Access.Update, Access.Delete), // TODO: this seems like a bug
+        LastUpdated(Date.class, Access.Read, Access.Update, Access.Delete), // TODO: this seems like a bug
+        LastUpdatedBy(Integer.class, Access.Read, Access.Update, Access.Delete, Access.Add),  // TODO: this seems like a bug
+        CreatedBy(Integer.class, Access.Read, Access.Update, Access.Delete, Access.Add),  // TODO: this seems like a bug
+        EstimatedCloseDate(Date.class, Access.Read, Access.Update, Access.Delete, Access.Add),
+        NextActionDate(Date.class, Access.Read, Access.Update, Access.Delete, Access.Add),
+        NextActionNotes(String.class, Access.Read, Access.Update, Access.Delete, Access.Add)
         ;
 
         private final Class<?> fieldClass;
+        private final List<Access> fieldAccess;
 
-        private Field(Class<?> fieldClass) {
+        private Field(Class<?> fieldClass, Access... fieldAccess) {
+            if(fieldAccess == null){ throw new RuntimeException("Invalid null fieldAccess argument"); }
             this.fieldClass = fieldClass;
+            this.fieldAccess = Arrays.asList(fieldAccess);
         }
 
         @Override
         public Class<?> typeClass() {
             return fieldClass;
+        }
+
+        @Override
+        public boolean hasAccess(Access access){
+            return fieldAccess.contains(access);
+        }
+
+        @Override
+        public Collection<Access> getAccess(){
+            return Collections.unmodifiableList(fieldAccess);
         }
     }
 }

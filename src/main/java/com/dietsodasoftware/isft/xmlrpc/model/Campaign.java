@@ -9,16 +9,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @link http://developers.infusionsoft.com/dbDocs/UserGroup.html
+ * @link http://help.infusionsoft.com/developers/tables/campaign
+ *
  * Created with IntelliJ IDEA.
  * User: wendel.schultz
- * Date: 2/25/13
- * Time: 8:27 PM
+ * Date: 2/27/13
+ * Time: 11:38 PM
  */
-@TableName(table = "UserGroup")
-public class UserGroup extends Model {
+@TableName(table = "Campaign")
+public class Campaign extends Model {
 
-    public UserGroup(Map<String, Object> model) {
+    public Campaign(Map<String, Object> model) {
         super(model);
     }
 
@@ -30,7 +31,7 @@ public class UserGroup extends Model {
     public enum Field implements NamedField {
         Id(Integer.class, Access.Read),
         Name(String.class, Access.Read),
-        OwnerId(Integer.class, Access.Read)
+        Status(String.class, Access.Read)
         ;
 
         private final Class<?> fieldClass;

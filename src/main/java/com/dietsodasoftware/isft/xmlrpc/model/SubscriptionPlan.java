@@ -9,16 +9,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @link http://developers.infusionsoft.com/dbDocs/UserGroup.html
+ * @Link http://help.infusionsoft.com/developers/tables/subscriptionplan
+ *
  * Created with IntelliJ IDEA.
  * User: wendel.schultz
- * Date: 2/25/13
- * Time: 8:27 PM
+ * Date: 2/27/13
+ * Time: 11:15 PM
  */
-@TableName(table = "UserGroup")
-public class UserGroup extends Model {
+@TableName(table = "SubscriptionPlan")
+public class SubscriptionPlan extends Model {
 
-    public UserGroup(Map<String, Object> model) {
+    public SubscriptionPlan(Map<String, Object> model) {
         super(model);
     }
 
@@ -29,15 +30,19 @@ public class UserGroup extends Model {
 
     public enum Field implements NamedField {
         Id(Integer.class, Access.Read),
-        Name(String.class, Access.Read),
-        OwnerId(Integer.class, Access.Read)
+        ProductId(Integer.class, Access.Update, Access.Add, Access.Read),
+        Cycle(String.class, Access.Update, Access.Add, Access.Read),
+        Frequency(Integer.class, Access.Update, Access.Add, Access.Read),
+        PreAuthorizeAmount(Double.class, Access.Update, Access.Add, Access.Read),
+        Prorate(Double.class, Access.Update, Access.Add, Access.Read),
+        Active(Double.class, Access.Update, Access.Add, Access.Read),
+        PlanPrice(Double.class, Access.Update, Access.Add, Access.Read)
         ;
 
         private final Class<?> fieldClass;
         private final List<Access> fieldAccess;
 
         private Field(Class<?> fieldClass, Access... fieldAccess) {
-            if(fieldAccess == null){ throw new RuntimeException("Invalid null fieldAccess argument"); }
             this.fieldClass = fieldClass;
             this.fieldAccess = Arrays.asList(fieldAccess);
         }

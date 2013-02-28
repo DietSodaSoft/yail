@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,32 +27,48 @@ public class ContactAction extends Model {
 	
 
 	public enum Field implements NamedField {
-		Id(Integer.class),	
-		ContactId(Integer.class),	
-		OpportunityId(Integer.class),	
-		ActionType(String.class),	
-		ActionDescription(String.class),	
-		CreationDate(Date.class),	
-		CreationNotes(String.class),	
-		CompletionDate(Date.class),	
-		ActionDate(Date.class),	
-		EndDate(Date.class),	
-		PopupDate(Date.class),	
-		UserID(Integer.class),	
-		Accepted(Integer.class),	
-		CreatedBy(Integer.class),	
-		LastUpdated(Date.class),	
-		LastUpdatedBy(Integer.class),	
-		Priority(Integer.class),	
-		IsAppointment(Integer.class) // 1 means "yes", 0 means "no"
+		Id(Integer.class, Access.Read),
+		ContactId(Integer.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		OpportunityId(Integer.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		ActionType(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		ActionDescription(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		CreationDate(Date.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		CreationNotes(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		CompletionDate(Date.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		ActionDate(Date.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		EndDate(Date.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		PopupDate(Date.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		UserID(Integer.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		Accepted(Integer.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		CreatedBy(Integer.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		LastUpdated(Date.class, Access.Read),
+		LastUpdatedBy(Integer.class, Access.Read),
+		Priority(Integer.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+		IsAppointment(Integer.class, Access.Read, Access.Update, Access.Add, Access.Delete) // 1 means "yes", 0 means "no"
 		;
-		private final Class<?> typeClass;
-		private Field(Class<?> typeClass){
-			this.typeClass = typeClass;
-		}
-		
-		public Class<?> typeClass(){
-			return typeClass;
-		}
+
+        private final Class<?> fieldClass;
+        private final List<Access> fieldAccess;
+
+        private Field(Class<?> fieldClass, Access... fieldAccess) {
+            if(fieldAccess == null){ throw new RuntimeException("Invalid null fieldAccess argument"); }
+            this.fieldClass = fieldClass;
+            this.fieldAccess = Arrays.asList(fieldAccess);
+        }
+
+        @Override
+        public Class<?> typeClass() {
+            return fieldClass;
+        }
+
+        @Override
+        public boolean hasAccess(Access access){
+            return fieldAccess.contains(access);
+        }
+
+        @Override
+        public Collection<Access> getAccess(){
+            return Collections.unmodifiableList(fieldAccess);
+        }
 	}
 }

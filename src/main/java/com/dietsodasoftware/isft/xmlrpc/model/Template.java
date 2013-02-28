@@ -5,6 +5,7 @@ import com.dietsodasoftware.isft.xmlrpc.client.annotations.TableName;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,21 +29,33 @@ public class Template extends Model {
     }
 
     public enum Field implements NamedField {
-        Id(Integer.class),
-        PieceType(String.class),
-        PieceTitle(String.class),
-        Categories(String.class)
+        Id(Integer.class, Access.Read),
+        PieceType(String.class, Access.Read),
+        PieceTitle(String.class, Access.Read),
+        Categories(String.class, Access.Read)
         ;
 
         private final Class<?> fieldClass;
+        private final List<Access> fieldAccess;
 
-        private Field(Class<?> fieldClass) {
+        private Field(Class<?> fieldClass, Access... fieldAccess) {
             this.fieldClass = fieldClass;
+            this.fieldAccess = Arrays.asList(fieldAccess);
         }
 
         @Override
         public Class<?> typeClass() {
             return fieldClass;
+        }
+
+        @Override
+        public boolean hasAccess(Access access){
+            return fieldAccess.contains(access);
+        }
+
+        @Override
+        public Collection<Access> getAccess(){
+            return Collections.unmodifiableList(fieldAccess);
         }
     }
 }
