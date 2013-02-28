@@ -39,7 +39,7 @@ public class GroupAssign extends Model {
         private final List<Access> fieldAccess;
 
         private Field(Class<?> fieldClass, Access... fieldAccess) {
-            if(fieldAccess == null){ throw new RuntimeException("Invalid null fieldAccess argument"); }
+            if(fieldAccess == null || fieldAccess.length == 0){ throw new RuntimeException("Invalid null fieldAccess argument"); }
             this.fieldClass = fieldClass;
             this.fieldAccess = Arrays.asList(fieldAccess);
         }

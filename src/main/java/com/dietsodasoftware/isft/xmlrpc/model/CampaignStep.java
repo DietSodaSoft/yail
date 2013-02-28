@@ -29,7 +29,7 @@ public class CampaignStep extends Model {
     }
 
     public enum Field implements NamedField {
-        Id(Integer.class),
+        Id(Integer.class, Access.Read),
         CampaignId(Integer.class, Access.Read),
         TemplateId(Integer.class, Access.Read),
         StepStatus(String.class, Access.Read),
@@ -40,7 +40,7 @@ public class CampaignStep extends Model {
         private final List<Access> fieldAccess;
 
         private Field(Class<?> fieldClass, Access... fieldAccess) {
-            if(fieldAccess == null){ throw new RuntimeException("Invalid null fieldAccess argument"); }
+            if(fieldAccess == null || fieldAccess.length == 0){ throw new RuntimeException("Invalid null fieldAccess argument"); }
             this.fieldClass = fieldClass;
             this.fieldAccess = Arrays.asList(fieldAccess);
         }
