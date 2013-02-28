@@ -146,7 +146,7 @@ public class WebServiceClientDriver {
 
     private static final Properties readAppProperties() throws IOException {
         final Properties props = new Properties();
-        final InputStream is = WebServiceClientDriver.class.getClassLoader().getResourceAsStream("app.properties");
+        final InputStream is = WebServiceClientDriver.class.getClassLoader().getResourceAsStream(APP_PROPERTIES_NAME);
         props.load(is);
 
         return props;
