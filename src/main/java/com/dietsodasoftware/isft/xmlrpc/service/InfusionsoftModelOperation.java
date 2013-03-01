@@ -1,6 +1,5 @@
 package com.dietsodasoftware.isft.xmlrpc.service;
 
-import com.dietsodasoftware.isft.xmlrpc.client.annotations.TableName;
 import com.dietsodasoftware.isft.xmlrpc.model.Model;
 import com.dietsodasoftware.isft.xmlrpc.model.NamedField;
 
@@ -25,12 +24,7 @@ public abstract class InfusionsoftModelOperation<MT extends Model, RT> extends I
     protected InfusionsoftModelOperation(Class<MT> modelTypeClass){
 
         this.modelTypeClass = modelTypeClass;
-        if( modelTypeClass.isAnnotationPresent(TableName.class)){
-            final TableName tableAnnotation = modelTypeClass.getAnnotation(TableName.class);
-            tableName = tableAnnotation.table();
-        } else {
-            throw new IllegalArgumentException("Must provide the return type Model class annotated by @TableName on class " + modelTypeClass.getName());
-        }
+        this.tableName = Model.getTableNameForModel(modelTypeClass);
 
     }
 
