@@ -52,7 +52,7 @@ public class ModelMetaDriver {
             }
             System.out.println("-");
 
-            System.out.println( model.getSimpleName());
+            System.out.println(model.getSimpleName() + " : " + Model.getTableNameForModel(model));
             for(NamedField f: m.allFields()){
                 final int l = f.name().length();
                 System.out.println(spaces.substring(0, indent) + f.name() + spaces.substring(0, (fieldColumnWidth - l)) +
