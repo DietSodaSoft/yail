@@ -21,6 +21,8 @@ import com.dietsodasoftware.isft.xmlrpc.model.StageMove;
 import com.dietsodasoftware.isft.xmlrpc.model.Status;
 import com.dietsodasoftware.isft.xmlrpc.model.SubscriptionPlan;
 import com.dietsodasoftware.isft.xmlrpc.model.Tag;
+import com.dietsodasoftware.isft.xmlrpc.model.TagAssignment;
+import com.dietsodasoftware.isft.xmlrpc.model.TagCategory;
 import com.dietsodasoftware.isft.xmlrpc.model.Template;
 import com.dietsodasoftware.isft.xmlrpc.model.User;
 import com.dietsodasoftware.isft.xmlrpc.model.UserGroup;
@@ -104,6 +106,8 @@ public class ModelMetaDriver {
             Status.class,
             SubscriptionPlan.class,
             Tag.class,
+            TagAssignment.class,
+            TagCategory.class,
             Template.class,
             User.class,
             UserGroup.class
