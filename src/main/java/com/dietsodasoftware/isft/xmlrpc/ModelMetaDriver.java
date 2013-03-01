@@ -8,6 +8,7 @@ import com.dietsodasoftware.isft.xmlrpc.model.Campaignee;
 import com.dietsodasoftware.isft.xmlrpc.model.Company;
 import com.dietsodasoftware.isft.xmlrpc.model.Contact;
 import com.dietsodasoftware.isft.xmlrpc.model.ContactAction;
+import com.dietsodasoftware.isft.xmlrpc.model.CreditCharge;
 import com.dietsodasoftware.isft.xmlrpc.model.GroupAssign;
 import com.dietsodasoftware.isft.xmlrpc.model.Lead;
 import com.dietsodasoftware.isft.xmlrpc.model.Model;
@@ -91,6 +92,7 @@ public class ModelMetaDriver {
             Company.class,
             Contact.class,
             ContactAction.class,
+            CreditCharge.class,
             GroupAssign.class,
             Lead.class,
             MtgLead.class,
