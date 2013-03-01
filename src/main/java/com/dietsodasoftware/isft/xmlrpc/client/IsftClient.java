@@ -12,18 +12,26 @@ import java.net.URL;
 import java.util.List;
 
 public class IsftClient {
-	private static final String APP_URL = ".infusionsoft.com/api/xmlrpc";
+	static final String APP_LOCATION = "infusionsoft.com";
+    private static final String XMLRPC_PATH = "/api/xmlrpc";
 	private final String apiKey;
-	private final String vendorKey;
-	
+
 	private final XmlRpcClient infusionApp;
+
+    private IsftClient(String appName, String appLocation, String apiKey, String vendorKey){
+        this.apiKey = apiKey;
+
+        final String appUrl = "https://" + appName + "." + appLocation + XMLRPC_PATH;
+        this.infusionApp = initXmlRpcClient(appUrl);
+    }
 	
 	private IsftClient(String appName, String apiKey, String vendorKey){
-		this.apiKey = apiKey;
-		this.vendorKey = vendorKey;
-		
-		final String appUrl = "https://" + appName + APP_URL;
-		
+        this(appName, APP_LOCATION, apiKey, vendorKey);
+    }
+
+    private XmlRpcClient initXmlRpcClient(String appUrl){
+
+
 		final XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
 		
 		try {
@@ -32,18 +40,14 @@ public class IsftClient {
 			throw new RuntimeException("You can't recover from this.  Go home.");
 		}
 
-		infusionApp =  new XmlRpcClient();
-		infusionApp.setConfig(config);
+		final XmlRpcClient app =  new XmlRpcClient();
+		app.setConfig(config);
+
+        return app;
 	}
 	
-	public static IsftClient usingVendorKey(String appName, String vendorKey){
-		final IsftClient client = new IsftClient(appName, null, vendorKey);
-		
-		return client;
-	}
-	
-	public static IsftClient usingApiKey(String appName, String apiKey){
-		final IsftClient client = new IsftClient(appName, apiKey, null);
+	public static IsftClient usingApiKey(String appName, String location, String apiKey){
+		final IsftClient client = new IsftClient(appName, location, apiKey, null);
 		
 		return client;
 	}
@@ -52,11 +56,6 @@ public class IsftClient {
 		if(apiKey != null){
 			return apiKey;
 		}
-		
-		if(vendorKey != null){
-			return vendorKey;
-		}
-		
 		throw new IllegalStateException("I have no idea which key to use");
 	}
 

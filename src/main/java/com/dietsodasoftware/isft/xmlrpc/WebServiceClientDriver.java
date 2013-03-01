@@ -27,14 +27,21 @@ public class WebServiceClientDriver {
     private static final String APP_PROPERTIES_NAME = "app.properties";
     private static final String PROP_APP_NAME = "com.dietsodasoftware.yail.appname";
     private static final String PROP_APP_APIKEY = "com.dietsodasoftware.yail.apikey";
+    private static final String PROP_APP_LOCATION = "com.dietsodasoftware.yail.location";
 
     public static void main(String [] args) throws InfusionsoftXmlRpcException, InfusionsoftResponseParsingException, IOException {
 
         final Properties props = readAppProperties();
         final String appName = props.getProperty(PROP_APP_NAME);
-        final String apiKey = props.getProperty(PROP_APP_APIKEY);
+        final String apiKey = props.getProperty(PROP_APP_APIKEY + "." + appName);
+        final String location = props.getProperty(PROP_APP_LOCATION + "." + appName);
 
-		final IsftProfile profile = IsftProfile.usingApiKey(appName, apiKey);
+		final IsftProfile profile;
+        if(location == null){
+            profile = IsftProfile.usingApiKey(appName, apiKey);
+        } else {
+            profile = IsftProfile.atLocationUsingApiKey(appName, location, apiKey);
+        }
 		final IsftClient client = profile.getClient();
 		
 		exerciseFindByQuery(client);
@@ -66,9 +73,9 @@ public class WebServiceClientDriver {
         for(Contact contact: client.call(finder)){
         	System.out.println(contact);
         }
-        
+
 	}
-	
+
 	private static void exerciseFindByField(IsftClient client) throws InfusionsoftXmlRpcException{
 		final DataServiceFindByFieldOperation<Contact> findByDate = new DataServiceFindByFieldOperation<Contact>(Contact.class)
                      .setFieldCriteria(Contact.Field.Id, 41)
