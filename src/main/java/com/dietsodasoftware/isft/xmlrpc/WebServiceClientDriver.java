@@ -8,6 +8,7 @@ import com.dietsodasoftware.isft.xmlrpc.model.TagAssignment;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftFieldResults;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftXmlRpcException;
+import com.dietsodasoftware.isft.xmlrpc.service.authentication.AuthenticationServiceAuthenticateUser;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceAddOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceDeleteOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceFindByFieldOperation;
@@ -29,6 +30,8 @@ public class WebServiceClientDriver {
     private static final String PROP_APP_NAME = "com.dietsodasoftware.yail.appname";
     private static final String PROP_APP_APIKEY = "com.dietsodasoftware.yail.apikey";
     private static final String PROP_APP_LOCATION = "com.dietsodasoftware.yail.location";
+    private static final String PROP_APP_USERNAME = "com.dietsodasoftware.yail.username";
+    private static final String PROP_APP_PASSWORD = "com.dietsodasoftware.yail.password";
 
     public static void main(String [] args) throws InfusionsoftXmlRpcException, InfusionsoftResponseParsingException, IOException {
 
@@ -36,6 +39,8 @@ public class WebServiceClientDriver {
         final String appName = props.getProperty(PROP_APP_NAME);
         final String apiKey = props.getProperty(PROP_APP_APIKEY + "." + appName);
         final String location = props.getProperty(PROP_APP_LOCATION + "." + appName);
+        final String username = props.getProperty(PROP_APP_USERNAME + "." + appName);
+        final String password = props.getProperty(PROP_APP_PASSWORD + "." + appName);
 
 		final IsftProfile profile;
         if(location == null){
@@ -58,6 +63,8 @@ public class WebServiceClientDriver {
         exerciseDataServiceLoad(client);
 
         exerciseDataServiceGetAppointmentCal(client);
+
+        exerciseUsernamePasswordAuthentication(client, username, password);
     }
 	
 	private static void exerciseFindByQuery(IsftClient client) throws InfusionsoftXmlRpcException {
@@ -89,7 +96,7 @@ public class WebServiceClientDriver {
 
 	private static void exerciseFindByField(IsftClient client) throws InfusionsoftXmlRpcException{
 		final DataServiceFindByFieldOperation<Contact> findByDate = new DataServiceFindByFieldOperation<Contact>(Contact.class)
-                     .setFieldCriteria(Contact.Field.Id, 41)
+                     .setFieldCriteria(Contact.Field.Id, 20)
 //                     .addReturnFieldName(Contact.Field.Id)
 //                     .addReturnFieldName(Contact.Field.DateCreated)
 //                     .addReturnFieldName(Contact.Field.FirstName)
@@ -160,6 +167,13 @@ public class WebServiceClientDriver {
         final Calendar appt = DataServiceGetAppointmentCalOperation.asIcal4jCalendar(response);
         System.out.println("Appointment cal: ");
         System.out.println(appt);
+    }
+
+    private static final void exerciseUsernamePasswordAuthentication(IsftClient client, String username, String password) throws InfusionsoftXmlRpcException {
+        System.out.print("Authentication using '" +username+ "'/'" +password+ "' : ");
+        final AuthenticationServiceAuthenticateUser auth = new AuthenticationServiceAuthenticateUser(username, password);
+        final Integer authenticatedUserId = client.call(auth);
+        System.out.println("ID " + authenticatedUserId);
     }
 
     private static final Properties readAppProperties() throws IOException {
