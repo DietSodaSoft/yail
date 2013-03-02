@@ -4,6 +4,7 @@ import com.dietsodasoftware.isft.xmlrpc.client.IsftClient;
 import com.dietsodasoftware.isft.xmlrpc.client.IsftProfile;
 import com.dietsodasoftware.isft.xmlrpc.model.Contact;
 import com.dietsodasoftware.isft.xmlrpc.model.ContactAction;
+import com.dietsodasoftware.isft.xmlrpc.model.TagAssignment;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftFieldResults;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftXmlRpcException;
@@ -74,6 +75,16 @@ public class WebServiceClientDriver {
         	System.out.println(contact);
         }
 
+        final String theTag = "7/24 Conference";
+        final DataServiceQueryOperation<TagAssignment> tagged =
+                new DataServiceQueryOperation<TagAssignment>(TagAssignment.class)
+                .fieldEquals(TagAssignment.Field.ContactGroup.name(), theTag);
+
+
+        System.out.println("From tag : " + theTag);
+        for(TagAssignment assign: client.call(tagged)){
+            System.out.println("\t" + assign);
+        }
 	}
 
 	private static void exerciseFindByField(IsftClient client) throws InfusionsoftXmlRpcException{

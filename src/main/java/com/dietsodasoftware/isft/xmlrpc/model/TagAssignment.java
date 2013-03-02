@@ -31,7 +31,7 @@ public class TagAssignment extends Model {
     public Collection<? extends NamedField> allFields(){
         final List fields = new LinkedList();
         fields.addAll(Arrays.asList(Field.values()));
-//        fields.addAll(joinedFields());
+        fields.addAll(joinedFields());
 
         return Collections.unmodifiableCollection(fields);
     }
