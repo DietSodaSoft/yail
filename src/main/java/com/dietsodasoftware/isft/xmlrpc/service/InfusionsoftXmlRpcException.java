@@ -7,7 +7,7 @@ package com.dietsodasoftware.isft.xmlrpc.service;
  * Time: 4:52 PM
  */
 public class InfusionsoftXmlRpcException extends Exception {
-    public InfusionsoftXmlRpcException() {
+    private InfusionsoftXmlRpcException() {
     }
 
     public InfusionsoftXmlRpcException(String s) {
