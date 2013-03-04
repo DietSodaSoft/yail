@@ -30,10 +30,13 @@ public abstract class InfusionsoftModelCollectionOperation<BT, MT extends Model>
 	public BT addCustomReturnFieldName(String customFieldName){
 		return addReturnFieldName("_" + customFieldName);
 	}
-	
-	public Collection<String> getReturnFieldNames(){
-		return returnFieldNames;
-	}
+
+    public Collection<String> getReturnFieldNames(){
+        if(returnFieldNames.isEmpty()){
+            return getAllModelReturnFieldNames();
+        }
+        return returnFieldNames;
+    }
 	
 	/** for paging, not public use */
 	@SuppressWarnings("unchecked")
@@ -42,8 +45,8 @@ public abstract class InfusionsoftModelCollectionOperation<BT, MT extends Model>
 		this.returnFieldNames.addAll(fieldNames);
 		return (BT)this;
 	}
-	
-	@Override
+
+    @Override
 	public InfusionsoftModelCollectionResults<MT> parseResult(Object rawResponse) {
 		return new InfusionsoftModelCollectionResults<MT>(getModelTypeClass(), (Object[]) rawResponse);
 	}
