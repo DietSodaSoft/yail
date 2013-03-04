@@ -1,11 +1,11 @@
 package com.dietsodasoftware.isft.xmlrpc.service.data;
 
 import com.dietsodasoftware.isft.xmlrpc.model.Model;
-import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftFieldResultsOperation;
+import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftModelCollectionOperation;
 
 import java.util.Collection;
 
-public abstract class DataServiceBase<BT, MT extends Model> extends InfusionsoftFieldResultsOperation<BT, MT> {
+public abstract class DataServiceBase<BT, MT extends Model> extends InfusionsoftModelCollectionOperation<BT, MT> {
 
 	public static final int FIRST_PAGE_NUMBER = 0;
 	public static final int DEFAULT_PAGE_LIMIT_SIZE = 100;

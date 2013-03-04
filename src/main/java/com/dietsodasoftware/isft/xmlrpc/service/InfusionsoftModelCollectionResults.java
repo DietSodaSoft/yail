@@ -9,12 +9,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class InfusionsoftFieldResults<T extends Model> implements Iterable<T> {
+public class InfusionsoftModelCollectionResults<T extends Model> implements Iterable<T> {
 	
 	private final Object[] resultSet;
 	private final Class<T> modelClass;
 	
-	public InfusionsoftFieldResults(Class<T> modelClass, Object[] rawResponse){
+	public InfusionsoftModelCollectionResults(Class<T> modelClass, Object[] rawResponse){
 		this.resultSet = rawResponse;
 		this.modelClass = modelClass;
 	}
@@ -25,7 +25,7 @@ public class InfusionsoftFieldResults<T extends Model> implements Iterable<T> {
 
 	@Override
 	public String toString() {
-		return "InfusionsoftFieldResults [length = " +length()+ ", rawResponse=" + resultSet + "], " + valuesString();
+		return "InfusionsoftModelCollectionResults [length = " +length()+ ", rawResponse=" + resultSet + "], " + valuesString();
 	}
 	
 	public String valuesString(){

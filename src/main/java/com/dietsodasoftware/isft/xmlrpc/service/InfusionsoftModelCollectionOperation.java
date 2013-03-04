@@ -7,11 +7,11 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class InfusionsoftFieldResultsOperation<BT, MT extends Model> extends InfusionsoftModelOperation<MT, InfusionsoftFieldResults<MT>>{
+public abstract class InfusionsoftModelCollectionOperation<BT, MT extends Model> extends InfusionsoftModelOperation<MT, InfusionsoftModelCollectionResults<MT>>{
 
 	private final List<String> returnFieldNames;
 
-	protected InfusionsoftFieldResultsOperation(Class<MT> modelTypeClass){
+	protected InfusionsoftModelCollectionOperation(Class<MT> modelTypeClass){
         super(modelTypeClass);
 
 		returnFieldNames = new LinkedList<String>();
@@ -44,8 +44,8 @@ public abstract class InfusionsoftFieldResultsOperation<BT, MT extends Model> ex
 	}
 	
 	@Override
-	public InfusionsoftFieldResults<MT> parseResult(Object rawResponse) {
-		return new InfusionsoftFieldResults<MT>(getModelTypeClass(), (Object[]) rawResponse);
+	public InfusionsoftModelCollectionResults<MT> parseResult(Object rawResponse) {
+		return new InfusionsoftModelCollectionResults<MT>(getModelTypeClass(), (Object[]) rawResponse);
 	}
 
 

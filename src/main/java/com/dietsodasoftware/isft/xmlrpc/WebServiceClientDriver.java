@@ -5,7 +5,7 @@ import com.dietsodasoftware.isft.xmlrpc.client.IsftProfile;
 import com.dietsodasoftware.isft.xmlrpc.model.Contact;
 import com.dietsodasoftware.isft.xmlrpc.model.ContactAction;
 import com.dietsodasoftware.isft.xmlrpc.model.TagAssignment;
-import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftFieldResults;
+import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftModelCollectionResults;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftXmlRpcException;
 import com.dietsodasoftware.isft.xmlrpc.service.authentication.AuthenticationServiceAuthenticateUser;
@@ -119,7 +119,7 @@ public class WebServiceClientDriver {
 //                .addReturnFieldName(ContactAction.Field.IsAppointment)
                 ;
 
-	   final InfusionsoftFieldResults<ContactAction> result = client.call(findByDate);
+	   final InfusionsoftModelCollectionResults<ContactAction> result = client.call(findByDate);
 	
 	   System.out.println("Appointment FindByDate: ");
 	   for(ContactAction action: client.call(findByDate)){
@@ -170,7 +170,7 @@ public class WebServiceClientDriver {
     }
 
     private static final void exerciseUsernamePasswordAuthentication(IsftClient client, String username, String password) throws InfusionsoftXmlRpcException {
-        System.out.print("Authentication using '" +username+ "'/'" +password+ "' : ");
+        System.out.print("Authentication using '" + username + "'/'" + password + "' : ");
         final AuthenticationServiceAuthenticateUser auth = new AuthenticationServiceAuthenticateUser(username, password);
         final Integer authenticatedUserId = client.call(auth);
         System.out.println("ID " + authenticatedUserId);
