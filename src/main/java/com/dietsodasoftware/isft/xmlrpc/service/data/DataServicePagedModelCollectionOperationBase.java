@@ -3,7 +3,7 @@ package com.dietsodasoftware.isft.xmlrpc.service.data;
 import com.dietsodasoftware.isft.xmlrpc.model.Model;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftModelCollectionOperation;
 
-public abstract class DataServiceBase<BT, MT extends Model> extends InfusionsoftModelCollectionOperation<BT, MT> {
+public abstract class DataServicePagedModelCollectionOperationBase<BT, MT extends Model> extends InfusionsoftModelCollectionOperation<BT, MT> {
 
 	public static final int FIRST_PAGE_NUMBER = 0;
 	public static final int DEFAULT_PAGE_LIMIT_SIZE = 100;
@@ -11,7 +11,7 @@ public abstract class DataServiceBase<BT, MT extends Model> extends Infusionsoft
 	private int limit = DEFAULT_PAGE_LIMIT_SIZE;
 	private int page = FIRST_PAGE_NUMBER;
 	
-	public DataServiceBase(Class<MT> clazz){
+	public DataServicePagedModelCollectionOperationBase(Class<MT> clazz){
 		super(clazz);
 	}
 

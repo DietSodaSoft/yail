@@ -6,7 +6,7 @@ import com.dietsodasoftware.isft.xmlrpc.model.NamedField;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DataServiceFindByFieldOperation<MT extends Model> extends DataServiceBase<DataServiceFindByFieldOperation<MT>, MT> {
+public class DataServiceFindByFieldOperation<MT extends Model> extends DataServicePagedModelCollectionOperationBase<DataServiceFindByFieldOperation<MT>, MT> {
 	
 	private final static String RPC_NAME = "DataService.findByField";
 

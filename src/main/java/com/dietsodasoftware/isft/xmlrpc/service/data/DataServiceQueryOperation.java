@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.dietsodasoftware.isft.xmlrpc.model.Model;
 
-public class DataServiceQueryOperation<MT extends Model> extends DataServiceBase<DataServiceQueryOperation<MT>, MT> {
+public class DataServiceQueryOperation<MT extends Model> extends DataServicePagedModelCollectionOperationBase<DataServiceQueryOperation<MT>, MT> {
 
 	public DataServiceQueryOperation(Class<MT> clazz) {
 		super(clazz);
