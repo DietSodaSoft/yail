@@ -26,7 +26,7 @@ public class ContactAction extends Model {
 	}
 	
 
-	public enum Field implements NamedField {
+	public enum Field implements NamedField<ContactAction> {
 		Id(Integer.class, Access.Read),
 		ContactId(Integer.class, Access.Read, Access.Update, Access.Add, Access.Delete),
 		OpportunityId(Integer.class, Access.Read, Access.Update, Access.Add, Access.Delete),

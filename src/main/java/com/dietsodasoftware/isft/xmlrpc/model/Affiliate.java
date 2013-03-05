@@ -29,7 +29,7 @@ public class Affiliate extends Model {
     }
 
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<Affiliate> {
         Id(Integer.class, Access.Read),
         ContactId(Integer.class, Access.Update, Access.Delete, Access.Add, Access.Read),
         ParentId(Integer.class, Access.Update, Access.Delete, Access.Add, Access.Read),

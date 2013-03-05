@@ -29,7 +29,7 @@ public class MtgLead extends Model {
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<MtgLead> {
         Id(Integer.class, Access.Read),
         DateAppraisalOrdered(Date.class, Access.Read),
         DateAppraisalDone(Date.class, Access.Read),

@@ -31,7 +31,7 @@ public class Status extends Model {
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<Status> {
         Id(Integer.class, Access.Read),
         StatusName(String.class, Access.Read),
         StatusOrder(String.class, Access.Read),

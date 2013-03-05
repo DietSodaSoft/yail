@@ -28,7 +28,7 @@ public class TagCategory extends Model {
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<TagCategory> {
         Id(Integer.class, Access.Read),
         CategoryName(String.class, Access.Read, Access.Add, Access.Update),
         CategoryDescription(String.class, Access.Read, Access.Add, Access.Update)

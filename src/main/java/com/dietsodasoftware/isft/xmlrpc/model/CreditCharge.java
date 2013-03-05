@@ -28,7 +28,7 @@ public class CreditCharge extends Model {
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<CreditCharge> {
         Id(Integer.class, Access.Read),
         CCId(Integer.class, Access.Read),
         PaymentId(String.class, Access.Read),

@@ -29,11 +29,11 @@ public abstract class Model {
 		return values.toString();
 	}
 	
-	public abstract <T extends NamedField> Collection<T> allFields();
+	public abstract <MT, T extends NamedField<MT>> Collection<T> allFields();
 
-    public List<String> allFieldsNames(){
+    public <MT extends Model, T extends NamedField<MT>> List<String> allFieldsNames(){
         final List<String> fieldNames = new LinkedList<String>();
-        for(NamedField field: allFields()){
+        for(NamedField<?> field: this.allFields()){
             fieldNames.add(field.name());
         }
 

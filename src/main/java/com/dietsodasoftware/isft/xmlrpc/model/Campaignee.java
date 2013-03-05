@@ -28,7 +28,7 @@ public class Campaignee extends Model {
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<Campaignee> {
         CampaignId(Integer.class, Access.Read),
         Status(String.class, Access.Read), // this is an enum in the DB
         Campaign(String.class, Access.Read),

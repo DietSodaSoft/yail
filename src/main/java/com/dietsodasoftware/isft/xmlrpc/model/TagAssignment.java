@@ -80,7 +80,7 @@ public class TagAssignment extends Model {
     }
 
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<TagAssignment> {
         GroupId(Integer.class, Access.Read),
         ContactGroup(String.class, Access.Read),  // This is the tag name
         DateCreated(Date.class, Access.Read),

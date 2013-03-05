@@ -28,7 +28,7 @@ public class ProductInterestBundle extends Model {
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<ProductInterestBundle> {
         Id(Integer.class, Access.Read),
         BundleName(String.class, Access.Read, Access.Update, Access.Add),
         Description(String.class, Access.Read, Access.Update, Access.Add)

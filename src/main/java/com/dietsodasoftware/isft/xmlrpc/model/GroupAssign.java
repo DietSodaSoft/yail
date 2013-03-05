@@ -28,7 +28,7 @@ public class GroupAssign extends Model {
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<GroupAssign> {
         Id(Integer.class, Access.Read),
         UserId(Integer.class, Access.Read),
         GroupId(Integer.class, Access.Read),

@@ -29,7 +29,7 @@ public class Lead extends Model {
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<Lead> {
         Id(Integer.class, Access.Read),
         OpportunityTitle(String.class, Access.Read, Access.Update, Access.Delete, Access.Add),
         ContactID(Integer.class, Access.Read, Access.Update, Access.Delete, Access.Add),

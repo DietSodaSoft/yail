@@ -30,7 +30,7 @@ public class Company extends Model {
     }
 
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<Company> {
         Address1Type(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
         Address2Street1(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
         Address2Street2(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),

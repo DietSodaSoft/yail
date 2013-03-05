@@ -78,7 +78,7 @@ public class ModelMetaDriver {
         int longest = 0;
         for(Class model: models){
             final Model m = (Model) Model.getModelMapConstructor(model).newInstance(new HashMap());
-            for(NamedField f: m.allFields()){
+            for(NamedField<?> f: m.allFields()){
                 longest = Math.max(longest, f.name().length());
             }
         }

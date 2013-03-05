@@ -2,7 +2,7 @@ package com.dietsodasoftware.isft.xmlrpc.model;
 
 import java.util.Collection;
 
-public interface NamedField {
+public interface NamedField<T> {
     public enum Access {
         Read, Add, Update, Delete;
     }

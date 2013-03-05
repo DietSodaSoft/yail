@@ -27,7 +27,7 @@ public class User extends Model {
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<User> {
         City(String.class, Access.Read),
         Email(String.class, Access.Read),
         EmailAddress2(String.class, Access.Read),

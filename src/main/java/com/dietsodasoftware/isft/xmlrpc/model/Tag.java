@@ -28,7 +28,7 @@ public class Tag extends Model {
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<Tag> {
         Id(Integer.class, Access.Read),
         GroupName(String.class, Access.Read, Access.Update, Access.Add),
         GroupCategoryId(Integer.class, Access.Read, Access.Update, Access.Add),

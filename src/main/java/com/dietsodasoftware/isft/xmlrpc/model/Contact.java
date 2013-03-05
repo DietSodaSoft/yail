@@ -26,14 +26,14 @@ public class Contact extends Model {
 	}
 
 	@Override
-	public Collection<? extends NamedField> allFields(){
+	public Collection<? extends NamedField<Contact>> allFields(){
 		return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
 	}
 	
 	/**
 	 * Now time for something painful.
 	 */
-	public enum Field implements NamedField {
+	public enum Field implements NamedField<Contact> {
 		Address1Type(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
 		Address2Street1(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
 		Address2Street2(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),

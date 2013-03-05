@@ -46,7 +46,7 @@ public abstract class InfusionsoftModelOperation<MT extends Model, RT> extends I
         return (RT)rawResponse;
     }
 
-    protected <T extends NamedField> Collection<T> getAllModelFieldNames(){
+    protected <T extends NamedField<MT>> Collection<T> getAllModelFieldNames(){
         return createModelInstance(new HashMap()).allFields();
     }
 

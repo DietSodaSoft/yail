@@ -28,7 +28,7 @@ public class SubscriptionPlan extends Model {
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<SubscriptionPlan> {
         Id(Integer.class, Access.Read),
         ProductId(Integer.class, Access.Update, Access.Add, Access.Read),
         Cycle(String.class, Access.Update, Access.Add, Access.Read),

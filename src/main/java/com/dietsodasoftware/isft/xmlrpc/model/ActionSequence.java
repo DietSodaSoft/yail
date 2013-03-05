@@ -24,11 +24,11 @@ public class ActionSequence extends Model {
     }
 
     @Override
-    public Collection<? extends NamedField> allFields(){
+    public Collection<? extends NamedField<ActionSequence>> allFields(){
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<ActionSequence> {
         Id(Integer.class, Access.Read),
         TemplateName(String.class, Access.Read),
         VisibleToTheseUsers(String.class, Access.Read)

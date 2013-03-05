@@ -28,7 +28,7 @@ public class Template extends Model {
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<Template> {
         Id(Integer.class, Access.Read),
         PieceType(String.class, Access.Read),
         PieceTitle(String.class, Access.Read),

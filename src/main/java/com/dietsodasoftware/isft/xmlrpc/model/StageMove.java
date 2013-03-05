@@ -31,7 +31,7 @@ public class StageMove extends Model {
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<StageMove> {
         Id(Long.class, Access.Read),
         OpportunityId(Long.class, Access.Read),
         MoveDate(Date.class, Access.Read),

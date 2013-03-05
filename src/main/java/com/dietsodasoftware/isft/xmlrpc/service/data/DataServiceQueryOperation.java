@@ -1,10 +1,11 @@
 package com.dietsodasoftware.isft.xmlrpc.service.data;
 
+import com.dietsodasoftware.isft.xmlrpc.model.Model;
+import com.dietsodasoftware.isft.xmlrpc.model.NamedField;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.dietsodasoftware.isft.xmlrpc.model.Model;
 
 public class DataServiceQueryOperation<MT extends Model> extends DataServicePagedModelCollectionOperationBase<DataServiceQueryOperation<MT>, MT> {
 
@@ -38,18 +39,32 @@ public class DataServiceQueryOperation<MT extends Model> extends DataServicePage
 	public String getRpcName() {
         return RPC_NAME;
 	}
+
+    private DataServiceQueryOperation<MT> fieldEquals(String fieldName, Object value){
+        parameterValues.put(fieldName, value);
+        return this;
+    }
+
+    public DataServiceQueryOperation<MT> fieldEquals(NamedField<MT> field, Object value){
+        parameterValues.put(field.name(), value);
+        return this;
+    }
+
+    private DataServiceQueryOperation<MT> fieldIsNull(String fieldName){
+        parameterValues.put(fieldName, NULL);
+        return this;
+    }
+
+    public DataServiceQueryOperation<MT> fieldIsNull(NamedField<MT> field){
+        parameterValues.put(field.name(), NULL);
+        return this;
+    }
+
+    public DataServiceQueryOperation<MT> fieldLike(NamedField<MT> field, String value, Like like){
+        return fieldLike(field.name(), value, like);
+    }
 	
-	public DataServiceQueryOperation<MT> fieldEquals(String fieldName, Object value){
-		parameterValues.put(fieldName, value);
-		return this;
-	}
-	
-	public DataServiceQueryOperation<MT> fieldIsNull(String fieldName){
-		parameterValues.put(fieldName, NULL);
-		return this;
-	}
-	
-	public DataServiceQueryOperation<MT> fieldLike(String fieldName, String value, Like like){
+	private DataServiceQueryOperation<MT> fieldLike(String fieldName, String value, Like like){
 		parameterValues.put(fieldName, like.getParameterValue(value));
 		return this;
 	}

@@ -70,7 +70,7 @@ public class WebServiceClientDriver {
 	private static void exerciseFindByQuery(IsftClient client) throws InfusionsoftXmlRpcException {
 		final DataServiceQueryOperation<Contact> finder = 
 				new DataServiceQueryOperation<Contact>(Contact.class)
-		             .fieldLike("FirstName", "A", Like.after)
+		             .fieldLike(Contact.Field.FirstName, "A", Like.after)
 //		             .addReturnFieldName(Contact.Field.Id)
 //                     .addReturnFieldName(Contact.Field.DateCreated)
 //                     .addReturnFieldName(Contact.Field.FirstName)
@@ -85,7 +85,7 @@ public class WebServiceClientDriver {
         final String theTag = "7/24 Conference";
         final DataServiceQueryOperation<TagAssignment> tagged =
                 new DataServiceQueryOperation<TagAssignment>(TagAssignment.class)
-                .fieldEquals(TagAssignment.Field.ContactGroup.name(), theTag);
+                .fieldEquals(TagAssignment.Field.ContactGroup, theTag);
 
 
         System.out.println("From tag : " + theTag);

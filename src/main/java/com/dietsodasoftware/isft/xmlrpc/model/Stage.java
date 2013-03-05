@@ -30,7 +30,7 @@ public class Stage extends Model {
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<Stage> {
         Id(Integer.class, Access.Read),
         StageName(String.class, Access.Read),
         StageOrder(Integer.class, Access.Read),

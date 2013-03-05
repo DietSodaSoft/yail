@@ -28,7 +28,7 @@ public class CampaignStep extends Model {
         return Collections.unmodifiableCollection(Arrays.asList(Field.values()));
     }
 
-    public enum Field implements NamedField {
+    public enum Field implements NamedField<CampaignStep> {
         Id(Integer.class, Access.Read),
         CampaignId(Integer.class, Access.Read),
         TemplateId(Integer.class, Access.Read),
