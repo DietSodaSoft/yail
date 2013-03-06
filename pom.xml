@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.dietsodasoftware.isft.xmlrpc</groupId>
-    <artifactId>Infusionsoft-XmlRpcJavaClient</artifactId>
-    <version>1.0</version>
+    <artifactId>yail-XmlRpcJavaClient</artifactId>
+    <version>0.7.0</version>
 
     <dependencies>
 
