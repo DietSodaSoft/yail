@@ -3,7 +3,7 @@
 
 This project is an attempt to be an easy-to-use client library for [Infusionsoft's API][1].
 
-    [1] http://help.infusionsoft.com/api-docs
+[1]: http://help.infusionsoft.com/api-docs
 
 
 Using the Infusionsoft APIs isn't all that bad.  *Using XmlRpc is what is painful.*  **"Struct."**
