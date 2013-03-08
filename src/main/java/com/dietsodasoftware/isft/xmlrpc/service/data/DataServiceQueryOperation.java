@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.dietsodasoftware.isft.xmlrpc.model.Model;
+import com.dietsodasoftware.isft.xmlrpc.model.NamedField;
 
 public class DataServiceQueryOperation<MT extends Model> extends DataServiceBase<DataServiceQueryOperation<MT>, MT> {
 
@@ -25,6 +26,19 @@ public class DataServiceQueryOperation<MT extends Model> extends DataServiceBase
 			return String.format(pattern, compareTo);
 		}
 	}
+
+    public enum Compare{
+        gt("~>~"),
+        lt("~<~"),
+        gte("~>=~"),
+        lte("~<=~")
+        ;
+
+        private final String compareString;
+        private Compare(String compareString){
+            this.compareString = compareString;
+        }
+    }
 	
 	private static final String NULL = "~null~";
 	
@@ -39,22 +53,34 @@ public class DataServiceQueryOperation<MT extends Model> extends DataServiceBase
         return RPC_NAME;
 	}
 	
-	public DataServiceQueryOperation<MT> fieldEquals(String fieldName, Object value){
+	private DataServiceQueryOperation<MT> fieldEquals(String fieldName, Object value){
 		parameterValues.put(fieldName, value);
 		return this;
 	}
 	
-	public DataServiceQueryOperation<MT> fieldIsNull(String fieldName){
+	private DataServiceQueryOperation<MT> fieldIsNull(String fieldName){
 		parameterValues.put(fieldName, NULL);
 		return this;
 	}
 	
-	public DataServiceQueryOperation<MT> fieldLike(String fieldName, String value, Like like){
+	private DataServiceQueryOperation<MT> fieldLike(String fieldName, String value, Like like){
 		parameterValues.put(fieldName, like.getParameterValue(value));
 		return this;
 	}
 
-	public DataServiceQueryOperation<MT> customFieldEquals(String fieldName, Object value){
+    public DataServiceQueryOperation<MT> fieldEquals(NamedField field, Object value){
+        return fieldEquals(field.name(), value);
+    }
+
+    public DataServiceQueryOperation<MT> fieldIsNull(NamedField field){
+        return fieldIsNull(field.name());
+    }
+
+    public DataServiceQueryOperation<MT> fieldLike(NamedField field, String value, Like like){
+        return fieldLike(field.name(), value, like);
+    }
+
+    public DataServiceQueryOperation<MT> customFieldEquals(String fieldName, Object value){
 		return fieldEquals("_" + fieldName, value);
 	}
 	
@@ -66,7 +92,17 @@ public class DataServiceQueryOperation<MT extends Model> extends DataServiceBase
 		return fieldLike("_" + fieldName, value, like);
 	}
 
-	@SuppressWarnings("unchecked")
+    public DataServiceQueryOperation<MT> fieldCompare(NamedField field, Compare compare, String value){
+        fieldEquals(field.name(), compare.compareString + value);
+        return this;
+    }
+
+    public DataServiceQueryOperation<MT> customFieldCompare(String field, Compare compare, String value){
+        fieldEquals("_" + field, compare.compareString + value);
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
 	@Override
 	protected List<?> getOperationParameters() {
 		@SuppressWarnings("rawtypes")
