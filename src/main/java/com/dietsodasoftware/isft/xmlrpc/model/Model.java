@@ -20,6 +20,10 @@ public abstract class Model {
 		return (T) values.get(field.name());
 	}
 
+    public <T> T getCustomFieldValue(String fieldName){
+        return (T) values.get("_" + fieldName);
+    }
+
     public final Map<String, Object> getStruct(){
         return values;
     }
