@@ -1,6 +1,5 @@
 package com.dietsodasoftware.isft.xmlrpc.service.authentication;
 
-import com.dietsodasoftware.isft.xmlrpc.client.IsftClient; // imported for JavaDoc. Funny.
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftAuthorizationFailureException;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
@@ -10,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Unfortunately, when this fails, all you'll get is an XmlRpcException from the {@link IsftClient}.
+ * Unfortunately, when this fails, all you'll get is an XmlRpcException from the {@link com.dietsodasoftware.isft.xmlrpc.client.YailClient}.
  *
  * Created with IntelliJ IDEA.
  * User: wendel.schultz

@@ -11,21 +11,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-public class IsftClient {
+public class YailClient {
 	static final String APP_LOCATION = "infusionsoft.com";
     private static final String XMLRPC_PATH = "/api/xmlrpc";
 	private final String apiKey;
 
 	private final XmlRpcClient infusionApp;
 
-    private IsftClient(String appName, String appLocation, String apiKey, String vendorKey){
+    private YailClient(String appName, String appLocation, String apiKey, String vendorKey){
         this.apiKey = apiKey;
 
         final String appUrl = "https://" + appName + "." + appLocation + XMLRPC_PATH;
         this.infusionApp = initXmlRpcClient(appUrl);
     }
 	
-	private IsftClient(String appName, String apiKey, String vendorKey){
+	private YailClient(String appName, String apiKey, String vendorKey){
         this(appName, APP_LOCATION, apiKey, vendorKey);
     }
 
@@ -46,8 +46,8 @@ public class IsftClient {
         return app;
 	}
 	
-	public static IsftClient usingApiKey(String appName, String location, String apiKey){
-		final IsftClient client = new IsftClient(appName, location, apiKey, null);
+	public static YailClient usingApiKey(String appName, String location, String apiKey){
+		final YailClient client = new YailClient(appName, location, apiKey, null);
 		
 		return client;
 	}
