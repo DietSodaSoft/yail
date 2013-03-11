@@ -5,7 +5,7 @@ import com.dietsodasoftware.isft.xmlrpc.client.YailProfile;
 import com.dietsodasoftware.isft.xmlrpc.model.Contact;
 import com.dietsodasoftware.isft.xmlrpc.model.ContactAction;
 import com.dietsodasoftware.isft.xmlrpc.model.TagAssignment;
-import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftFieldResults;
+import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftModelCollectionResults;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftXmlRpcException;
 import com.dietsodasoftware.isft.xmlrpc.service.authentication.AuthenticationServiceAuthenticateUser;
@@ -119,7 +119,7 @@ public class WebServiceClientDriver {
 //                .addReturnFieldName(ContactAction.Field.IsAppointment)
                 ;
 
-	   final InfusionsoftFieldResults<ContactAction> result = client.call(findByDate);
+	   final InfusionsoftModelCollectionResults<ContactAction> result = client.call(findByDate);
 	
 	   System.out.println("Appointment FindByDate: ");
 	   for(ContactAction action: client.call(findByDate)){

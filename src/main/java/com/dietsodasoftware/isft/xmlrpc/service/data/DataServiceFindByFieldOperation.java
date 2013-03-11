@@ -2,11 +2,12 @@ package com.dietsodasoftware.isft.xmlrpc.service.data;
 
 import com.dietsodasoftware.isft.xmlrpc.model.Model;
 import com.dietsodasoftware.isft.xmlrpc.model.NamedField;
+import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftModelCollectionOperation;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class DataServiceFindByFieldOperation<MT extends Model> extends DataServiceBase<DataServiceFindByFieldOperation<MT>, MT> {
+public class DataServiceFindByFieldOperation<MT extends Model> extends InfusionsoftModelCollectionOperation<DataServiceFindByFieldOperation<MT>,MT> {
 	
 	private final static String RPC_NAME = "DataService.findByField";
 
