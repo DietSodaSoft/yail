@@ -1,6 +1,6 @@
 package com.dietsodasoftware.isft.xmlrpc.service;
 
-import com.dietsodasoftware.isft.xmlrpc.client.IsftClient;
+import com.dietsodasoftware.isft.xmlrpc.client.YailClient;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 public abstract class InfusionsoftXmlRpcServiceOperation<T> {
 
 	@SuppressWarnings("unchecked")
-	public final List<?> getXmlRpcParameters(IsftClient isft){
+	public final List<?> getXmlRpcParameters(YailClient isft){
 		@SuppressWarnings("rawtypes")
 		final List parameters = new LinkedList();
 		parameters.add(isft.getKey());

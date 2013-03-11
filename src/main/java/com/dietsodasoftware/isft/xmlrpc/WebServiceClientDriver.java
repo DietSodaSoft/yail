@@ -1,7 +1,7 @@
 package com.dietsodasoftware.isft.xmlrpc;
 
-import com.dietsodasoftware.isft.xmlrpc.client.IsftClient;
-import com.dietsodasoftware.isft.xmlrpc.client.IsftProfile;
+import com.dietsodasoftware.isft.xmlrpc.client.YailClient;
+import com.dietsodasoftware.isft.xmlrpc.client.YailProfile;
 import com.dietsodasoftware.isft.xmlrpc.model.Contact;
 import com.dietsodasoftware.isft.xmlrpc.model.ContactAction;
 import com.dietsodasoftware.isft.xmlrpc.model.TagAssignment;
@@ -42,13 +42,13 @@ public class WebServiceClientDriver {
         final String username = props.getProperty(PROP_APP_USERNAME + "." + appName);
         final String password = props.getProperty(PROP_APP_PASSWORD + "." + appName);
 
-		final IsftProfile profile;
+		final YailProfile profile;
         if(location == null){
-            profile = IsftProfile.usingApiKey(appName, apiKey);
+            profile = YailProfile.usingApiKey(appName, apiKey);
         } else {
-            profile = IsftProfile.atLocationUsingApiKey(appName, location, apiKey);
+            profile = YailProfile.atLocationUsingApiKey(appName, location, apiKey);
         }
-		final IsftClient client = profile.getClient();
+		final YailClient client = profile.getClient();
 		
 		exerciseFindByQuery(client);
 		exerciseFindByField(client);
@@ -67,7 +67,7 @@ public class WebServiceClientDriver {
         exerciseUsernamePasswordAuthentication(client, username, password);
     }
 	
-	private static void exerciseFindByQuery(IsftClient client) throws InfusionsoftXmlRpcException {
+	private static void exerciseFindByQuery(YailClient client) throws InfusionsoftXmlRpcException {
 		final DataServiceQueryOperation<Contact> finder = 
 				new DataServiceQueryOperation<Contact>(Contact.class)
 		             .fieldLike(Contact.Field.FirstName, "A", Like.after)
@@ -94,7 +94,7 @@ public class WebServiceClientDriver {
         }
 	}
 
-	private static void exerciseFindByField(IsftClient client) throws InfusionsoftXmlRpcException{
+	private static void exerciseFindByField(YailClient client) throws InfusionsoftXmlRpcException{
 		final DataServiceFindByFieldOperation<Contact> findByDate = new DataServiceFindByFieldOperation<Contact>(Contact.class)
                      .setFieldCriteria(Contact.Field.Id, 20)
 //                     .addReturnFieldName(Contact.Field.Id)
@@ -109,7 +109,7 @@ public class WebServiceClientDriver {
 
 	}
 	
-	private static void exerciseFindAppointments(IsftClient client) throws InfusionsoftXmlRpcException{
+	private static void exerciseFindAppointments(YailClient client) throws InfusionsoftXmlRpcException{
 		final DataServiceFindByFieldOperation<ContactAction> findByDate = new DataServiceFindByFieldOperation<ContactAction>(ContactAction.class)
                 .setFieldCriteria(ContactAction.Field.IsAppointment, 1)
 //                .addReturnFieldName(ContactAction.Field.Id)
@@ -128,7 +128,7 @@ public class WebServiceClientDriver {
    
 	}
 
-    private static void exerciseAddDataService(IsftClient client) throws InfusionsoftXmlRpcException {
+    private static void exerciseAddDataService(YailClient client) throws InfusionsoftXmlRpcException {
         final Map<String, Object> contactData = new HashMap<String, Object>();
         contactData.put(Contact.Field.FirstName.name(), "WebServiceClientDriver");
         contactData.put(Contact.Field.LastName.name(), "DemoCode");
@@ -141,7 +141,7 @@ public class WebServiceClientDriver {
         System.out.println("The new Contact's ID: " + newId);
     }
 
-    private static void exerciseDeleteDataService(IsftClient client) throws InfusionsoftXmlRpcException {
+    private static void exerciseDeleteDataService(YailClient client) throws InfusionsoftXmlRpcException {
         final DataServiceFindByFieldOperation<Contact> finder = new DataServiceFindByFieldOperation<Contact>(Contact.class)
                 .addReturnFieldName(Contact.Field.Id)
                 .setFieldCriteria(Contact.Field.LastName, "DemoCode")
@@ -155,13 +155,13 @@ public class WebServiceClientDriver {
         }
     }
 
-    private static void exerciseDataServiceLoad(IsftClient client) throws InfusionsoftXmlRpcException {
+    private static void exerciseDataServiceLoad(YailClient client) throws InfusionsoftXmlRpcException {
         final DataServiceLoadOperation<Contact, Contact> loader = new DataServiceLoadOperation<Contact, Contact>(Contact.class, 5);
         final Contact contact = client.call(loader);
         System.out.println("Loaded Contact: " + contact);
     }
 
-    private static void exerciseDataServiceGetAppointmentCal(IsftClient client) throws InfusionsoftXmlRpcException, InfusionsoftResponseParsingException {
+    private static void exerciseDataServiceGetAppointmentCal(YailClient client) throws InfusionsoftXmlRpcException, InfusionsoftResponseParsingException {
         final DataServiceGetAppointmentCalOperation cal = new DataServiceGetAppointmentCalOperation(1);
         final String response = client.call(cal);
         final Calendar appt = DataServiceGetAppointmentCalOperation.asIcal4jCalendar(response);
@@ -169,7 +169,7 @@ public class WebServiceClientDriver {
         System.out.println(appt);
     }
 
-    private static final void exerciseUsernamePasswordAuthentication(IsftClient client, String username, String password) throws InfusionsoftXmlRpcException {
+    private static final void exerciseUsernamePasswordAuthentication(YailClient client, String username, String password) throws InfusionsoftXmlRpcException {
         System.out.print("Authentication using '" +username+ "'/'" +password+ "' : ");
         final AuthenticationServiceAuthenticateUser auth = new AuthenticationServiceAuthenticateUser(username, password);
         final Integer authenticatedUserId = client.call(auth);
