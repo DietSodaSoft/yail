@@ -6,8 +6,9 @@ import java.util.Map;
 
 import com.dietsodasoftware.isft.xmlrpc.model.Model;
 import com.dietsodasoftware.isft.xmlrpc.model.NamedField;
+import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftModelCollectionOperation;
 
-public class DataServiceQueryOperation<MT extends Model> extends DataServiceBase<DataServiceQueryOperation<MT>, MT> {
+public class DataServiceQueryOperation<MT extends Model> extends InfusionsoftModelCollectionOperation<DataServiceQueryOperation<MT>,MT> {
 
 	public DataServiceQueryOperation(Class<MT> clazz) {
 		super(clazz);
