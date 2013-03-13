@@ -14,6 +14,7 @@ import com.dietsodasoftware.isft.xmlrpc.model.Lead;
 import com.dietsodasoftware.isft.xmlrpc.model.Model;
 import com.dietsodasoftware.isft.xmlrpc.model.MtgLead;
 import com.dietsodasoftware.isft.xmlrpc.model.NamedField;
+import com.dietsodasoftware.isft.xmlrpc.model.Order;
 import com.dietsodasoftware.isft.xmlrpc.model.PaidSubscription;
 import com.dietsodasoftware.isft.xmlrpc.model.ProductInterest;
 import com.dietsodasoftware.isft.xmlrpc.model.ProductInterestBundle;
@@ -100,6 +101,7 @@ public class ModelMetaDriver {
             GroupAssign.class,
             Lead.class,
             MtgLead.class,
+            Order.class,
             PaidSubscription.class,
             ProductInterest.class,
             ProductInterestBundle.class,
