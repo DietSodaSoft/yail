@@ -1,15 +1,11 @@
 package com.dietsodasoftware.isft.xmlrpc.service.contact;
 
 import com.dietsodasoftware.isft.xmlrpc.model.Contact;
-import com.dietsodasoftware.isft.xmlrpc.model.Model;
-import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftModelOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Handles contact creation
