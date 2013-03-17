@@ -9,6 +9,7 @@ import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftModelCollectionResul
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftXmlRpcException;
 import com.dietsodasoftware.isft.xmlrpc.service.authentication.AuthenticationServiceAuthenticateUser;
+import com.dietsodasoftware.isft.xmlrpc.service.contact.ContactServiceAddOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceAddOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceDeleteOperation;
 import com.dietsodasoftware.isft.xmlrpc.service.data.DataServiceFindByFieldOperation;
@@ -49,7 +50,8 @@ public class WebServiceClientDriver {
             profile = YailProfile.atLocationUsingApiKey(appName, location, apiKey);
         }
 		final YailClient client = profile.getClient();
-		
+
+
 		exerciseFindByQuery(client);
 		exerciseFindByField(client);
 
@@ -65,6 +67,8 @@ public class WebServiceClientDriver {
         exerciseDataServiceGetAppointmentCal(client);
 
         exerciseUsernamePasswordAuthentication(client, username, password);
+
+        exerciseAddContactService(client);
     }
 	
 	private static void exerciseFindByQuery(YailClient client) throws InfusionsoftXmlRpcException {
@@ -182,5 +186,19 @@ public class WebServiceClientDriver {
         props.load(is);
 
         return props;
+    }
+
+    private static void exerciseAddContactService(YailClient client) throws InfusionsoftXmlRpcException {
+        final Map<String, Object> contactData = new HashMap<String, Object>();
+        contactData.put(Contact.Field.FirstName.name(), "WebServiceClientDriverDemoFirstName");
+        contactData.put(Contact.Field.LastName.name(), "DemoLastName");
+        contactData.put(Contact.Field.Email.name(),"icey502@gmail.com");
+        contactData.put(Contact.Field.Company.name(),"Acme Rockets Inc");
+
+        final Contact contact = new Contact(contactData);
+        final ContactServiceAddOperation add = new ContactServiceAddOperation(contact);
+
+        final Integer newId = client.call(add);
+        System.out.println("The new Contact's ID: " + newId);
     }
 }
