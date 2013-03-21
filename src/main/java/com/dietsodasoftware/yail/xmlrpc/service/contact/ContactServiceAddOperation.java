@@ -1,8 +1,8 @@
-package com.dietsodasoftware.yail.xmlrpc.service.contact;
+package com.dietsodasoftware.isft.xmlrpc.service.contact;
 
-import com.dietsodasoftware.yail.xmlrpc.model.Contact;
-import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingException;
-import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
+import com.dietsodasoftware.isft.xmlrpc.model.Contact;
+import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftResponseParsingException;
+import com.dietsodasoftware.isft.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
 
 import java.util.LinkedList;
 import java.util.List;
