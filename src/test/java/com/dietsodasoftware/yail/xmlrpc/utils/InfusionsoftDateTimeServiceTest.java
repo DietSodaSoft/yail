@@ -1,7 +1,5 @@
 package com.dietsodasoftware.yail.xmlrpc.utils;
 
-import com.dietsodasoftware.isft.xmlrpc.utils.InfusionsoftDateTimeService;
-import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.util.Calendar;
