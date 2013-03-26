@@ -17,12 +17,12 @@ import java.util.TimeZone;
 
 public class InfusionsoftDateTimeService {
     private static final DateTimeZone est = DateTimeZone.forOffsetHours(-5);
-    private static final DateTimeZone edt = DateTimeZone.forID("EDT");
+    private static final DateTimeZone edt = DateTimeZone.forID("EST");
 
     public enum DateTimeBinding {
         Date("yyyyMMdd"),
         Time("HH:mm:ss"),
-        DateTime("yyyyMMdd HH:mm:ss")
+        DateTime("yyyy-MM-dd HH:mm:ss")
         ;
 
         private final String serviceFormatMask;
