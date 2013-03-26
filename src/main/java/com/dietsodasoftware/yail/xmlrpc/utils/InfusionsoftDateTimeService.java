@@ -93,7 +93,7 @@ public class InfusionsoftDateTimeService {
 
     public String todayAsBindingValue(TimeZone originTimeZone, DateTimeBinding binding){
         final DateTimeZone zone = DateTimeZone.forTimeZone(originTimeZone);
-        final LocalDateTime today = new LocalDateTime(originTimeZone);
+        final LocalDateTime today = new LocalDateTime(zone);
 
         return BindingUtils.dateAsBinding(today.toDate(), binding.serviceFormatMask);
     }
