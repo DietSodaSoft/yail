@@ -58,23 +58,23 @@ public class WebServiceClientDriver {
 		final YailClient client = profile.getClient();
 
 
-//		exerciseFindByQuery(client);
-//		exerciseFindByField(client);
+		exerciseFindByQuery(client);
+		exerciseFindByField(client);
 
 		exerciseFindAppointments(client);
 
-//        exerciseAddDataService(client);
-//        exerciseAddDataService(client);
-//
-//        exerciseDeleteDataService(client);
-//
-//        exerciseDataServiceLoad(client);
-//
-//        exerciseDataServiceGetAppointmentCal(client);
-//
-//        exerciseUsernamePasswordAuthentication(client, username, password);
-//
-//        exerciseAddContactService(client);
+        exerciseAddDataService(client);
+        exerciseAddDataService(client);
+
+        exerciseDeleteDataService(client);
+
+        exerciseDataServiceLoad(client);
+
+        exerciseDataServiceGetAppointmentCal(client);
+
+        exerciseUsernamePasswordAuthentication(client, username, password);
+
+        exerciseAddContactService(client);
     }
 	
 	private static void exerciseFindByQuery(YailClient client) throws InfusionsoftXmlRpcException {
