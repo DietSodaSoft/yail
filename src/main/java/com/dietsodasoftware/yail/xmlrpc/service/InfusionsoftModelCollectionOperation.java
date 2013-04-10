@@ -53,6 +53,10 @@ public abstract class InfusionsoftModelCollectionOperation<BT, MT extends Model>
 
     @SuppressWarnings("unchecked")
     public BT setLimit(int limit){
+        if(limit < 1){
+            throw new IllegalArgumentException("Invalid argument: limit");
+        }
+
         this.limit = limit;
         return (BT)this;
     }
@@ -63,6 +67,10 @@ public abstract class InfusionsoftModelCollectionOperation<BT, MT extends Model>
 
     @SuppressWarnings("unchecked")
     public BT setPage(int page){
+        if(page < 0){
+            throw new IllegalArgumentException("Invalid argument: limit");
+        }
+
         this.page = page;
         return (BT)this;
     }
