@@ -18,6 +18,9 @@ import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceGetAppointmentCa
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceLoadOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation.Like;
+import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceUtils;
+import com.dietsodasoftware.yail.xmlrpc.service.paging.AutoForwardPagingIterator;
+import com.dietsodasoftware.yail.xmlrpc.service.paging.ForwardPagingBound;
 import com.dietsodasoftware.yail.xmlrpc.utils.InfusionsoftDateTimeService;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.DateTime;
@@ -27,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
@@ -161,9 +165,10 @@ public class WebServiceClientDriver {
                 .addReturnFieldName(ContactAction.Field.IsAppointment)
                 .setLimit(2)
                 .orderBy(ContactAction.Field.ActionDate)
-                .descending()
+                .ascending()
                 ;
 
+        System.out.println("All-manual paging");
         boolean stop = false;
         boolean firstRequest = true;
         do {
@@ -190,6 +195,40 @@ public class WebServiceClientDriver {
 
         } while (stop == false);
 
+
+        final Date before4 = (Date) theStartDate.clone();
+        before4.setHours(14);
+        final ForwardPagingBound<ContactAction> boundary = new ForwardPagingBound<ContactAction>() {
+            @Override
+            public boolean isInBounds(ContactAction model) {
+                final Date apptDate = model.getFieldValue(ContactAction.Field.ActionDate);
+                if(apptDate == null){
+                    return false;
+                } else {
+                    return apptDate.before(before4);
+                }
+            }
+        };
+
+        final Iterator<ContactAction> it1 = DataServiceUtils.dataServiceQueryOperationForwardIteratorWithBoundaryFor(client, findByDate, boundary);
+
+        System.out.println("IT1: boundary paging");
+        stop = false;
+        while(stop == false && it1.hasNext()){
+            final ContactAction action = it1.next();
+            System.out.println(action);
+        }
+
+//        final AutoForwardPagingIterator<ContactAction, DataServiceQueryOperation<ContactAction>> pager = new AutoForwardPagingIterator<ContactAction, DataServiceQueryOperation<ContactAction>>(client, findByDate);
+//        final Iterator<ContactAction> iterator = pager.iterator();
+        final Iterator<ContactAction> it2 = DataServiceUtils.dataServiceQueryOperationForwardIteratorFor(client, findByDate);
+
+        System.out.println("IT2: no boundary - endless pages");
+        stop = false;
+        while(stop == false && it2.hasNext()){
+            final ContactAction action = it2.next();
+            System.out.println(action);
+        }
 	}
 
     private static void exerciseAddDataService(YailClient client) throws InfusionsoftXmlRpcException {
@@ -220,7 +259,7 @@ public class WebServiceClientDriver {
     }
 
     private static void exerciseDataServiceLoad(YailClient client) throws InfusionsoftXmlRpcException {
-        final DataServiceLoadOperation<Contact, Contact> loader = new DataServiceLoadOperation<Contact, Contact>(Contact.class, 5);
+        final DataServiceLoadOperation<Contact, Contact> loader = new DataServiceLoadOperation<Contact, Contact>(Contact.class, 207);
         final Contact contact = client.call(loader);
         System.out.println("Loaded Contact: " + contact);
     }

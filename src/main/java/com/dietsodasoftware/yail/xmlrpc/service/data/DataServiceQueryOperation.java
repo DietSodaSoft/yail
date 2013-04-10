@@ -8,8 +8,10 @@ import java.util.Map;
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
 import com.dietsodasoftware.yail.xmlrpc.model.NamedField;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionOperation;
+import com.dietsodasoftware.yail.xmlrpc.service.paging.ForwardPagingRequest;
 
-public class DataServiceQueryOperation<MT extends Model> extends InfusionsoftModelCollectionOperation<DataServiceQueryOperation<MT>,MT> {
+public class DataServiceQueryOperation<MT extends Model> extends InfusionsoftModelCollectionOperation<DataServiceQueryOperation<MT>,MT>
+implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
 
 	public DataServiceQueryOperation(Class<MT> clazz) {
 		super(clazz);
@@ -136,6 +138,11 @@ public class DataServiceQueryOperation<MT extends Model> extends InfusionsoftMod
         op.parameterValues.putAll(parameterValues);
 
         return op;
+    }
+
+    @Override
+    public DataServiceQueryOperation<MT> getRequest() {
+        return this;
     }
 
     public DataServiceQueryOperation<MT> previousPage(){
