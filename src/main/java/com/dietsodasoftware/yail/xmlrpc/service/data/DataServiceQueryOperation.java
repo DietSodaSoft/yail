@@ -1,5 +1,6 @@
 package com.dietsodasoftware.yail.xmlrpc.service.data;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,6 +103,61 @@ public class DataServiceQueryOperation<MT extends Model> extends InfusionsoftMod
         fieldEquals("_" + field, compare.compareString + value);
         return this;
     }
+
+    public DataServiceQueryOperation<MT> orderBy(NamedField field){
+        this.orderBy = field.name();
+        return this;
+    }
+
+    public DataServiceQueryOperation<MT> orderByCustomField(String field){
+        this.orderBy = "_" + field;
+        return this;
+    }
+
+    public DataServiceQueryOperation<MT> ascending(){
+        this.ascending = true;
+        return this;
+    }
+
+    public DataServiceQueryOperation<MT> descending(){
+        this.ascending = false;
+        return this;
+    }
+
+
+    public DataServiceQueryOperation<MT> nextPage(){
+        final DataServiceQueryOperation<MT> op = new DataServiceQueryOperation<MT>(getModelTypeClass())
+                .setLimit(getLimit())
+                .setPage(getPage() + 1)
+                .setReturnFieldNames(getReturnFieldNames());
+
+        op.orderBy = orderBy;
+        op.ascending = ascending;
+        op.parameterValues.putAll(parameterValues);
+
+        return op;
+    }
+
+    public DataServiceQueryOperation<MT> previousPage(){
+        int page = getPage();
+        if(page > 0){
+            page--;
+        } else {
+            page = 0;
+        }
+        final DataServiceQueryOperation<MT> op = new DataServiceQueryOperation<MT>(getModelTypeClass())
+                .setLimit(getLimit())
+                .setPage(page)
+                .setReturnFieldNames(getReturnFieldNames());
+
+        op.orderBy = orderBy;
+        op.ascending = ascending;
+        op.parameterValues.putAll(parameterValues);
+
+        return op;
+    }
+
+
 
     @SuppressWarnings("unchecked")
 	@Override
