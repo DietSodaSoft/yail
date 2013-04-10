@@ -5,6 +5,7 @@ import com.dietsodasoftware.yail.xmlrpc.client.YailProfile;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact;
 import com.dietsodasoftware.yail.xmlrpc.model.ContactAction;
 import com.dietsodasoftware.yail.xmlrpc.model.TagAssignment;
+import com.dietsodasoftware.yail.xmlrpc.model.User;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionResults;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
@@ -17,13 +18,18 @@ import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceGetAppointmentCa
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceLoadOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation.Like;
+import com.dietsodasoftware.yail.xmlrpc.utils.InfusionsoftDateTimeService;
 import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.DateTime;
+import org.joda.time.LocalDateTime;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TimeZone;
 
 public class WebServiceClientDriver {
 
@@ -52,23 +58,23 @@ public class WebServiceClientDriver {
 		final YailClient client = profile.getClient();
 
 
-		exerciseFindByQuery(client);
-		exerciseFindByField(client);
+//		exerciseFindByQuery(client);
+//		exerciseFindByField(client);
 
 		exerciseFindAppointments(client);
 
-        exerciseAddDataService(client);
-        exerciseAddDataService(client);
-
-        exerciseDeleteDataService(client);
-
-        exerciseDataServiceLoad(client);
-
-        exerciseDataServiceGetAppointmentCal(client);
-
-        exerciseUsernamePasswordAuthentication(client, username, password);
-
-        exerciseAddContactService(client);
+//        exerciseAddDataService(client);
+//        exerciseAddDataService(client);
+//
+//        exerciseDeleteDataService(client);
+//
+//        exerciseDataServiceLoad(client);
+//
+//        exerciseDataServiceGetAppointmentCal(client);
+//
+//        exerciseUsernamePasswordAuthentication(client, username, password);
+//
+//        exerciseAddContactService(client);
     }
 	
 	private static void exerciseFindByQuery(YailClient client) throws InfusionsoftXmlRpcException {
@@ -114,22 +120,76 @@ public class WebServiceClientDriver {
 	}
 	
 	private static void exerciseFindAppointments(YailClient client) throws InfusionsoftXmlRpcException{
-		final DataServiceFindByFieldOperation<ContactAction> findByDate = new DataServiceFindByFieldOperation<ContactAction>(ContactAction.class)
-                .setFieldCriteria(ContactAction.Field.IsAppointment, 1)
+        final InfusionsoftDateTimeService dts = new InfusionsoftDateTimeService();
+        final Date theStartDate = new Date();
+        theStartDate.setMonth(2);
+        theStartDate.setDate(23);
+
+        theStartDate.setHours(0);
+        theStartDate.setMinutes(0);
+        theStartDate.setSeconds(0);
+
+        final Date theEndDate = new LocalDateTime(theStartDate).plusDays(1).toDate();
+
+        final String theStartDateBinding = dts.dateAsServiceBindingValue(theStartDate, InfusionsoftDateTimeService.DateTimeBinding.Date);
+        final String theEndDateBinding   = dts.dateAsServiceBindingValue(theEndDate, InfusionsoftDateTimeService.DateTimeBinding.DateTime);
+        final String today = dts.todayAsBindingValue(TimeZone.getDefault(), InfusionsoftDateTimeService.DateTimeBinding.Date);
+
+        System.out.println("Start date: " + theStartDateBinding);
+        System.out.println("End date:   " + theEndDateBinding);
+        System.out.println("Today:      " + today);
+
+        final DataServiceQueryOperation<User> verify = new DataServiceQueryOperation<User>(User.class)
+                .fieldEquals(User.Field.Id, "1")
+                .addReturnFieldName(User.Field.LastName);
+
+        final User u = client.call(verify).iterator().next();
+        System.out.println("User: " + u.getStruct());
+
+        final DataServiceQueryOperation<ContactAction> findByDate = new DataServiceQueryOperation<ContactAction>(ContactAction.class)
+                .fieldEquals(ContactAction.Field.IsAppointment, 1)
+//                .fieldCompare(ContactAction.Field.ActionDate, DataServiceQueryOperation.Compare.gt, theStartDateBinding)
+//                .fieldCompare(ContactAction.Field.ActionDate, DataServiceQueryOperation.Compare.lt, theEndDateBinding)
+                .fieldCompare(ContactAction.Field.ActionDate, DataServiceQueryOperation.Compare.gte, theStartDateBinding)
 //                .addReturnFieldName(ContactAction.Field.Id)
 //                .addReturnFieldName(ContactAction.Field.ActionDescription)
 //                .addReturnFieldName(ContactAction.Field.ActionDate)
 //                .addReturnFieldName(ContactAction.Field.EndDate)
 //                .addReturnFieldName(ContactAction.Field.IsAppointment)
+                .addReturnFieldName(ContactAction.Field.ActionDate)
+                .addReturnFieldName(ContactAction.Field.ActionDescription)
+                .addReturnFieldName(ContactAction.Field.IsAppointment)
+                .setLimit(2)
+                .orderBy(ContactAction.Field.ActionDate)
+                .descending()
                 ;
 
-	   final InfusionsoftModelCollectionResults<ContactAction> result = client.call(findByDate);
-	
-	   System.out.println("Appointment FindByDate: ");
-	   for(ContactAction action: client.call(findByDate)){
-		   System.out.println(action);
-	   }
-   
+        boolean stop = false;
+        boolean firstRequest = true;
+        do {
+            final DataServiceQueryOperation<ContactAction> nextRequest;
+            if(firstRequest){
+                firstRequest = false;
+                nextRequest = findByDate;
+            } else {
+                nextRequest = findByDate.nextPage();
+            }
+            final InfusionsoftModelCollectionResults<ContactAction> result = client.call(nextRequest);
+
+            if(result.length() < nextRequest.getLimit()){
+                stop = true;
+            }
+            if(result.length() == 0){
+                continue;
+            }
+
+            System.out.println("Appointment FindByDate: ");
+            for(ContactAction action: result){
+                System.out.println(action);
+            }
+
+        } while (stop == false);
+
 	}
 
     private static void exerciseAddDataService(YailClient client) throws InfusionsoftXmlRpcException {
