@@ -90,7 +90,7 @@ public abstract class InfusionsoftModelCollectionOperation<BT, MT extends Model>
         return returnFieldNames;
     }
 
-    protected static String scrubCustomFieldName(String customField){
+    protected String scrubCustomFieldName(String customField){
         if(customField == null){
             return null;
         }
