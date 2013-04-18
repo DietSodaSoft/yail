@@ -6,7 +6,7 @@
 
     <groupId>com.dietsodasoftware.isft.xmlrpc</groupId>
     <artifactId>yail-XmlRpcJavaClient</artifactId>
-    <version>0.7.6-SNAPSHOT</version>
+    <version>0.7.5</version>
 
     <dependencies>
 
