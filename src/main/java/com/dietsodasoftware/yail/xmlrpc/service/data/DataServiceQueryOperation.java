@@ -85,15 +85,15 @@ implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
     }
 
     public DataServiceQueryOperation<MT> customFieldEquals(String fieldName, Object value){
-		return fieldEquals("_" + fieldName, value);
+		return fieldEquals("_" + scrubCustomFieldName(fieldName), value);
 	}
 	
 	public DataServiceQueryOperation<MT> customFieldIsNull(String fieldName){
-		return fieldIsNull("_" + fieldName);
+		return fieldIsNull("_" + scrubCustomFieldName(fieldName));
 	}
 	
 	public DataServiceQueryOperation<MT> customFieldLike(String fieldName, String value, Like like){
-		return fieldLike("_" + fieldName, value, like);
+		return fieldLike("_" + scrubCustomFieldName(fieldName), value, like);
 	}
 
     public DataServiceQueryOperation<MT> fieldCompare(NamedField field, Compare compare, String value){
@@ -102,7 +102,7 @@ implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
     }
 
     public DataServiceQueryOperation<MT> customFieldCompare(String field, Compare compare, String value){
-        fieldEquals("_" + field, compare.compareString + value);
+        fieldEquals("_" + scrubCustomFieldName(field), compare.compareString + value);
         return this;
     }
 
@@ -112,7 +112,7 @@ implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
     }
 
     public DataServiceQueryOperation<MT> orderByCustomField(String field){
-        this.orderBy = "_" + field;
+        this.orderBy = "_" + scrubCustomFieldName(field);
         return this;
     }
 
