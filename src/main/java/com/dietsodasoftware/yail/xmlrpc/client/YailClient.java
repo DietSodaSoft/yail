@@ -1,8 +1,12 @@
 package com.dietsodasoftware.yail.xmlrpc.client;
 
+import com.dietsodasoftware.yail.xmlrpc.model.Model;
+import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
+import com.dietsodasoftware.yail.xmlrpc.service.paging.AutoForwardPagingIterator;
+import com.dietsodasoftware.yail.xmlrpc.service.paging.ForwardPagingRequest;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
@@ -67,9 +71,13 @@ public class YailClient {
             final Object rawResult = infusionApp.execute(operation.getRpcName(), parameters);
             return operation.parseResult(rawResult);
         } catch (XmlRpcException e) {
-            throw new InfusionsoftXmlRpcException("Failure making XmlRpc invocation", e);
+            throw new InfusionsoftXmlRpcException("Failure making XmlRpc invocation: " + e.getMessage(), e);
         } catch (InfusionsoftResponseParsingException e) {
             throw new InfusionsoftXmlRpcException("Unable to parse XmlRpc response", e);
         }
 	}
+
+    public <MT  extends Model, RT extends InfusionsoftModelCollectionOperation<?, MT>> Iterable<MT> autoPage(ForwardPagingRequest<MT, RT> operation){
+        return new AutoForwardPagingIterator<MT, RT>(this, operation);
+    }
 }

@@ -12,6 +12,10 @@ public abstract class InfusionsoftModelCollectionOperation<BT, MT extends Model>
     public static final int FIRST_PAGE_NUMBER = 0;
     public static final int DEFAULT_PAGE_LIMIT_SIZE = 100;
 
+    private final static String [] customFieldScrubCharacters = new String[]{
+            " ", ",", "'"
+    };
+
     private int limit = DEFAULT_PAGE_LIMIT_SIZE;
     private int page = FIRST_PAGE_NUMBER;
 
@@ -24,7 +28,7 @@ public abstract class InfusionsoftModelCollectionOperation<BT, MT extends Model>
 	}
 	
 	@SuppressWarnings("unchecked")
-	public BT addReturnFieldName(String fieldName){
+	protected BT addReturnFieldName(String fieldName){
 		returnFieldNames.add(fieldName);
 		return (BT)this;
 	}
@@ -34,7 +38,7 @@ public abstract class InfusionsoftModelCollectionOperation<BT, MT extends Model>
 	}
 	
 	public BT addCustomReturnFieldName(String customFieldName){
-		return addReturnFieldName("_" + customFieldName);
+		return addReturnFieldName("_" + scrubCustomFieldName(customFieldName));
 	}
 
 	/** for paging, not public use */
@@ -84,6 +88,17 @@ public abstract class InfusionsoftModelCollectionOperation<BT, MT extends Model>
             return getAllModelReturnFieldNames();
         }
         return returnFieldNames;
+    }
+
+    protected static String scrubCustomFieldName(String customField){
+        if(customField == null){
+            return null;
+        }
+
+        for(String scrub: customFieldScrubCharacters){
+            customField = customField.replaceAll(scrub, "");
+        }
+        return customField;
     }
 
 

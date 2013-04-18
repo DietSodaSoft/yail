@@ -30,7 +30,7 @@ public class DataServiceFindByFieldOperation<MT extends Model> extends Infusions
 	}
 	
 	public DataServiceFindByFieldOperation<MT> setCustomFieldCriteria(String fieldName, Object fieldValue){
-        return setFieldCriteria("_" + fieldName, fieldValue);
+        return setFieldCriteria("_" + scrubCustomFieldName(fieldName), fieldValue);
 	}
 	
 	public DataServiceFindByFieldOperation<MT> nextPage(){
