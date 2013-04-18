@@ -1,16 +1,16 @@
 package com.dietsodasoftware.yail.xmlrpc.service.paging;
 
 import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
-import com.dietsodasoftware.yail.xmlrpc.model.ContactAction;
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionResults;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
-import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation;
 
 import java.util.Iterator;
 
 /**
+ * Decidedly NOT thread-safe.
+ *
  * Created with IntelliJ IDEA.
  * User: wendelschultz
  * Date: 4/9/13

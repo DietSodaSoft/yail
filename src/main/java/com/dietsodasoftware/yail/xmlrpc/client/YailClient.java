@@ -6,6 +6,7 @@ import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingExcep
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.paging.AutoForwardPagingIterator;
+import com.dietsodasoftware.yail.xmlrpc.service.paging.ForwardPagingBound;
 import com.dietsodasoftware.yail.xmlrpc.service.paging.ForwardPagingRequest;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.client.XmlRpcClient;
@@ -76,4 +77,9 @@ public class YailClient {
     public <MT  extends Model, RT extends InfusionsoftModelCollectionOperation<?, MT>> Iterable<MT> autoPage(ForwardPagingRequest<MT, RT> operation){
         return new AutoForwardPagingIterator<MT, RT>(this, operation);
     }
+
+    public <MT  extends Model, RT extends InfusionsoftModelCollectionOperation<?, MT>> Iterable<MT> autoPage(ForwardPagingRequest<MT, RT> operation, ForwardPagingBound<MT> stopper){
+        return new AutoForwardPagingIterator<MT, RT>(this, operation, stopper);
+    }
+
 }
