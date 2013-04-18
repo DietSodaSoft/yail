@@ -21,6 +21,10 @@ public abstract class InfusionsoftXmlRpcServiceOperation<T> {
 	
 	abstract protected List<?> getOperationParameters();
 
+    /**
+     * The only reason you wouldn't do this is if you are the vendor key auth operation.
+     * @return to include API key in the parameter list
+     */
     protected boolean includeApiKey(){
         return true;
     }
