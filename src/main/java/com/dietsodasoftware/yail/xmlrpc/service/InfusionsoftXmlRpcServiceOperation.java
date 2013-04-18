@@ -8,17 +8,22 @@ import java.util.List;
 public abstract class InfusionsoftXmlRpcServiceOperation<T> {
 
 	@SuppressWarnings("unchecked")
-	public final List<?> getXmlRpcParameters(YailClient isft){
+	public final List<?> getXmlRpcParameters(YailClient isft) throws InfusionsoftXmlRpcException {
 		@SuppressWarnings("rawtypes")
 		final List parameters = new LinkedList();
-		parameters.add(isft.getKey());
+        if(includeApiKey()){
+            parameters.add(isft.getKey());
+        }
 		parameters.addAll(getOperationParameters());
 		
 		return parameters;
 	}
 	
 	abstract protected List<?> getOperationParameters();
-	
+
+    protected boolean includeApiKey(){
+        return true;
+    }
 
 	public abstract String getRpcName();
 
