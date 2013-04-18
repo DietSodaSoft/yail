@@ -9,6 +9,7 @@ import com.dietsodasoftware.yail.xmlrpc.model.User;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionResults;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
+import com.dietsodasoftware.yail.xmlrpc.service.authentication.AuthenticationServiceAuthenticateForTemporaryKey;
 import com.dietsodasoftware.yail.xmlrpc.service.authentication.AuthenticationServiceAuthenticateUser;
 import com.dietsodasoftware.yail.xmlrpc.service.contact.ContactServiceAddOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceAddOperation;
@@ -43,6 +44,7 @@ public class WebServiceClientDriver {
     private static final String PROP_APP_LOCATION = "com.dietsodasoftware.yail.location";
     private static final String PROP_APP_USERNAME = "com.dietsodasoftware.yail.username";
     private static final String PROP_APP_PASSWORD = "com.dietsodasoftware.yail.password";
+    private static final String PROP_DSS_VENDOR_KEY = "com.dietsodasoftware.yail.vendorkey";
 
     public static void main(String [] args) throws InfusionsoftXmlRpcException, InfusionsoftResponseParsingException, IOException {
 
@@ -52,12 +54,22 @@ public class WebServiceClientDriver {
         final String location = props.getProperty(PROP_APP_LOCATION + "." + appName);
         final String username = props.getProperty(PROP_APP_USERNAME + "." + appName);
         final String password = props.getProperty(PROP_APP_PASSWORD + "." + appName);
+        final String vendorKey = props.getProperty(PROP_DSS_VENDOR_KEY);
 
+        final boolean useVendorKey = false;
 		final YailProfile profile;
-        if(location == null){
-            profile = YailProfile.usingApiKey(appName, apiKey);
+        if(useVendorKey){
+            if(location == null){
+                profile = YailProfile.usingVendorKey(appName, vendorKey, username, password);
+            } else {
+                profile = YailProfile.atLocationUsingVendorKey(appName, location, vendorKey, username, password);
+            }
         } else {
-            profile = YailProfile.atLocationUsingApiKey(appName, location, apiKey);
+            if(location == null){
+                profile = YailProfile.usingApiKey(appName, apiKey);
+            } else {
+                profile = YailProfile.atLocationUsingApiKey(appName, location, apiKey);
+            }
         }
 		final YailClient client = profile.getClient();
 
@@ -76,7 +88,7 @@ public class WebServiceClientDriver {
 
         exerciseDataServiceGetAppointmentCal(client);
 
-        exerciseUsernamePasswordAuthentication(client, username, password);
+        exerciseUsernamePasswordAuthentication(client, vendorKey, username, password);
 
         exerciseAddContactService(client);
     }
@@ -272,11 +284,15 @@ public class WebServiceClientDriver {
         System.out.println(appt);
     }
 
-    private static final void exerciseUsernamePasswordAuthentication(YailClient client, String username, String password) throws InfusionsoftXmlRpcException {
-        System.out.print("Authentication using '" +username+ "'/'" +password+ "' : ");
+    private static final void exerciseUsernamePasswordAuthentication(YailClient client, String vendorKey, String username, String password) throws InfusionsoftXmlRpcException {
+        System.out.print("Authentication using '" +username+ "'/'" +password+ "'/" +client.getKey()+" : ");
         final AuthenticationServiceAuthenticateUser auth = new AuthenticationServiceAuthenticateUser(username, password);
         final Integer authenticatedUserId = client.call(auth);
         System.out.println("ID " + authenticatedUserId);
+
+        final AuthenticationServiceAuthenticateForTemporaryKey keyAuth = new AuthenticationServiceAuthenticateForTemporaryKey(vendorKey, username, password);
+        final String temporaryKey = client.call(keyAuth);
+        System.out.println("Temporary key: " + temporaryKey);
     }
 
     private static final Properties readAppProperties() throws IOException {

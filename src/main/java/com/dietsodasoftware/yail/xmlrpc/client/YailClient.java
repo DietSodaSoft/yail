@@ -16,21 +16,25 @@ import java.net.URL;
 import java.util.List;
 
 public class YailClient {
+    interface ApiKeyProvider {
+        String getApiKey(YailClient client) throws InfusionsoftXmlRpcException;
+    }
+
 	static final String APP_LOCATION = "infusionsoft.com";
     private static final String XMLRPC_PATH = "/api/xmlrpc";
-	private final String apiKey;
+    private final ApiKeyProvider apiKeyProvider;
 
 	private final XmlRpcClient infusionApp;
 
-    private YailClient(String appName, String appLocation, String apiKey, String vendorKey){
-        this.apiKey = apiKey;
+    YailClient(String appName, String appLocation, ApiKeyProvider apiKeyProvider){
+        this.apiKeyProvider = apiKeyProvider;
 
         final String appUrl = "https://" + appName + "." + appLocation + XMLRPC_PATH;
         this.infusionApp = initXmlRpcClient(appUrl);
     }
 	
-	private YailClient(String appName, String apiKey, String vendorKey){
-        this(appName, APP_LOCATION, apiKey, vendorKey);
+	YailClient(String appName, ApiKeyProvider apiKeyProvider){
+        this(appName, APP_LOCATION, apiKeyProvider);
     }
 
     private XmlRpcClient initXmlRpcClient(String appUrl){
@@ -50,17 +54,9 @@ public class YailClient {
         return app;
 	}
 	
-	public static YailClient usingApiKey(String appName, String location, String apiKey){
-		final YailClient client = new YailClient(appName, location, apiKey, null);
-		
-		return client;
-	}
-	
-	public String getKey(){
-		if(apiKey != null){
-			return apiKey;
-		}
-		throw new IllegalStateException("I have no idea which key to use");
+
+	public String getKey() throws InfusionsoftXmlRpcException {
+        return apiKeyProvider.getApiKey(this);
 	}
 
 	public <T> T call(InfusionsoftXmlRpcServiceOperation<T> operation) throws InfusionsoftXmlRpcException {
