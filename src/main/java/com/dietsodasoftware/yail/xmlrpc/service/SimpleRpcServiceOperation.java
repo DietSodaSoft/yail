@@ -1,7 +1,11 @@
 package com.dietsodasoftware.yail.xmlrpc.service;
 
+import com.dietsodasoftware.yail.xmlrpc.utils.InfusionsoftDateTimeService;
+import com.dietsodasoftware.yail.xmlrpc.utils.InfusionsoftDateTimeService.DateTimeBinding;
 import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
+import org.joda.time.DateTime;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,5 +39,18 @@ public class SimpleRpcServiceOperation<T> extends InfusionsoftXmlRpcServiceOpera
     @Override
     public T parseResult(Object rawResponse) throws InfusionsoftResponseParsingException, InfusionsoftAuthorizationFailureException {
         return (T)rawResponse;
+    }
+
+    protected static String bindingValue(InfusionsoftDateTimeService dateService, DateTime dateTime, DateTimeBinding binding){
+        final Date date = dateService.normalizeDateToInfusionsoftDate(dateTime);
+        return dateService.dateAsServiceBindingValue(date, binding);
+    }
+
+    protected static String dateBindingValue(InfusionsoftDateTimeService dateService, DateTime dateTime){
+        return bindingValue(dateService, dateTime, DateTimeBinding.Date);
+    }
+
+    protected static String dateAndTimeBindingValue(InfusionsoftDateTimeService dateService, DateTime dateTime){
+        return bindingValue(dateService, dateTime, DateTimeBinding.DateTime);
     }
 }
