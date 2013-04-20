@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class SimpleRpcServiceOperation<T> extends InfusionsoftXmlRpcServiceOperation<T> {
 
-    private final List<?> parameters;
+    private final List<Object> parameters;
 
     public SimpleRpcServiceOperation(String serviceName, String methodName){
         super(serviceName, methodName);
