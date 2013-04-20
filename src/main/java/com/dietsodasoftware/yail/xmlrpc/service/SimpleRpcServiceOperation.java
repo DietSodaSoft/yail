@@ -20,6 +20,11 @@ public class SimpleRpcServiceOperation<T> extends InfusionsoftXmlRpcServiceOpera
 
     private final List<Object> parameters;
 
+    /**
+     * For simple operations which aren't subclassed, this ctor initializes the list of
+     * @param serviceName
+     * @param methodName
+     */
     public SimpleRpcServiceOperation(String serviceName, String methodName){
         super(serviceName, methodName);
         this.parameters = ListFactory.quickLinkedList();
@@ -29,12 +34,8 @@ public class SimpleRpcServiceOperation<T> extends InfusionsoftXmlRpcServiceOpera
         this.parameters = ListFactory.quickUnmodifiableLinkedList(parameters);
     }
 
-    protected void addParameters(Object... parameters){
-        this.parameters.addAll(ListFactory.quickLinkedList(parameters));
-    }
-
     @Override
-    protected List<?> getOperationParameters() {
+    protected List<Object> getOperationParameters() {
         return parameters;
     }
 
