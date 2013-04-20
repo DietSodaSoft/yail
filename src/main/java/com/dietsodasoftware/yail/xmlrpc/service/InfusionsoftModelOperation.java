@@ -18,6 +18,9 @@ public abstract class InfusionsoftModelOperation<MT extends Model, RT> extends I
     private final String tableName;
     private final Class<MT> modelTypeClass;
 
+    private final static String [] customFieldScrubCharacters = new String[]{
+            " ", ",", "'"
+    };
 
     protected InfusionsoftModelOperation(Class<MT> modelTypeClass){
 
@@ -61,5 +64,16 @@ public abstract class InfusionsoftModelOperation<MT extends Model, RT> extends I
         }
     }
 
+
+    protected String scrubCustomFieldName(String customField){
+        if(customField == null){
+            return null;
+        }
+
+        for(String scrub: customFieldScrubCharacters){
+            customField = customField.replaceAll(scrub, "");
+        }
+        return customField;
+    }
 
 }
