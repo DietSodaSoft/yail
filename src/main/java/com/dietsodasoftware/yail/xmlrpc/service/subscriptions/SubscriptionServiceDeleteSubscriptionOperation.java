@@ -1,5 +1,6 @@
 package com.dietsodasoftware.yail.xmlrpc.service.subscriptions;
 
+import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.service.SimpleRpcServiceOperation;
 
 /**
@@ -10,11 +11,11 @@ import com.dietsodasoftware.yail.xmlrpc.service.SimpleRpcServiceOperation;
  * Date: 4/19/13
  * Time: 10:34 AM
  */
+@InfusionsoftRpc(service = "InvoiceService", method = "deleteSubscription")
 public class SubscriptionServiceDeleteSubscriptionOperation extends SimpleRpcServiceOperation<Boolean> {
-    private static final String RPC_NAME = "InvoiceService.deleteSubscription";
 
     public SubscriptionServiceDeleteSubscriptionOperation(Integer subscriptionId) {
-        super(RPC_NAME, subscriptionId);
+        super(subscriptionId);
     }
 
 }

@@ -1,8 +1,10 @@
 package com.dietsodasoftware.yail.xmlrpc.service.orders;
 
+import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftAuthorizationFailureException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
+import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,8 +18,8 @@ import java.util.Map;
  * Date: 4/18/13
  * Time: 5:05 PM
  */
+@InfusionsoftRpc(service = "OrderService", method = "placeOrder")
 public class OrderServicePlaceOrderOperation extends InfusionsoftXmlRpcServiceOperation<OrderPlacementResult> {
-    private static final String RPC_NAME = "OrderService.placeOrder";
 
     private final OrderPlacementArguments arguments;
 
@@ -28,25 +30,19 @@ public class OrderServicePlaceOrderOperation extends InfusionsoftXmlRpcServiceOp
     @Override
     protected List<?> getOperationParameters() {
         final List<Object> args = new LinkedList<Object>();
-
-        args.add(arguments.contactId);
-        args.add(arguments.creditCardId);
-        args.add(arguments.payPlanId);
-        args.add(arguments.productIds);
-        args.add(arguments.subscriptionPlanIds);
-        args.add(arguments.processSpecials);
-        args.add(arguments.promoCodes);
-        args.add(arguments.leadAffiliateId);
-        args.add(arguments.affiliateId);
-
-
-        return args;
+        return ListFactory.quickUnmodifiableLinkedList(
+                arguments.contactId ,
+                arguments.creditCardId,
+                arguments.payPlanId,
+                arguments.productIds,
+                arguments.subscriptionPlanIds,
+                arguments.processSpecials,
+                arguments.promoCodes,
+                arguments.leadAffiliateId,
+                arguments.affiliateId
+        );
     }
 
-    @Override
-    public String getRpcName() {
-        return RPC_NAME;
-    }
 
     @Override
     public OrderPlacementResult parseResult(Object rawResponse) throws InfusionsoftResponseParsingException, InfusionsoftAuthorizationFailureException {

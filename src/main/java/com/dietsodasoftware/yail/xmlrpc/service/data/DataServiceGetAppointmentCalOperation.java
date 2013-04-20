@@ -1,14 +1,15 @@
 package com.dietsodasoftware.yail.xmlrpc.service.data;
 
+import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
+import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.model.Calendar;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -17,9 +18,8 @@ import java.util.List;
  * Date: 2/24/13
  * Time: 4:31 PM
  */
+@InfusionsoftRpc(service = "DataService", method = "getAppointmentICal")
 public class DataServiceGetAppointmentCalOperation extends InfusionsoftXmlRpcServiceOperation<String> {
-    private static final String RPC_NAME = "DataService.getAppointmentICal";
-
     private final int appointmentId;
 
     public DataServiceGetAppointmentCalOperation(int appointmentId) {
@@ -28,15 +28,7 @@ public class DataServiceGetAppointmentCalOperation extends InfusionsoftXmlRpcSer
 
     @Override
     protected List<?> getOperationParameters() {
-        final List params = new LinkedList();
-        params.add(appointmentId);
-
-        return params;
-    }
-
-    @Override
-    public String getRpcName() {
-        return RPC_NAME;
+        return ListFactory.quickUnmodifiableLinkedList(appointmentId);
     }
 
     public static final Calendar asIcal4jCalendar(final String rawResponse) throws InfusionsoftResponseParsingException {

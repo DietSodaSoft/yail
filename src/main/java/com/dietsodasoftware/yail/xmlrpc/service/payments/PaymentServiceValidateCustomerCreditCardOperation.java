@@ -1,5 +1,6 @@
 package com.dietsodasoftware.yail.xmlrpc.service.payments;
 
+import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftAuthorizationFailureException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.yail.xmlrpc.service.SimpleRpcServiceOperation;
@@ -15,11 +16,11 @@ import java.util.Map;
  * Date: 4/19/13
  * Time: 11:21 AM
  */
+@InfusionsoftRpc(service = "InvoiceService", method = "validateCreditCard")
 public class PaymentServiceValidateCustomerCreditCardOperation extends SimpleRpcServiceOperation<CreditCardValidationResults>{
-    private final static String RPC_NAME = "InvoiceService.validateCreditCard";
 
     public PaymentServiceValidateCustomerCreditCardOperation(Integer creditCardId){
-        super(RPC_NAME, creditCardId);
+        super(creditCardId);
     }
 
     @Override

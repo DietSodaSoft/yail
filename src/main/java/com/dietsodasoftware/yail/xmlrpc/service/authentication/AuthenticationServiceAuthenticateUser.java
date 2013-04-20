@@ -1,12 +1,10 @@
 package com.dietsodasoftware.yail.xmlrpc.service.authentication;
 
+import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftAuthorizationFailureException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingException;
-import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
+import com.dietsodasoftware.yail.xmlrpc.service.SimpleRpcServiceOperation;
 import com.dietsodasoftware.yail.xmlrpc.utils.DigestionUtils;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Unfortunately, when this fails, all you'll get is an XmlRpcException from the {@link com.dietsodasoftware.yail.xmlrpc.client.YailClient}.
@@ -16,31 +14,11 @@ import java.util.List;
  * Date: 3/1/13
  * Time: 2:39 PM
  */
-public class AuthenticationServiceAuthenticateUser extends InfusionsoftXmlRpcServiceOperation<Integer> {
-    private static final String RPC_NAME = "DataService.authenticateUser";
-
-    private final String username;
-    private final String passwordHash;
+@InfusionsoftRpc(service = "DataService", method = "authenticateUser")
+public class AuthenticationServiceAuthenticateUser extends SimpleRpcServiceOperation<Integer> {
 
     public AuthenticationServiceAuthenticateUser(String username, String password) {
-        this.username = username;
-        this.passwordHash = DigestionUtils.getMD5ForString(password);
-    }
-
-    @Override
-    protected List<?> getOperationParameters() {
-
-        final List<Object> params = new LinkedList<Object>();
-        params.add(username);
-        params.add(passwordHash);
-
-        return params;
-
-    }
-
-    @Override
-    public String getRpcName() {
-        return RPC_NAME;
+        super((Object)username, DigestionUtils.getMD5ForString(password));
     }
 
     @Override

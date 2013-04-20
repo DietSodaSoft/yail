@@ -1,11 +1,12 @@
 package com.dietsodasoftware.yail.xmlrpc.service.authentication;
 
+import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftAuthorizationFailureException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingException;
-import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
+import com.dietsodasoftware.yail.xmlrpc.service.SimpleRpcServiceOperation;
 import com.dietsodasoftware.yail.xmlrpc.utils.DigestionUtils;
+import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -15,39 +16,15 @@ import java.util.List;
  * Time: 12:42 AM
  * To change this template use File | Settings | File Templates.
  */
-public class AuthenticationServiceAuthenticateForTemporaryKey extends InfusionsoftXmlRpcServiceOperation<String> {
-
-    private static final String RPC_NAME = "DataService.getTemporaryKey";
-
-    private final String vendorKey;
-    private final String username;
-    private final String passwordHash;
+@InfusionsoftRpc(service = "DataService", method = "getTemporaryKey")
+public class AuthenticationServiceAuthenticateForTemporaryKey extends SimpleRpcServiceOperation<String> {
 
     public AuthenticationServiceAuthenticateForTemporaryKey(String vendorKey, String username, String password) {
-        this.vendorKey = vendorKey;
-        this.username = username;
-        this.passwordHash = DigestionUtils.getMD5ForString(password);
+        super(vendorKey, username, DigestionUtils.getMD5ForString(password));
     }
 
     protected boolean includeApiKey(){
         return false;
-    }
-
-    @Override
-    protected List<?> getOperationParameters() {
-
-        final List<Object> params = new LinkedList<Object>();
-        params.add(vendorKey);
-        params.add(username);
-        params.add(passwordHash);
-
-        return params;
-
-    }
-
-    @Override
-    public String getRpcName() {
-        return RPC_NAME;
     }
 
     @Override

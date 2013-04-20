@@ -1,16 +1,16 @@
 package com.dietsodasoftware.yail.xmlrpc.service.data;
 
+import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
 import com.dietsodasoftware.yail.xmlrpc.model.NamedField;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionOperation;
+import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
 
-import java.util.LinkedList;
 import java.util.List;
 
+@InfusionsoftRpc(service = "DataService", method = "findByField")
 public class DataServiceFindByFieldOperation<MT extends Model> extends InfusionsoftModelCollectionOperation<DataServiceFindByFieldOperation<MT>,MT> {
 	
-	private final static String RPC_NAME = "DataService.findByField";
-
 	private String fieldName;
 	private Object fieldValue;
 	
@@ -58,21 +58,14 @@ public class DataServiceFindByFieldOperation<MT extends Model> extends Infusions
 	@SuppressWarnings("unchecked")
 	@Override
 	protected List<?> getOperationParameters() {
-		@SuppressWarnings("rawtypes")
-		final List params = new LinkedList();
-		params.add(getTableName());
-		params.add(getLimit());
-		params.add(getPage());
-		params.add(fieldName);
-		params.add(fieldValue);
-		params.add(getReturnFieldNames());
-		
-		return params;
-	}
-
-	@Override
-	public String getRpcName() {
-		return RPC_NAME;
+        return ListFactory.quickUnmodifiableLinkedList(
+                getTableName(),
+                getLimit(),
+                getPage(),
+                fieldName,
+                fieldValue,
+                getReturnFieldNames()
+        );
 	}
 
 }

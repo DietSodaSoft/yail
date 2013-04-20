@@ -1,8 +1,10 @@
 package com.dietsodasoftware.yail.xmlrpc.service.data;
 
+import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
 import com.dietsodasoftware.yail.xmlrpc.model.NamedField;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelOperation;
+import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,8 +16,8 @@ import java.util.Map;
  * Date: 2/24/13
  * Time: 8:32 AM
  */
+@InfusionsoftRpc(service = "DataService", method = "load")
 public class DataServiceLoadOperation<MT extends Model, RT> extends InfusionsoftModelOperation<MT, RT> {
-    private static final String RPC_NAME = "DataService.load";
 
     private final int primaryKey;
     private final List<String> returnFields;
@@ -41,10 +43,10 @@ public class DataServiceLoadOperation<MT extends Model, RT> extends Infusionsoft
 
     @Override
     protected List<?> getOperationParameters() {
-        final List fields = new LinkedList();
-        final List params = new LinkedList();
-        params.add(getTableName());
-        params.add(Integer.valueOf(primaryKey));
+        final List params = ListFactory.quickLinkedList(
+                getTableName(),
+                Integer.valueOf(primaryKey)
+        );
         if(returnFields.isEmpty()){
             params.add(getAllModelReturnFieldNames());
         } else {
@@ -52,11 +54,6 @@ public class DataServiceLoadOperation<MT extends Model, RT> extends Infusionsoft
         }
 
         return params;
-    }
-
-    @Override
-    public String getRpcName() {
-        return RPC_NAME;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.dietsodasoftware.yail.xmlrpc.service.subscriptions;
 
+import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.service.SimpleRpcServiceOperation;
 import com.dietsodasoftware.yail.xmlrpc.utils.InfusionsoftDateTimeService;
 import org.joda.time.LocalDate;
@@ -10,13 +11,12 @@ import org.joda.time.LocalDate;
  * Date: 4/19/13
  * Time: 2:13 PM
  */
+@InfusionsoftRpc(service = "InvoiceService", method = "updateJobRecurringNextBillDate")
 public class SubscriptionServiceModifyNextBillDateOperation extends SimpleRpcServiceOperation<Boolean> {
-    private static final String RPC_NAME = "InvoiceService.updateJobRecurringNextBillDate";
 
-    public SubscriptionServiceModifyNextBillDateOperation(String rpcName,
-                                                          InfusionsoftDateTimeService dateService,
+    public SubscriptionServiceModifyNextBillDateOperation(InfusionsoftDateTimeService dateService,
                                                           Integer subscriptionOrderId,
                                                           LocalDate nextBillingDate) {
-        super(rpcName, subscriptionOrderId, dateBindingValue(dateService, nextBillingDate.toDateTimeAtStartOfDay()));
+        super(subscriptionOrderId, dateBindingValue(dateService, nextBillingDate.toDateTimeAtStartOfDay()));
     }
 }
