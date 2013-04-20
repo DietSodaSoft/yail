@@ -1,5 +1,6 @@
 package com.dietsodasoftware.yail.xmlrpc.service.invoices;
 
+import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.service.SimpleRpcServiceOperation;
 
 /**
@@ -8,10 +9,10 @@ import com.dietsodasoftware.yail.xmlrpc.service.SimpleRpcServiceOperation;
  * Date: 4/19/13
  * Time: 10:59 AM
  */
+@InfusionsoftRpc(service = "InvoiceService", method = "deleteInvoice")
 public class InvoiceServiceDeleteInvoiceOperation extends SimpleRpcServiceOperation<Boolean> {
-    private static final String RPC_NAME = "InvoiceService.deleteInvoice";
 
     public InvoiceServiceDeleteInvoiceOperation(Integer invoiceId){
-        super(RPC_NAME, invoiceId);
+        super(invoiceId);
     }
 }

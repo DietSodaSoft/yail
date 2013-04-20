@@ -1,15 +1,18 @@
 package com.dietsodasoftware.yail.xmlrpc.service.data;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
 import com.dietsodasoftware.yail.xmlrpc.model.NamedField;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.paging.ForwardPagingRequest;
+import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
+@InfusionsoftRpc(service = "DataService", method = "query")
 public class DataServiceQueryOperation<MT extends Model> extends InfusionsoftModelCollectionOperation<DataServiceQueryOperation<MT>,MT>
 implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
 
@@ -17,7 +20,6 @@ implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
 		super(clazz);
 	}
 
-	private final static String RPC_NAME = "DataService.query";
 	public enum Like{
 		before("%%%s"), after("%s%%"), surrounding("%%%s%%");
 		
@@ -52,11 +54,7 @@ implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
 	private Boolean ascending;
 	private String orderBy;
 	
-	@Override
-	public String getRpcName() {
-        return RPC_NAME;
-	}
-	
+
 	private DataServiceQueryOperation<MT> fieldEquals(String fieldName, Object value){
 		parameterValues.put(fieldName, value);
 		return this;
@@ -169,14 +167,14 @@ implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
     @SuppressWarnings("unchecked")
 	@Override
 	protected List<?> getOperationParameters() {
-		@SuppressWarnings("rawtypes")
-        final List list = emptyParameters();
-        list.add(getTableName());
-        list.add(getLimit());
-        list.add(getPage());
-        list.add(parameterValues);
-        list.add(getReturnFieldNames());
-        
+        final List list = ListFactory.quickLinkedList(
+                getTableName(),
+                getLimit(),
+                getPage(),
+                parameterValues,
+                getReturnFieldNames()
+        );
+
         if(orderBy != null){
         	list.add(orderBy);
         }

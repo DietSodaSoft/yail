@@ -18,22 +18,24 @@ import java.util.List;
  */
 public class SimpleRpcServiceOperation<T> extends InfusionsoftXmlRpcServiceOperation<T> {
 
-    private final String rpcName;
     private final List<?> parameters;
 
-    public SimpleRpcServiceOperation(String rpcName, Object... parameters) {
-        this.rpcName = rpcName;
+    public SimpleRpcServiceOperation(String serviceName, String methodName){
+        super(serviceName, methodName);
+        this.parameters = ListFactory.quickLinkedList();
+    }
+
+    public SimpleRpcServiceOperation(Object... parameters) {
         this.parameters = ListFactory.quickUnmodifiableLinkedList(parameters);
+    }
+
+    protected void addParameters(Object... parameters){
+        this.parameters.addAll(ListFactory.quickLinkedList(parameters));
     }
 
     @Override
     protected List<?> getOperationParameters() {
         return parameters;
-    }
-
-    @Override
-    public String getRpcName() {
-        return rpcName;
     }
 
     @Override

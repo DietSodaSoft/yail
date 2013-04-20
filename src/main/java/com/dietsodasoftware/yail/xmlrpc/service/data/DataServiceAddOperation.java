@@ -1,9 +1,10 @@
 package com.dietsodasoftware.yail.xmlrpc.service.data;
 
+import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelOperation;
+import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -12,9 +13,8 @@ import java.util.List;
  * Date: 2/23/13
  * Time: 11:48 AM
  */
+@InfusionsoftRpc(service = "DataService", method = "add")
 public class DataServiceAddOperation<MT extends Model> extends InfusionsoftModelOperation<MT, Integer> {
-
-    private static final String RPC_NAME = "DataService.add";
 
     private MT model;
 
@@ -29,15 +29,7 @@ public class DataServiceAddOperation<MT extends Model> extends InfusionsoftModel
 
     @Override
     protected List<?> getOperationParameters() {
-        final List params = new LinkedList();
-        params.add(getTableName());
-        params.add(model.getStruct());
-
-        return params;
+        return ListFactory.quickUnmodifiableLinkedList(getTableName(), model.getStruct());
     }
 
-    @Override
-    public String getRpcName() {
-        return RPC_NAME;
-    }
 }

@@ -6,8 +6,6 @@ import com.dietsodasoftware.yail.xmlrpc.model.NamedField;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,11 +28,6 @@ public abstract class InfusionsoftModelOperation<MT extends Model, RT> extends I
 
     protected Class<MT> getModelTypeClass(){
         return modelTypeClass;
-    }
-
-    @SuppressWarnings("rawtypes")
-    public List emptyParameters(){
-        return new LinkedList();
     }
 
     public String getTableName(){
