@@ -307,7 +307,7 @@ public class WebServiceClientDriver {
         final Map<String, Object> contactData = new HashMap<String, Object>();
         contactData.put(Contact.Field.FirstName.name(), "WebServiceClientDriverDemoFirstName");
         contactData.put(Contact.Field.LastName.name(), "DemoLastName");
-        contactData.put(Contact.Field.Email.name(),"icey502@gmail.com");
+        contactData.put(Contact.Field.Email.name(),"whatever@whatever.com");
         contactData.put(Contact.Field.Company.name(),"Acme Rockets Inc");
 
         final Contact contact = new Contact(contactData);
