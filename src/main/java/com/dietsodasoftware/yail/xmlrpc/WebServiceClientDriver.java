@@ -2,10 +2,7 @@ package com.dietsodasoftware.yail.xmlrpc;
 
 import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
 import com.dietsodasoftware.yail.xmlrpc.client.YailProfile;
-import com.dietsodasoftware.yail.xmlrpc.model.Contact;
-import com.dietsodasoftware.yail.xmlrpc.model.ContactAction;
-import com.dietsodasoftware.yail.xmlrpc.model.TagAssignment;
-import com.dietsodasoftware.yail.xmlrpc.model.User;
+import com.dietsodasoftware.yail.xmlrpc.model.*;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionResults;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
@@ -91,6 +88,7 @@ public class WebServiceClientDriver {
         exerciseUsernamePasswordAuthentication(client, vendorKey, username, password);
 
         exerciseAddContactService(client);
+        exerciseAddProductService(client);
     }
 	
 	private static void exerciseFindByQuery(YailClient client) throws InfusionsoftXmlRpcException {
@@ -315,5 +313,18 @@ public class WebServiceClientDriver {
 
         final Integer newId = client.call(add);
         System.out.println("The new Contact's ID: " + newId);
+    }
+
+    private static void exerciseAddProductService(YailClient client) throws InfusionsoftXmlRpcException {
+        final Map<String, Object> productData = new HashMap<String, Object>();
+        productData.put(Product.Field.ProductName.name(), "TestProduct1");
+        productData.put(Product.Field.ProductPrice.name(), "2.99");
+
+        final Product product = new Product(productData);
+        final DataServiceAddOperation<Product> add = new DataServiceAddOperation<Product>(Product.class)
+                .useModelPrototype(product);
+
+        final Integer newId = client.call(add);
+        System.out.println("The new Product's ID: " + newId);
     }
 }
