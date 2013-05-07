@@ -4,7 +4,7 @@
 
     <groupId>com.dietsodasoftware.isft.xmlrpc</groupId>
     <artifactId>yail-XmlRpcJavaClient</artifactId>
-    <version>0.7.7-SNAPSHOT</version>
+    <version>0.7.6-SNAPSHOT</version>
 
     <scm>
         <connection>scm:hg:ssh://hg@bitbucket.org/dietsoda/yail</connection>
@@ -69,8 +69,8 @@
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh-external</artifactId>
-                <version>2.2</version>
+                <artifactId>wagon-ssh</artifactId>
+                <version>1.0</version>
             </extension>
         </extensions>
     </build>
