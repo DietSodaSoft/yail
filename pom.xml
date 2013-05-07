@@ -4,13 +4,13 @@
 
     <groupId>com.dietsodasoftware.isft.xmlrpc</groupId>
     <artifactId>yail-XmlRpcJavaClient</artifactId>
-    <version>0.7.6</version>
+    <version>0.7.7-SNAPSHOT</version>
 
     <scm>
         <connection>scm:hg:ssh://hg@bitbucket.org/dietsoda/yail</connection>
         <!--<developerConnection>scm:svn:https://scm.infusiontest.com/svn/crmalpha/trunk</developerConnection>-->
         <url>http://hg.dietsodasoftware.com/yail/src</url>
-      <tag>v0.7.6</tag>
+      <tag>HEAD</tag>
   </scm>
 
 
@@ -69,5 +69,13 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <!-- Publish the versioned releases here -->
+        <repository>
+            <id>dss-repo</id>
+            <name>Diet Soda Software maven2 repository</name>
+            <url>scp://dietsodasoft@maven.dietsodasoftware.com/maven-repo/maven2</url>
+        </repository>
+    </distributionManagement>
 
 </project>
