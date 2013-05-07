@@ -8,12 +8,43 @@ This project is an attempt to be an easy-to-use client library for [Infusionsoft
 
 Using the Infusionsoft APIs isn't all that bad.  *Using XmlRpc is what is painful.*  **"Struct."**
 
+## Getting Started
+
 There are a few basic building blocks:
 
 *  The Profile
 *  The Client
 *  The Models
 *  The Web Service Operation
+
+You can get right to work using version 0.7.6 or greater by including it in your maven project:
+
+        <repositories>
+            ...
+            <repository>
+                <id>dss-maven-repo</id>
+                <name>Diet Soda Software Repository for YAIL</name>
+                <url>http://maven.dietsodasoftware.com/maven2</url>
+            </repository>
+            ...
+        <repositories>
+        ...
+        <dependencies>
+           ...
+                   <dependency>
+                       <groupId>com.dietsodasoftware.yail</groupId>
+                       <artifactId>yail-XmlRpcJavaClient</artifactId>
+                       <version>${com.dietsodasoftware.yail-version}</version>
+                   <dependency>
+           ...
+        <dependencies>
+        ...
+        <properties>
+            ...
+            <com.dietsodasoftware.yail-version>0.7.6</com.dietsodasoftware.yail-version>
+            ...
+        </properties>
+
 
 ###The Profile.
 
