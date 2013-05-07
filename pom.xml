@@ -8,6 +8,13 @@
     <artifactId>yail-XmlRpcJavaClient</artifactId>
     <version>0.7.6-SNAPSHOT</version>
 
+    <scm>
+        <connection>scm:hg:ssh://hg@bitbucket.org/dietsoda/yail</connection>
+        <!--<developerConnection>scm:svn:https://scm.infusiontest.com/svn/crmalpha/trunk</developerConnection>-->
+        <url>http://hg.dietsodasoftware.com/yail/src</url>
+    </scm>
+
+
     <dependencies>
 
         <dependency>
@@ -49,5 +56,19 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
 </project>
