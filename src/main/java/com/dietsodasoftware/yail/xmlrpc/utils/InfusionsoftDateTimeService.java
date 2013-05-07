@@ -32,10 +32,14 @@ public class InfusionsoftDateTimeService {
     }
 
     public Date normalizeDateToInfusionsoftDate(Date date, TimeZone originTimeZone){
+        return normalizeDateToInfusionsoft(date, originTimeZone).toDate();
+    }
+
+    public DateTime normalizeDateToInfusionsoft(Date date, TimeZone originTimeZone){
         final DateTimeZone otz = forTimeZone(originTimeZone);
         final LocalDateTime local = new LocalDateTime(date.getTime(), otz);
 
-        return local.toDateTime(est).toDate();
+        return local.toDateTime(est);
     }
 
     public Date normalizeDateToInfusionsoftDate(DateTime date){
