@@ -7,7 +7,7 @@ public class YailProfile {
 	private final String appName;
     private final String location;
 
-    private YailProfile(String appName, String location, YailClient.ApiKeyProvider apiKeyProvider){
+    YailProfile(String appName, String location, YailClient.ApiKeyProvider apiKeyProvider){
         this.apiKeyProvider = apiKeyProvider;
 		this.appName = appName;
         this.location = location;
