@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Link http://help.infusionsoft.com/developers/tables/subscriptionplan
+ * @link http://help.infusionsoft.com/developers/tables/subscriptionplan
  *
  * Created with IntelliJ IDEA.
  * User: wendel.schultz
