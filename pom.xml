@@ -4,12 +4,12 @@
 
     <groupId>com.dietsodasoftware.isft.xmlrpc</groupId>
     <artifactId>yail-XmlRpcJavaClient</artifactId>
-    <version>0.7.8-SNAPSHOT</version>
+    <version>0.7.7</version>
 
     <scm>
         <connection>scm:hg:ssh://hg@bitbucket.org/dietsoda/yail</connection>
         <url>http://hg.dietsodasoftware.com/yail/src</url>
-      <tag>HEAD</tag>
+      <tag>v0.7.7</tag>
   </scm>
 
 
