@@ -35,7 +35,7 @@ You can get right to work using version 0.7.6 or greater by including it in your
                        <groupId>com.dietsodasoftware</groupId>
                        <artifactId>yail-XmlRpcJavaClient</artifactId>
                        <version>${com.dietsodasoftware.yail-version}</version>
-                   <dependency>
+                   </dependency>
            ...
         <dependencies>
         ...
