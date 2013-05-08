@@ -21,50 +21,44 @@ public class CreditCard extends Model {
 
     public enum Field implements NamedField {
         Id(Integer.class, Access.Read),
-        ContactId(Integer.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        BillName(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        FirstName(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        LastName(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        PhoneNumber(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        Email(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        BillAddress1(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        BillAddress2(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        BillCity(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        BillState(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        BillZip(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        BillCountry(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        ShipFirstName(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        ShipMiddleName(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        ShipLastName(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        ShipCompanyName(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        ShipPhoneNumber(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        ShipAddress1(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        ShipAddress2(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        ShipCity(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        ShipState(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        ShipZip(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        ShipCountry(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        ShipName(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        NameOnCard(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
+        ContactId(Integer.class, Access.Read),
+        BillName(String.class, Access.Read, Access.Update, Access.Add),
+        FirstName(String.class, Access.Read, Access.Update, Access.Add),
+        LastName(String.class, Access.Read, Access.Update, Access.Add),
+        PhoneNumber(String.class, Access.Read, Access.Update, Access.Add),
+        Email(String.class, Access.Read, Access.Update, Access.Add),
+        BillAddress1(String.class, Access.Read, Access.Update, Access.Add),
+        BillAddress2(String.class, Access.Read, Access.Update, Access.Add),
+        BillCity(String.class, Access.Read, Access.Update, Access.Add),
+        BillState(String.class, Access.Read, Access.Update, Access.Add),
+        BillZip(String.class, Access.Read, Access.Update, Access.Add),
+        BillCountry(String.class, Access.Read, Access.Update, Access.Add),
+        ShipFirstName(String.class, Access.Read, Access.Update, Access.Add),
+        ShipMiddleName(String.class, Access.Read, Access.Update, Access.Add),
+        ShipLastName(String.class, Access.Read, Access.Update, Access.Add),
+        ShipCompanyName(String.class, Access.Read, Access.Update, Access.Add),
+        ShipPhoneNumber(String.class, Access.Read, Access.Update, Access.Add),
+        ShipAddress1(String.class, Access.Read, Access.Update, Access.Add),
+        ShipAddress2(String.class, Access.Read, Access.Update, Access.Add),
+        ShipCity(String.class, Access.Read, Access.Update, Access.Add),
+        ShipState(String.class, Access.Read, Access.Update, Access.Add),
+        ShipZip(String.class, Access.Read, Access.Update, Access.Add),
+        ShipCountry(String.class, Access.Read, Access.Update, Access.Add),
+        ShipName(String.class, Access.Read, Access.Update, Access.Add),
+        NameOnCard(String.class, Access.Read, Access.Update, Access.Add),
 
         CardNumber(String.class, Access.Add),
         Last4(String.class, Access.Read),
 
-        ExpirationMonth(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        ExpirationYear(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        CVV2(String.class, Access.Read, Access.Update),
-        Status(Integer.class, Access.Read),
-        /* Status:
-        0: Unknown
-        1: Invalid
-        2: Deleted
-        3: Valid/Good
-        4: Inactive
-        */
-        CardType(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        StartDateMonth(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        StartDateYear(String.class, Access.Read, Access.Update, Access.Add, Access.Delete),
-        MaestroIssueNumber(String.class, Access.Read, Access.Update, Access.Add, Access.Delete)
+        ExpirationMonth(String.class, Access.Read, Access.Update, Access.Add),
+        ExpirationYear(String.class, Access.Read, Access.Update, Access.Add),
+        CVV2(String.class, Access.Add, Access.Update),
+        Status(Integer.class, Access.Read),    // see CardStatus
+
+        CardType(String.class, Access.Read, Access.Update, Access.Add),
+        StartDateMonth(String.class, Access.Read, Access.Update, Access.Add),
+        StartDateYear(String.class, Access.Read, Access.Update, Access.Add),
+        MaestroIssueNumber(String.class, Access.Read, Access.Update, Access.Add)
         ;
 
         private final Class<?> fieldClass;
@@ -93,4 +87,35 @@ public class CreditCard extends Model {
 
     }
 
+    /* Status:
+    0: Unknown
+    1: Invalid
+    2: Deleted
+    3: Valid/Good
+    4: Inactive
+    */
+    public enum CardStatus {
+        Unknown(0), Invalid(1), Deleted(2), Valid(3), Inactive(4);
+
+        private final int dbConstant;
+
+        private CardStatus(int dbConstant) {
+            this.dbConstant = dbConstant;
+        }
+
+        public int getDbConstant(){
+            return dbConstant;
+        }
+
+        public static CardStatus fromDbConstant(int dbConstant){
+
+            for(CardStatus status: CardStatus.values()){
+                if(status.getDbConstant() == dbConstant){
+                    return status;
+                }
+            }
+
+            throw new IllegalArgumentException("Unknown Credit Card status constant: " + dbConstant);
+        }
+    }
 }
