@@ -38,7 +38,9 @@ public abstract class Model {
     public List<String> allFieldsNames(){
         final List<String> fieldNames = new LinkedList<String>();
         for(NamedField field: allFields()){
-            fieldNames.add(field.name());
+            if(field.hasAccess(NamedField.Access.Read)){
+                fieldNames.add(field.name());
+            }
         }
 
         return fieldNames;
