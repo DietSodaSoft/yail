@@ -8,6 +8,9 @@ This project is an attempt to be an easy-to-use client library for [Infusionsoft
 
 Using the Infusionsoft APIs isn't all that bad.  *Using XmlRpc is what is painful.*  **"Struct."**
 
+## What's new?
+Check out the [Release Notes](wiki/Release Notes) for what has been happening lately.
+
 ## Getting Started
 
 There are a few basic building blocks:
@@ -51,15 +54,17 @@ You can get right to work using version 0.7.6 or greater by including it in your
 The profile is the Infusionsoft app location and whatever you need to authenticate against that app in order to create a
 valid client.
 
-Currently, there are three ways to authenticate:
+Currently, there are several ways to authenticate:
 
-*  Using an app user's username/password (not currently supported yet)
-*  Using a vendor's key (not currently supported yet)
-*  Using an app's API key (supported because it is easiest)
+*  Using an app user's username/password
+*  Using a vendor's key
+*  Using an app's API key
+*  Using Infusionsoft ID (CAS rollout: not yet supported. Coming soon...)
 
 A profile is meant to be stored securely in the app somewhere so that a user provides config once and they are good to
-go.
+go by virtue of using the profile as a factory for YailClients which are able to connect using the appropriate tokens.
 
+Read more in the [wiki](wiki/Profiles)
 
 ### The Client.
 
@@ -70,7 +75,7 @@ the client will ask the operation to unmarshall the results.
 ### The Models.
 
 The Infusionsoft APIs vend data about real-world things: contacts, opportunities, tasks, appointments, etc.  Wouldn't
-it be nice if my application can think about these real-world things and not bags key/value pairs?  That's what a
+it be nice if my application can think about these real-world things and not bags of key/value pairs?  That's what a
 model is, in case you've never written any code in your entire life.
 
 
@@ -84,13 +89,13 @@ makes it painfully obvious what you can hope to get back, assuming nothing goes 
 
 ##ENOUGH FOREPLAY!!  Let's see this thing in action.
 
-The heart and soul of how this works is **`IsftClient.call()`**.  It is really simple:
+The heart and soul of how this works is **`YailClient.call()`**.  It is really simple; the crux of it looks like this:
 
 	public <T> T call(InfusionsoftXmlRpcServiceOperation<T> operation) throws XmlRpcException{
 
-		// TODO: operation.validateRequest();  Let the operation throw if it hasn't been set up with valid args
 		final List<?> parameters = operation.getXmlRpcParameters(this);
 
+        // infusionApp is a configured apache XmlRpcClient instance.
 		final Object rawResult = infusionApp.execute(operation.getRpcName(), parameters);
 		final T parsedResult = operation.parseResult(rawResult);
 
@@ -114,7 +119,7 @@ fields you want returned, which page you want on the request operation.
 
 These operations are pretty dumb, though.  For example, if you try to page before page 0, you'll get page 0 again.  Also,
 you can beat the off-by-one by checking to see if you received as many records as your page size is large, and not
-asking for the next page in the event the record count is less than page size.
+asking for the next page in the event the record count is less than page size.  However, we recommend using client.autoPage().
 
 
 
@@ -192,7 +197,8 @@ a primitive 'like' syntax.  The usual return fields, page number, page limit and
         // find all contacts with a first name starting with 'A'
 		final DataServiceQueryOperation<Contact> finder =
 				new DataServiceQueryOperation<Contact>(Contact.class)
-		             .fieldLike("FirstName", "A", Like.after);
+		             .fieldLike(Contact.Field.FirstName, "A", Like.after)
+		             .customFieldLike("DogName", "Ral", Like.after;
 
         System.out.println("FindByQuery: " );
         for(Contact contact: client.call(finder)){
@@ -212,4 +218,5 @@ easily-used methods to parse the response into ical4j's Calendar.
         System.out.println("Appointment cal: ");
         System.out.println(appt);
 
-I don't completely know what is going on with this one.  I have requested an iCal for several valid appointments, but only one of them succeeds.  I get `XmlRpcException`s for the others.  I'm working on understanding the nuances of this API call.
+This API call has a bug in it, at the time of writing.  If you request an iCal for a contact which doesn't have an email
+address, you will get an XmlRpcException with little to no hint as to what is going on.
