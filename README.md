@@ -41,17 +41,19 @@ You can get right to work using version 0.7.6 or greater by including it in your
             ...
         </properties>
 
-## One-Pager on design and usage
+## One-Pager on design, usage and reference
 There are a few basic building blocks:
 
 *  The Profile ([design](wiki/design/Profiles) / [usage](wiki/usage/Profiles))
-*  The Client
-*  The Models
-*  The Web Service Operation
+*  The Client ([design](wiki/design/Clients) / [usage](wiki/usage/Clients))
+*  The Models ([design](wiki/design/Models) / [usage](wiki/usage/Models)) / [reference](wiki/reference/Models))
+*  The Web Service Operation ([design](wiki/design/Operations) / [usage](wiki/usage/Operations) / [reference](wiki/reference/Operations)
 
 Read more about [YAIL's design](wiki/design/Home) in the wiki.
 
 Read more about [YAIL's usage documentation](wiki/usage/Home) in the wiki.
+
+Read more about [YAIL's reference documentation](wiki/reference/Home) in the wiki.
 
 ###The Profile.
 
