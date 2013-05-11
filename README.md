@@ -1,5 +1,6 @@
 # YAIL:  Yet Another Infusionsoft Library
-*This library is not affiliated with nor supported by Infusionsoft. Direct any questions to me or create an issue here.*
+*This library is not affiliated with nor supported by Infusionsoft. Direct any questions to me or create an issue here.
+[wschultz@dietsodasoftware.com](mailto:wschultz@dietsodasoftware.com)*
 
 This project is an attempt to be an easy-to-use client library for [Infusionsoft's API][1].
 
