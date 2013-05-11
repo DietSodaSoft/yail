@@ -48,6 +48,7 @@ There are a few basic building blocks:
 *  The Client ([design](wiki/design/Clients) / [usage](wiki/usage/Clients))
 *  The Models ([design](wiki/design/Models) / [usage](wiki/usage/Models)) / [reference](wiki/reference/Models))
 *  The Web Service Operation ([design](wiki/design/Operations) / [usage](wiki/usage/Operations) / [reference](wiki/reference/Operations)
+*  A few Utilities ([reference](wiki/reference/Utilities))
 
 Read more about [YAIL's design](wiki/design/Home) in the wiki.
 
