@@ -13,13 +13,6 @@ Check out the [Release Notes](wiki/Release Notes) for what has been happening la
 
 ## Getting Started
 
-There are a few basic building blocks:
-
-*  The Profile
-*  The Client
-*  The Models
-*  The Web Service Operation
-
 You can get right to work using version 0.7.6 or greater by including it in your maven project:
 
         <repositories>
@@ -48,6 +41,17 @@ You can get right to work using version 0.7.6 or greater by including it in your
             ...
         </properties>
 
+## One-Pager on design and usage
+There are a few basic building blocks:
+
+*  The Profile ([design](wiki/design/Profiles) / [usage](wiki/usage/Profiles)
+*  The Client
+*  The Models
+*  The Web Service Operation
+
+Read more about [YAIL's design](wiki/design/Home) in the wiki.
+
+Read more about [YAIL's usage documentation](wiki/usage/Home) in the wiki.
 
 ###The Profile.
 
@@ -64,13 +68,14 @@ Currently, there are several ways to authenticate:
 A profile is meant to be stored securely in the app somewhere so that a user provides config once and they are good to
 go by virtue of using the profile as a factory for YailClients which are able to connect using the appropriate tokens.
 
-Read more in the [wiki](wiki/Profiles)
+Read more in the [wiki](wiki/design/Profiles).
 
 ### The Client.
 
 The client sends a valid, signed XmlRpc request to the Infusionsoft app after asking the operation for it's parameters.  Additionally,
 the client will ask the operation to unmarshall the results.
 
+Read more in the [wiki](wiki/design/Clients).
 
 ### The Models.
 
@@ -78,6 +83,7 @@ The Infusionsoft APIs vend data about real-world things: contacts, opportunities
 it be nice if my application can think about these real-world things and not bags of key/value pairs?  That's what a
 model is, in case you've never written any code in your entire life.
 
+Read more in the [wiki](wiki/design/Models).
 
 ### The Web Service Operation
 
@@ -85,6 +91,7 @@ The web service operation thinks about two things: what it sends and what is ret
 provides semantic clarity into what the operation does, but not necessarily how (only if necessary).  The operation
 makes it painfully obvious what you can hope to get back, assuming nothing goes wrong.
 
+Read more in the [wiki](wiki/design/Operations).
 
 
 ##ENOUGH FOREPLAY!!  Let's see this thing in action.
@@ -101,6 +108,8 @@ The heart and soul of how this works is **`YailClient.call()`**.  It is really s
 
 		return parsedResult;
 	}
+
+A few prototypical usage demos follow.
 
 ## DataService.
 
@@ -119,7 +128,8 @@ fields you want returned, which page you want on the request operation.
 
 These operations are pretty dumb, though.  For example, if you try to page before page 0, you'll get page 0 again.  Also,
 you can beat the off-by-one by checking to see if you received as many records as your page size is large, and not
-asking for the next page in the event the record count is less than page size.  However, we recommend using client.autoPage().
+asking for the next page in the event the record count is less than page size.  However, we recommend
+using [client.autoPage()](wiki/usage/Clients).
 
 
 
