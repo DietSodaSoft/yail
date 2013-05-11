@@ -44,7 +44,7 @@ You can get right to work using version 0.7.6 or greater by including it in your
 ## One-Pager on design and usage
 There are a few basic building blocks:
 
-*  The Profile ([design](wiki/design/Profiles) / [usage](wiki/usage/Profiles)
+*  The Profile ([design](wiki/design/Profiles) / [usage](wiki/usage/Profiles))
 *  The Client
 *  The Models
 *  The Web Service Operation
