@@ -201,11 +201,11 @@ Contacts aren't the only show in town.  Search for Appointments:
 		   System.out.println(action);
 	   }
 
-Currently, models include: Campaignee, CampaignStep, Company, Contact, ContactAction (task and appointments), GroupAssign, Lead, MtgLead, ProductInterest, ProductInterestBundle, Stage, StageMove, Status, User, and UserGroup.
+Currently, well over half of the models are codified and are still under construction.
 
 ### DataService.query
 
-Query is a bit like findByField, but much more general.  You can cascade restrictions on different fields, even including
+Query is a bit like findByField, but much more powerful.  You can cascade restrictions on different fields, even including
 a primitive 'like' syntax.  The usual return fields, page number, page limit and returned collection applies.
 
         // find all contacts with a first name starting with 'A'
