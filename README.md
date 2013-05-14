@@ -50,6 +50,7 @@ There are a few basic building blocks:
 *  The Models ([design](wiki/design/Models) / [usage](wiki/usage/Models)) / [reference](wiki/reference/Models))
 *  The Web Service Operation ([design](wiki/design/Operations) / [usage](wiki/usage/Operations) / [reference](wiki/reference/Operations)
 *  A few Utilities ([reference](wiki/reference/Utilities))
+*  Infusionsoft authentication ([design](wiki/design/Authentication))
 
 Read more about [YAIL's design](wiki/design/Home) in the wiki.
 
@@ -67,7 +68,7 @@ Currently, there are several ways to authenticate:
 *  Using an app user's username/password
 *  Using a vendor's key
 *  Using an app's API key
-*  Using Infusionsoft ID (CAS rollout: not yet supported. Coming soon...)
+*  Using Infusionsoft ID (CAS is supported in 0.8.0)
 
 A profile is meant to be stored securely in the app somewhere so that a user provides config once and they are good to
 go by virtue of using the profile as a factory for YailClients which are able to connect using the appropriate tokens.
