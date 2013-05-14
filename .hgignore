@@ -3,4 +3,5 @@
 .*.iml
 target
 tmp
+src/main/resources/app.properties
 
