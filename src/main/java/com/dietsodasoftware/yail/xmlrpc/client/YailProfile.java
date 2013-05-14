@@ -2,6 +2,8 @@ package com.dietsodasoftware.yail.xmlrpc.client;
 
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.authentication.AuthenticationServiceAuthenticateForTemporaryKey;
+import com.dietsodasoftware.yail.xmlrpc.service.cas.UserTokens;
+import com.dietsodasoftware.yail.xmlrpc.utils.DigestionUtils;
 
 /**
  * A YAIL Profile is a DTO for the application access information: app name/location, and the relevant tokens necessary
@@ -42,15 +44,17 @@ import com.dietsodasoftware.yail.xmlrpc.service.authentication.AuthenticationSer
  */
 public class YailProfile {
 	
-	private YailClient.ApiKeyProvider apiKeyProvider;
+	private final YailClient.ApiKeyProvider apiKeyProvider;
 
 	private final String appName;
     private final String location;
+    private final UserTokens tokens;
 
-    YailProfile(String appName, String location, YailClient.ApiKeyProvider apiKeyProvider){
+    YailProfile(String appName, String location, YailClient.ApiKeyProvider apiKeyProvider, UserTokens tokens){
         this.apiKeyProvider = apiKeyProvider;
 		this.appName = appName;
         this.location = location;
+        this.tokens = tokens;
 	}
 	
 	public static YailProfile usingApiKey(String appName, String apiKey){
@@ -59,7 +63,7 @@ public class YailProfile {
 
     public static YailProfile atLocationUsingApiKey(String appName, String location, String apiKey){
         final YailClient.ApiKeyProvider keys = new FixedApiKeyProvider(apiKey);
-        final YailProfile profile = new YailProfile(appName, location, keys);
+        final YailProfile profile = new YailProfile(appName, location, keys, null);
 
         return profile;
     }
@@ -68,13 +72,25 @@ public class YailProfile {
         return atLocationUsingVendorKey(appName, YailClient.APP_LOCATION, vendorKey, username, password);
     }
 
-    public static YailProfile atLocationUsingVendorKey(String appName, String location, String vendorKey, String username, String password){
+    public static YailProfile atLocationUsingVendorKey(String appName, String location, String vendorKey, final String username, final String password){
+        final String hashword = DigestionUtils.getMD5ForString(password);
         final YailClient.ApiKeyProvider keys = new VendorKeyAuthenticatingRefreshedApiKeyProvider(vendorKey, username, password);
-        return new YailProfile(appName, location, keys);
+        final UserTokens tokens = new UserTokens() {
+            @Override
+            public String getUsername() {
+                return username;
+            }
+
+            @Override
+            public String getPassword() {
+                return password;
+            }
+        };
+        return new YailProfile(appName, location, keys, tokens);
     }
 
     public YailClient getClient(){
-		return new YailClient(appName, location, apiKeyProvider);
+		return new YailClient(appName, location, apiKeyProvider, tokens);
 	}
 
 }
