@@ -2,12 +2,19 @@ package com.dietsodasoftware.yail.xmlrpc;
 
 import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
 import com.dietsodasoftware.yail.xmlrpc.client.YailProfile;
-import com.dietsodasoftware.yail.xmlrpc.model.*;
+import com.dietsodasoftware.yail.xmlrpc.model.Contact;
+import com.dietsodasoftware.yail.xmlrpc.model.ContactAction;
+import com.dietsodasoftware.yail.xmlrpc.model.Product;
+import com.dietsodasoftware.yail.xmlrpc.model.TagAssignment;
+import com.dietsodasoftware.yail.xmlrpc.model.User;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionResults;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
 import com.dietsodasoftware.yail.xmlrpc.service.authentication.AuthenticationServiceAuthenticateForTemporaryKey;
 import com.dietsodasoftware.yail.xmlrpc.service.authentication.AuthenticationServiceAuthenticateUser;
+import com.dietsodasoftware.yail.xmlrpc.service.cas.CASAccount;
+import com.dietsodasoftware.yail.xmlrpc.service.cas.CASLogin;
+import com.dietsodasoftware.yail.xmlrpc.service.cas.CASUtils;
 import com.dietsodasoftware.yail.xmlrpc.service.contact.ContactServiceAddOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceAddOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceDeleteOperation;
@@ -17,11 +24,9 @@ import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceLoadOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation.Like;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceUtils;
-import com.dietsodasoftware.yail.xmlrpc.service.paging.AutoForwardPagingIterator;
 import com.dietsodasoftware.yail.xmlrpc.service.paging.ForwardPagingBound;
 import com.dietsodasoftware.yail.xmlrpc.utils.InfusionsoftDateTimeService;
 import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.DateTime;
 import org.joda.time.LocalDateTime;
 
 import java.io.IOException;
@@ -39,9 +44,9 @@ public class WebServiceClientDriver {
     private static final String PROP_APP_NAME = "com.dietsodasoftware.yail.appname";
     private static final String PROP_APP_APIKEY = "com.dietsodasoftware.yail.apikey";
     private static final String PROP_APP_LOCATION = "com.dietsodasoftware.yail.location";
-    private static final String PROP_APP_USERNAME = "com.dietsodasoftware.yail.username";
-    private static final String PROP_APP_PASSWORD = "com.dietsodasoftware.yail.password";
     private static final String PROP_DSS_VENDOR_KEY = "com.dietsodasoftware.yail.vendorkey";
+    private static final String PROP_CAS_USERNAME_KEY = "com.dietsodasoftware.yail.cas-username";
+    private static final String PROP_CAS_PASSWORD_KEY = "com.dietsodasoftware.yail.cas-password";
 
     public static void main(String [] args) throws InfusionsoftXmlRpcException, InfusionsoftResponseParsingException, IOException {
 
@@ -49,17 +54,17 @@ public class WebServiceClientDriver {
         final String appName = props.getProperty(PROP_APP_NAME);
         final String apiKey = props.getProperty(PROP_APP_APIKEY + "." + appName);
         final String location = props.getProperty(PROP_APP_LOCATION + "." + appName);
-        final String username = props.getProperty(PROP_APP_USERNAME + "." + appName);
-        final String password = props.getProperty(PROP_APP_PASSWORD + "." + appName);
+        final String casUsername = props.getProperty(PROP_CAS_USERNAME_KEY);
+        final String casPassword = props.getProperty(PROP_CAS_PASSWORD_KEY);
         final String vendorKey = props.getProperty(PROP_DSS_VENDOR_KEY);
 
-        final boolean useVendorKey = false;
+        final boolean useVendorKey = true;
 		final YailProfile profile;
         if(useVendorKey){
             if(location == null){
-                profile = YailProfile.usingVendorKey(appName, vendorKey, username, password);
+                profile = YailProfile.usingVendorKey(appName, vendorKey, casUsername, casPassword);
             } else {
-                profile = YailProfile.atLocationUsingVendorKey(appName, location, vendorKey, username, password);
+                profile = YailProfile.atLocationUsingVendorKey(appName, location, vendorKey, casUsername, casPassword);
             }
         } else {
             if(location == null){
@@ -70,6 +75,9 @@ public class WebServiceClientDriver {
         }
 		final YailClient client = profile.getClient();
 
+        exerciseCasAuthentication(client, appName);//, casUsername, casPassword);
+
+        exerciseVendorKeyToken(client, vendorKey, casUsername, casPassword);
 
 		exerciseFindByQuery(client);
 		exerciseFindByField(client);
@@ -85,10 +93,50 @@ public class WebServiceClientDriver {
 
         exerciseDataServiceGetAppointmentCal(client);
 
-        exerciseUsernamePasswordAuthentication(client, vendorKey, username, password);
+        exerciseUsernamePasswordAuthentication(client, vendorKey, casUsername, casPassword);
 
         exerciseAddContactService(client);
         exerciseAddProductService(client);
+    }
+
+    private static void exerciseVendorKeyToken(YailClient client, String vendorKey, String username, String password) throws InfusionsoftXmlRpcException {
+        final AuthenticationServiceAuthenticateForTemporaryKey keyAuth = new AuthenticationServiceAuthenticateForTemporaryKey(vendorKey, username, password);
+        final String key =  client.call(keyAuth);
+
+        System.out.println("Temporary key: " + key);
+
+    }
+
+    private static void exerciseCasAuthentication(YailClient client, String appName) throws IOException {//}, String user, String pass) throws IOException, ServiceClientException {
+        CASLogin login = client.authenticateWithInfusionsoftID();
+        System.out.println("CAS Login: ");
+        System.out.println("    " + login.getCasGlobalId());
+        System.out.println("    " + login.getDisplayName());
+        System.out.println("    " + login.getFirstName());
+        System.out.println("    " + login.getLastName());
+        System.out.println("    " + login.getUsername());
+        System.out.println("    " + login.getAuthorities());
+
+        for(CASAccount account: login.getLinkedApps()){
+            System.out.println("==================");
+            printAccount(account);
+        }
+
+        System.out.println("    " + login.getCode());
+        System.out.println("    " + login.getMessage());
+
+
+        final CASAccount myIsft = CASUtils.crmAppNamed(login, appName);
+        System.out.println("My app: " + appName);
+        printAccount(myIsft);
+    }
+
+    private static void printAccount(CASAccount account) {
+        System.out.println("        " + account.getAppType());
+        System.out.println("        " + account.getAppName());
+        System.out.println("        " + account.getAppUsername());
+        System.out.println("        " + account.getAppUrl());
+        System.out.println("        " + account.getAppAlias());
     }
 	
 	private static void exerciseFindByQuery(YailClient client) throws InfusionsoftXmlRpcException {
