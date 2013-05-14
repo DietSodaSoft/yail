@@ -12,7 +12,6 @@ import com.dietsodasoftware.yail.xmlrpc.service.cas.UserTokens;
 import com.dietsodasoftware.yail.xmlrpc.service.paging.AutoForwardPagingIterator;
 import com.dietsodasoftware.yail.xmlrpc.service.paging.ForwardPagingBound;
 import com.dietsodasoftware.yail.xmlrpc.service.paging.ForwardPagingRequest;
-import com.dietsodasoftware.yail.xmlrpc.utils.DigestionUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.fluent.Request;
@@ -101,16 +100,22 @@ public class YailClient {
         return new AutoForwardPagingIterator<MT, RT>(this, operation, stopper);
     }
 
+    /**
+     * Will throw IllegalArgumentException if the client is API key-based.  This can only work if the client has the
+     * username and password.
+     *
+     * @return
+     * @throws IOException
+     */
     public CASLogin authenticateWithInfusionsoftID() throws IOException {
         return authenticateWithInfusionsoftID(tokens);
     }
 
     /**
-     * Use the Profile using username and passowrd.  This is here until the API key is deprectated completely.
+     * Use the Profile using vendor key, username and passowrd.  This is here until the API key is deprectated completely.
      */
     @Deprecated
-    public CASLogin authenticateWithInfusionsoftID(final String username, String password) throws IOException {
-        final String hashword = DigestionUtils.getMD5ForString(password);
+    public CASLogin authenticateWithInfusionsoftID(final String username, final String password) throws IOException {
         final UserTokens tokens = new UserTokens() {
             @Override
             public String getUsername() {
@@ -119,21 +124,26 @@ public class YailClient {
 
             @Override
             public String getPassword() {
-                return hashword;
+                return password;
             }
         };
 
         return authenticateWithInfusionsoftID(tokens);
     }
 
-    // OK fine.  This will really become private.
+    // OK fine: this isn't deprecated per se.  This will really become private or subsumed in the no-arg variant above.
     @Deprecated
     public CASLogin authenticateWithInfusionsoftID(final UserTokens tokens) throws IOException {
         final InfusionsoftIDLoginRequest login = new InfusionsoftIDLoginRequest(tokens);
         return post(login);
     }
 
-
+    /**
+     * This is needed for the CAS signin.  There are other Infusionsoft goodies that make use of POST requests, so this
+     * can live here with "reasonable cause."  "Reasonable" because that's the way it is done, not because it is a good
+     * way to design/model this stuff.
+     *
+     */
     public <T> T post(InfusionsoftHttpPostRequest<T> isftRequest) throws IOException {
         isftRequest.validateArguments();
 
