@@ -12,9 +12,6 @@ import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingExcep
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
 import com.dietsodasoftware.yail.xmlrpc.service.authentication.AuthenticationServiceAuthenticateForTemporaryKey;
 import com.dietsodasoftware.yail.xmlrpc.service.authentication.AuthenticationServiceAuthenticateUser;
-import com.dietsodasoftware.yail.xmlrpc.service.cas.CASAccount;
-import com.dietsodasoftware.yail.xmlrpc.service.cas.CASLogin;
-import com.dietsodasoftware.yail.xmlrpc.service.cas.CASUtils;
 import com.dietsodasoftware.yail.xmlrpc.service.contact.ContactServiceAddOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceAddOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceDeleteOperation;
@@ -75,8 +72,6 @@ public class WebServiceClientDriver {
         }
 		final YailClient client = profile.getClient();
 
-        exerciseCasAuthentication(client, appName);//, casUsername, casPassword);
-
         exerciseVendorKeyToken(client, vendorKey, casUsername, casPassword);
 
 		exerciseFindByQuery(client);
@@ -107,38 +102,6 @@ public class WebServiceClientDriver {
 
     }
 
-    private static void exerciseCasAuthentication(YailClient client, String appName) throws IOException {//}, String user, String pass) throws IOException, ServiceClientException {
-        CASLogin login = client.authenticateWithInfusionsoftID();
-        System.out.println("CAS Login: ");
-        System.out.println("    " + login.getCasGlobalId());
-        System.out.println("    " + login.getDisplayName());
-        System.out.println("    " + login.getFirstName());
-        System.out.println("    " + login.getLastName());
-        System.out.println("    " + login.getUsername());
-        System.out.println("    " + login.getAuthorities());
-
-        for(CASAccount account: login.getLinkedApps()){
-            System.out.println("==================");
-            printAccount(account);
-        }
-
-        System.out.println("    " + login.getCode());
-        System.out.println("    " + login.getMessage());
-
-
-        final CASAccount myIsft = CASUtils.crmAppNamed(login, appName);
-        System.out.println("My app: " + appName);
-        printAccount(myIsft);
-    }
-
-    private static void printAccount(CASAccount account) {
-        System.out.println("        " + account.getAppType());
-        System.out.println("        " + account.getAppName());
-        System.out.println("        " + account.getAppUsername());
-        System.out.println("        " + account.getAppUrl());
-        System.out.println("        " + account.getAppAlias());
-    }
-	
 	private static void exerciseFindByQuery(YailClient client) throws InfusionsoftXmlRpcException {
 		final DataServiceQueryOperation<Contact> finder = 
 				new DataServiceQueryOperation<Contact>(Contact.class)

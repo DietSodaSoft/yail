@@ -68,7 +68,7 @@ Currently, there are several ways to authenticate:
 *  Using an app user's username/password
 *  Using a vendor's key
 *  Using an app's API key
-*  Using Infusionsoft ID (CAS is supported in 0.8.0)
+*  Using Infusionsoft ID (CAS isn't publicly available just yet)
 
 A profile is meant to be stored securely in the app somewhere so that a user provides config once and they are good to
 go by virtue of using the profile as a factory for YailClients which are able to connect using the appropriate tokens.
