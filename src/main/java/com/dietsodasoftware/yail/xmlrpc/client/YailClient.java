@@ -7,7 +7,7 @@ import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingExcep
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.cas.CASLogin;
-import com.dietsodasoftware.yail.xmlrpc.service.cas.InfusionsoftIDLoginRequest;
+import com.dietsodasoftware.yail.xmlrpc.service.cas.LegacyInfusionsoftIDLoginRequest;
 import com.dietsodasoftware.yail.xmlrpc.service.cas.UserTokens;
 import com.dietsodasoftware.yail.xmlrpc.service.paging.AutoForwardPagingIterator;
 import com.dietsodasoftware.yail.xmlrpc.service.paging.ForwardPagingBound;
@@ -134,7 +134,7 @@ public class YailClient {
     // OK fine: this isn't deprecated per se.  This will really become private or subsumed in the no-arg variant above.
     @Deprecated
     public CASLogin authenticateWithInfusionsoftID(final UserTokens tokens) throws IOException {
-        final InfusionsoftIDLoginRequest login = new InfusionsoftIDLoginRequest(tokens);
+        final LegacyInfusionsoftIDLoginRequest login = new LegacyInfusionsoftIDLoginRequest(tokens);
         return post(login);
     }
 
