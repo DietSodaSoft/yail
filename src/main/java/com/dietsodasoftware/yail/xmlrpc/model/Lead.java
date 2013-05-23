@@ -75,4 +75,8 @@ public class Lead extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<Lead> builder(){
+        return new Builder<Lead>(Lead.class);
+    }
 }

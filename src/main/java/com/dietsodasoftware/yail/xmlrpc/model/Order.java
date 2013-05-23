@@ -82,4 +82,8 @@ public class Order extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<Order> builder(){
+        return new Builder<Order>(Order.class);
+    }
 }

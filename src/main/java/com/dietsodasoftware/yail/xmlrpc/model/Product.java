@@ -68,4 +68,8 @@ public class Product extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<Product> builder(){
+        return new Builder<Product>(Product.class);
+    }
 }

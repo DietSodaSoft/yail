@@ -58,4 +58,8 @@ public class Campaign extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<Campaign> builder(){
+        return new Builder<Campaign>(Campaign.class);
+    }
 }

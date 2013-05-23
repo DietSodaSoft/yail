@@ -59,4 +59,8 @@ public class GroupAssign extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<GroupAssign> builder(){
+        return new Builder<GroupAssign>(GroupAssign.class);
+    }
 }

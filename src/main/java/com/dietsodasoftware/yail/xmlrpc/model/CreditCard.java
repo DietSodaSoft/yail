@@ -118,4 +118,8 @@ public class CreditCard extends Model {
             throw new IllegalArgumentException("Unknown Credit Card status constant: " + dbConstant);
         }
     }
+
+    public static Builder<CreditCard> builder(){
+        return new Builder<CreditCard>(CreditCard.class);
+    }
 }

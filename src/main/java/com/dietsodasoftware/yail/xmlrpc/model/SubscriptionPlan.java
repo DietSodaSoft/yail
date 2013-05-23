@@ -63,4 +63,8 @@ public class SubscriptionPlan extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<SubscriptionPlan> builder(){
+        return new Builder<SubscriptionPlan>(SubscriptionPlan.class);
+    }
 }

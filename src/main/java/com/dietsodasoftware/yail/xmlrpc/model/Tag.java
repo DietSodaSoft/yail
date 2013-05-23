@@ -60,4 +60,8 @@ public class Tag extends Model {
         }
 
     }
+
+    public static Builder<Tag> builder(){
+        return new Builder<Tag>(Tag.class);
+    }
 }

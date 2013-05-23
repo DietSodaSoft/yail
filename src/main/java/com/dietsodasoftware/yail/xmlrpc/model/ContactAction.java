@@ -71,4 +71,8 @@ public class ContactAction extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
 	}
+
+    public static Builder<ContactAction> builder(){
+        return new Builder<ContactAction>(ContactAction.class);
+    }
 }

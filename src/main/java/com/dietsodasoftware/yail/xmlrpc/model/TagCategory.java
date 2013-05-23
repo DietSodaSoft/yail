@@ -60,4 +60,7 @@ public class TagCategory extends Model {
 
     }
 
+    public static Builder<TagCategory> builder(){
+        return new Builder<TagCategory>(TagCategory.class);
+    }
 }

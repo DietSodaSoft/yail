@@ -62,4 +62,8 @@ public class Status extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<Status> builder(){
+        return new Builder<Status>(Status.class);
+    }
 }

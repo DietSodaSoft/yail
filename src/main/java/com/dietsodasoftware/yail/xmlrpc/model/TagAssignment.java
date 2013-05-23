@@ -113,4 +113,8 @@ public class TagAssignment extends Model {
         }
 
     }
+
+    public static Builder<TagAssignment> builder(){
+        return new Builder<TagAssignment>(TagAssignment.class);
+    }
 }

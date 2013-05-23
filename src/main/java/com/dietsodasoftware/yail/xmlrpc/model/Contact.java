@@ -139,4 +139,7 @@ public class Contact extends Model {
         }
     }
 
+    public static Builder<Contact> builder(){
+        return new Builder<Contact>(Contact.class);
+    }
 }

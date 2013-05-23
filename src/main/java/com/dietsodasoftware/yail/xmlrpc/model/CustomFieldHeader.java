@@ -57,4 +57,8 @@ public class CustomFieldHeader extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<CustomFieldHeader> builder(){
+        return new Builder<CustomFieldHeader>(CustomFieldHeader.class);
+    }
 }

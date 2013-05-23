@@ -58,4 +58,8 @@ public class ProductInterestBundle extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<ProductInterestBundle> builder(){
+        return new Builder<ProductInterestBundle>(ProductInterestBundle.class);
+    }
 }

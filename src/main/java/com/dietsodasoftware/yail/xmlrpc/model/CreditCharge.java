@@ -65,4 +65,7 @@ public class CreditCharge extends Model {
 
     }
 
+    public static Builder<CreditCharge> builder(){
+        return new Builder<CreditCharge>(CreditCharge.class);
+    }
 }

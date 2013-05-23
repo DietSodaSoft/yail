@@ -58,4 +58,8 @@ public class ActionSequence extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<ActionSequence> builder(){
+        return new Builder<ActionSequence>(ActionSequence.class);
+    }
 }

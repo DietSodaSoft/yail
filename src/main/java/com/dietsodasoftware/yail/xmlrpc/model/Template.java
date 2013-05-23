@@ -59,4 +59,8 @@ public class Template extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<Template> builder(){
+        return new Builder<Template>(Template.class);
+    }
 }

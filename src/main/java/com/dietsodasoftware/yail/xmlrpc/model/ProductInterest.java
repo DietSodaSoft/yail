@@ -62,4 +62,8 @@ public class ProductInterest extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<ProductInterest> builder(){
+        return new Builder<ProductInterest>(ProductInterest.class);
+    }
 }

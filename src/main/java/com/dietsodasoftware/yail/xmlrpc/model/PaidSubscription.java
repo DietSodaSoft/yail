@@ -101,4 +101,8 @@ public class PaidSubscription extends Model {
     public enum Status{
         Active, Inactive;
     }
+
+    public static Builder<PaidSubscription> builder(){
+        return new Builder<PaidSubscription>(PaidSubscription.class);
+    }
 }

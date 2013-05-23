@@ -5,21 +5,21 @@ import com.dietsodasoftware.yail.xmlrpc.client.annotations.TableName;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 /**
- * @link http://developers.infusionsoft.com/dbDocs/Campaignee.html
- *
  * Created with IntelliJ IDEA.
  * User: wendel.schultz
- * Date: 2/25/13
- * Time: 8:31 PM
+ * Date: 5/22/13
+ * Time: 7:15 PM
  */
-@TableName(table = "Campaignee")
-public class Campaignee extends Model {
+@TableName(table = "Expense")
+public class Expense extends Model {
 
-    public Campaignee(Map<String, Object> model) {
+
+    public Expense(Map<String, Object> model) {
         super(model);
     }
 
@@ -29,10 +29,12 @@ public class Campaignee extends Model {
     }
 
     public enum Field implements NamedField {
-        CampaignId(Integer.class, Access.Read),
-        Status(String.class, Access.Read), // this is an enum in the DB
-        Campaign(String.class, Access.Read),
-        ContactId(Integer.class, Access.Read)
+        Id(Integer.class, Access.Read),
+        ContactId(Integer.class, Access.Read),
+        ExpenseType(String.class, Access.Read),
+        TypeId(Integer.class, Access.Read),
+        ExpenseAmt(Double.class, Access.Read),
+        DateIncurred(Date.class, Access.Read),
         ;
 
         private final Class<?> fieldClass;
@@ -58,9 +60,17 @@ public class Campaignee extends Model {
         public Collection<Access> getAccess(){
             return Collections.unmodifiableList(fieldAccess);
         }
+
     }
 
-    public static Builder<Campaignee> builder(){
-        return new Builder<Campaignee>(Campaignee.class);
+    /**
+     * Valid values for the ExpenseType field
+     */
+    public enum ExpenseType {
+        CampaignStep, LeadSource, MarketingPiece;
+    }
+
+    public static Builder<Expense> builder(){
+        return new Builder<Expense>(Expense.class);
     }
 }

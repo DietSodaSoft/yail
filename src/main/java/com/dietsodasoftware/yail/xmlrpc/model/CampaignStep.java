@@ -60,4 +60,8 @@ public class CampaignStep extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<CampaignStep> builder(){
+        return new Builder<CampaignStep>(CampaignStep.class);
+    }
 }

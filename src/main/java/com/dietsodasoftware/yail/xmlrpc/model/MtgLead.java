@@ -68,4 +68,8 @@ public class MtgLead extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<MtgLead> builder(){
+        return new Builder<MtgLead>(MtgLead.class);
+    }
 }

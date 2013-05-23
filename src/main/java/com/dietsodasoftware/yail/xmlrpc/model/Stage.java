@@ -61,4 +61,8 @@ public class Stage extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<Stage> builder(){
+        return new Builder<Stage>(Stage.class);
+    }
 }

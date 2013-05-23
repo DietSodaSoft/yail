@@ -80,4 +80,8 @@ public class User extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<User> builder(){
+        return new Builder<User>(User.class);
+    }
 }

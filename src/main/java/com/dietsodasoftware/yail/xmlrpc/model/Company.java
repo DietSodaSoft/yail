@@ -131,5 +131,10 @@ public class Company extends Model {
         @Override
         public Collection<Access> getAccess(){
             return Collections.unmodifiableList(fieldAccess);
-        }    }
+        }
+    }
+
+    public static Builder<Company> builder(){
+        return new Builder<Company>(Company.class);
+    }
 }

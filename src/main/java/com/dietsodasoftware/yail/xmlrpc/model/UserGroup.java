@@ -57,4 +57,8 @@ public class UserGroup extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<UserGroup> builder(){
+        return new Builder<UserGroup>(UserGroup.class);
+    }
 }

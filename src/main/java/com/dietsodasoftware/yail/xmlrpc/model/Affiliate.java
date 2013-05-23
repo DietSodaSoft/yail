@@ -71,4 +71,8 @@ public class Affiliate extends Model {
         }
 
     }
+
+    public static Builder<Affiliate> builder(){
+        return new Builder<Affiliate>(Affiliate.class);
+    }
 }
