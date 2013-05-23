@@ -10,7 +10,7 @@ import com.dietsodasoftware.yail.xmlrpc.service.SimpleRpcServiceOperation;
 @InfusionsoftRpc(service = "ContactService", method = "add")
 public class ContactServiceAddOperation extends SimpleRpcServiceOperation<Integer> {
 
-    public enum DupCheckType{
+    public enum DuplicateCheckType {
         Email,
         EmailAndName,
         EmailAndNameAndCompany
@@ -21,7 +21,7 @@ public class ContactServiceAddOperation extends SimpleRpcServiceOperation<Intege
     }
 
     // Cheating here.  The annotated service/method are ignored using this constructor.
-    public ContactServiceAddOperation(Contact contact, DupCheckType dupType){
+    public ContactServiceAddOperation(Contact contact, DuplicateCheckType dupType){
         super("ContactService", "addWithDupCheck");
 
         getOperationParameters().add(contact.getStruct());
