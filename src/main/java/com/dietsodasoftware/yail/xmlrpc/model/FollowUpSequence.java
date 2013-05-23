@@ -9,17 +9,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @link http://developers.infusionsoft.com/dbDocs/Campaignee.html
+ * @link http://help.infusionsoft.com/developers/tables/campaign
  *
  * Created with IntelliJ IDEA.
  * User: wendel.schultz
- * Date: 2/25/13
- * Time: 8:31 PM
+ * Date: 2/27/13
+ * Time: 11:38 PM
  */
-@TableName(table = "Campaignee")
-public class Campaignee extends Model {
+@TableName(table = "Campaign")
+public class FollowUpSequence extends Model {
 
-    public Campaignee(Map<String, Object> model) {
+    public FollowUpSequence(Map<String, Object> model) {
         super(model);
     }
 
@@ -29,10 +29,9 @@ public class Campaignee extends Model {
     }
 
     public enum Field implements NamedField {
-        CampaignId(Integer.class, Access.Read),
-        Status(String.class, Access.Read), // this is an enum in the DB
-        Campaign(String.class, Access.Read),
-        ContactId(Integer.class, Access.Read)
+        Id(Integer.class, Access.Read),
+        Name(String.class, Access.Read),
+        Status(String.class, Access.Read)
         ;
 
         private final Class<?> fieldClass;
@@ -60,7 +59,7 @@ public class Campaignee extends Model {
         }
     }
 
-    public static Builder<Campaignee> builder(){
-        return new Builder<Campaignee>(Campaignee.class);
+    public static Builder<FollowUpSequence> builder(){
+        return new Builder<FollowUpSequence>(FollowUpSequence.class);
     }
 }
