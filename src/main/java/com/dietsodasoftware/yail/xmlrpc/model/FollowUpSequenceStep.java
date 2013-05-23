@@ -9,17 +9,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @link http://help.infusionsoft.com/developers/tables/campaign
+ * @link http://developers.infusionsoft.com/dbDocs/FollowUpSequenceStep.html
  *
  * Created with IntelliJ IDEA.
  * User: wendel.schultz
- * Date: 2/27/13
- * Time: 11:38 PM
+ * Date: 2/25/13
+ * Time: 8:33 PM
  */
-@TableName(table = "Campaign")
-public class Campaign extends Model {
+@TableName(table = "CampaignStep")
+public class FollowUpSequenceStep extends Model {
 
-    public Campaign(Map<String, Object> model) {
+    public FollowUpSequenceStep(Map<String, Object> model) {
         super(model);
     }
 
@@ -30,8 +30,10 @@ public class Campaign extends Model {
 
     public enum Field implements NamedField {
         Id(Integer.class, Access.Read),
-        Name(String.class, Access.Read),
-        Status(String.class, Access.Read)
+        CampaignId(Integer.class, Access.Read),
+        TemplateId(Integer.class, Access.Read),
+        StepStatus(String.class, Access.Read),
+        StepTitle(String.class, Access.Read)
         ;
 
         private final Class<?> fieldClass;
@@ -59,7 +61,7 @@ public class Campaign extends Model {
         }
     }
 
-    public static Builder<Campaign> builder(){
-        return new Builder<Campaign>(Campaign.class);
+    public static Builder<FollowUpSequenceStep> builder(){
+        return new Builder<FollowUpSequenceStep>(FollowUpSequenceStep.class);
     }
 }

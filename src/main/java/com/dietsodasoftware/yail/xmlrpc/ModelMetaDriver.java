@@ -2,9 +2,9 @@ package com.dietsodasoftware.yail.xmlrpc;
 
 import com.dietsodasoftware.yail.xmlrpc.model.ActionSequence;
 import com.dietsodasoftware.yail.xmlrpc.model.Affiliate;
-import com.dietsodasoftware.yail.xmlrpc.model.Campaign;
-import com.dietsodasoftware.yail.xmlrpc.model.CampaignStep;
-import com.dietsodasoftware.yail.xmlrpc.model.Campaignee;
+import com.dietsodasoftware.yail.xmlrpc.model.FollowUpSequence;
+import com.dietsodasoftware.yail.xmlrpc.model.FollowUpSequenceStep;
+import com.dietsodasoftware.yail.xmlrpc.model.FollowUpSequenceTarget;
 import com.dietsodasoftware.yail.xmlrpc.model.Company;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact;
 import com.dietsodasoftware.yail.xmlrpc.model.ContactAction;
@@ -91,9 +91,9 @@ public class ModelMetaDriver {
     private static final Class[] models = new Class[]{
             ActionSequence.class,
             Affiliate.class,
-            Campaign.class,
-            Campaignee.class,
-            CampaignStep.class,
+            FollowUpSequence.class,
+            FollowUpSequenceTarget.class,
+            FollowUpSequenceStep.class,
             Company.class,
             Contact.class,
             ContactAction.class,
