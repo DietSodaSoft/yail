@@ -94,4 +94,8 @@ public class OrderItem extends Model {
             return description;
         }
     }
+
+    public static Builder<OrderItem> builder(){
+        return new Builder<OrderItem>(OrderItem.class);
+    }
 }

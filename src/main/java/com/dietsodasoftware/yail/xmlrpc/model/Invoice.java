@@ -63,4 +63,8 @@ public class Invoice extends Model {
             return Collections.unmodifiableList(fieldAccess);
         }
     }
+
+    public static Builder<Invoice> builder(){
+        return new Builder<Invoice>(Invoice.class);
+    }
 }
