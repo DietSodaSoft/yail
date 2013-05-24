@@ -1,6 +1,7 @@
 package com.dietsodasoftware.yailext.xmlrpc.client;
 
 import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
+import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
 import org.junit.Before;
@@ -48,7 +49,7 @@ public class BatchTest {
     Batch batch;
 
     @Before
-    public void before() throws InfusionsoftXmlRpcException {
+    public void before() throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
 
         batch = new Batch();
 
@@ -79,7 +80,7 @@ public class BatchTest {
     }
 
     @Test
-    public void testBatchWithRegularOperationsAddedDuringExecution() throws InfusionsoftXmlRpcException {
+    public void testBatchWithRegularOperationsAddedDuringExecution() throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
 
         final BatchedOperation.Completion completion4 = new BatchedOperation.Completion(){
 
@@ -112,7 +113,7 @@ public class BatchTest {
     }
 
     @Test
-    public void testBatchWithPreemptiveOperationsAddedDuringExecution() throws InfusionsoftXmlRpcException {
+    public void testBatchWithPreemptiveOperationsAddedDuringExecution() throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
 
         final BatchedOperation.Completion completion4 = new BatchedOperation.Completion(){
 
@@ -145,7 +146,7 @@ public class BatchTest {
     }
 
     @Test
-    public void testBatchWitPreemptiveOperationsAddedAtEndOfExecution() throws InfusionsoftXmlRpcException {
+    public void testBatchWitPreemptiveOperationsAddedAtEndOfExecution() throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
 
         final BatchedOperation.Completion completion4 = new BatchedOperation.Completion(){
 
@@ -178,7 +179,7 @@ public class BatchTest {
     }
 
     @Test
-    public void testBatchWithRegularOperationsHaltedPrematurelyDuringExecution() throws InfusionsoftXmlRpcException {
+    public void testBatchWithRegularOperationsHaltedPrematurelyDuringExecution() throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
 
         final BatchedOperation.Completion completion4 = new BatchedOperation.Completion(){
 
@@ -221,7 +222,7 @@ public class BatchTest {
     }
 
     @Test
-    public void testBatchWithPreemptiveOperationsHaltedPrematurelyDuringExecution() throws InfusionsoftXmlRpcException {
+    public void testBatchWithPreemptiveOperationsHaltedPrematurelyDuringExecution() throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
 
         final BatchedOperation first = new BatchedOperation(request1, completion1);
         final BatchedOperation second = new BatchedOperation(request2, completion2);
@@ -268,7 +269,7 @@ public class BatchTest {
     }
 
     @Test
-    public void testBatchWithRegularOperationsAddedDuringExecutionHaltedAfterLastOperationCompleted() throws InfusionsoftXmlRpcException {
+    public void testBatchWithRegularOperationsAddedDuringExecutionHaltedAfterLastOperationCompleted() throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
 
         final BatchedOperation second = new BatchedOperation(request2, completion2);
         final BatchedOperation third = new BatchedOperation(request3, completion3);
