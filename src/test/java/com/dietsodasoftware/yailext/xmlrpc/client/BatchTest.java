@@ -324,4 +324,105 @@ public class BatchTest {
         assertFalse("Batch should NOT have abended", batch.didAbend());
     }
 
+    @Test
+    public void testBatchWithLastOperationInsertinhMultiplePreemptiveOperations() throws InfusionsoftXmlRpcException {
+
+        final BatchedOperation third = new BatchedOperation(request3, completion3);
+
+        final BatchedOperation.Completion completion2 = spy(new BatchedOperation.Completion() {
+            @Override
+            public void onSuccess(Batch batch, Object response) {
+                batch.injectImmediateOperationIntoBatch(third);
+            }
+
+            @Override
+            public void onError(Batch batch, Exception e) {
+                throw new IllegalArgumentException("Shouldn't error out");
+            }
+        });
+
+
+        final BatchedOperation second = new BatchedOperation(request2, completion2);
+        final BatchedOperation.Completion completion1 = spy(new BatchedOperation.Completion() {
+            @Override
+            public void onSuccess(Batch batch, Object response) {
+                batch.injectImmediateOperationIntoBatch(second);
+            }
+
+            @Override
+            public void onError(Batch batch, Exception e) {
+                throw new IllegalArgumentException("Shouldn't error out");
+            }
+        });
+
+        final BatchedOperation first = new BatchedOperation(request1, completion1);
+
+        batch.addOperationToBatch(first);
+
+        batch.execute(client);
+
+        final InOrder inOrder = inOrder(completion1, completion2, completion3);
+        inOrder.verify(completion1).onSuccess(eq(batch), eq(11));
+        inOrder.verify(completion2).onSuccess(eq(batch), eq(22));
+        inOrder.verify(completion3).onSuccess(eq(batch), eq(33));
+
+        assertTrue(batch.getCompletedOperations().contains(first));
+        assertTrue(batch.getCompletedOperations().contains(second));
+        assertTrue(batch.getCompletedOperations().contains(third));
+        assertEquals(3, batch.getCompletedOperations().size());
+
+        assertFalse("Batch should NOT have abended", batch.didAbend());
+    }
+
+    @Test
+    public void testBatchWithOnlyMultiplePreemptiveOperations(){
+
+
+        final BatchedOperation third = new BatchedOperation(request3, completion3);
+
+        final BatchedOperation.Completion completion2 = spy(new BatchedOperation.Completion() {
+            @Override
+            public void onSuccess(Batch batch, Object response) {
+                batch.injectImmediateOperationIntoBatch(third);
+            }
+
+            @Override
+            public void onError(Batch batch, Exception e) {
+                throw new IllegalArgumentException("Shouldn't error out");
+            }
+        });
+
+
+        final BatchedOperation second = new BatchedOperation(request2, completion2);
+        final BatchedOperation.Completion completion1 = spy(new BatchedOperation.Completion() {
+            @Override
+            public void onSuccess(Batch batch, Object response) {
+                batch.injectImmediateOperationIntoBatch(second);
+            }
+
+            @Override
+            public void onError(Batch batch, Exception e) {
+                throw new IllegalArgumentException("Shouldn't error out");
+            }
+        });
+
+        final BatchedOperation first = new BatchedOperation(request1, completion1);
+
+        batch.injectImmediateOperationIntoBatch(first);
+
+        batch.execute(client);
+
+        final InOrder inOrder = inOrder(completion1, completion2, completion3);
+        inOrder.verify(completion1).onSuccess(eq(batch), eq(11));
+        inOrder.verify(completion2).onSuccess(eq(batch), eq(22));
+        inOrder.verify(completion3).onSuccess(eq(batch), eq(33));
+
+        assertTrue(batch.getCompletedOperations().contains(first));
+        assertTrue(batch.getCompletedOperations().contains(second));
+        assertTrue(batch.getCompletedOperations().contains(third));
+        assertEquals(3, batch.getCompletedOperations().size());
+
+        assertFalse("Batch should NOT have abended", batch.didAbend());
+
+    }
 }
