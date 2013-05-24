@@ -144,7 +144,13 @@ public class Batch {
             result = client.call(operation.getRpcOperation());
         } catch (Exception e) {
             success = false;
-            operation.getCompletion().onError(this, e);
+
+            try {
+                operation.getCompletion().onError(this, e);
+            } catch (Exception nested) {
+                // WTD? operation completed successfully but the callback failed ... should the batch fail?
+                // right now, I say no. If it should, your callback should halt it.
+            }
         } finally {
             completedOperations.add(operation);
         }
@@ -154,7 +160,7 @@ public class Batch {
                 operation.getCompletion().onSuccess(this, result);
             } catch (Exception e){
                 // WTD? operation completed successfully but the callback failed ... should the batch fail?
-                // right now, I say no
+                // right now, I say no. If it should, your callback should halt it.
             }
         }
 
