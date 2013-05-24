@@ -1,9 +1,11 @@
 package com.dietsodasoftware.yail.xmlrpc.service.data;
 
+import com.dietsodasoftware.yail.xmlrpc.client.annotations.ArgumentValidator;
 import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
 import com.dietsodasoftware.yail.xmlrpc.model.NamedField;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionOperation;
+import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 import com.dietsodasoftware.yail.xmlrpc.service.paging.ForwardPagingRequest;
 import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
 
@@ -53,6 +55,18 @@ implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
 	
 	private Boolean ascending;
 	private String orderBy;
+
+    @ArgumentValidator
+    public void ensureOrderByAscending() throws InfusionsoftParameterValidationException {
+        if(ascending != null && orderBy == null){
+            throw new InfusionsoftParameterValidationException("Must provide orderBy field or custom field to declare ascending/descending query");
+        }
+
+        if(ascending == null && orderBy != null){
+            throw new InfusionsoftParameterValidationException("Must provide ascending/descending to declare order by field or custom field query");
+        }
+
+    }
 	
 
 	private DataServiceQueryOperation<MT> fieldEquals(String fieldName, Object value){
