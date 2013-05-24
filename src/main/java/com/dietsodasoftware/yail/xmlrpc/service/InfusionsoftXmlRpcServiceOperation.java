@@ -2,6 +2,7 @@ package com.dietsodasoftware.yail.xmlrpc.service;
 
 import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
 import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
+import org.springframework.core.annotation.AnnotationUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,12 +16,13 @@ public abstract class InfusionsoftXmlRpcServiceOperation<T> {
 
     private final String rpcName;
     protected InfusionsoftXmlRpcServiceOperation(){
-        if( this.getClass().isAnnotationPresent(InfusionsoftRpc.class)){
-            final InfusionsoftRpc rpcAnnotation = this.getClass().getAnnotation(InfusionsoftRpc.class);
-            rpcName =buildRpcName(rpcAnnotation.service(), rpcAnnotation.method());
-        } else {
+
+        final InfusionsoftRpc rpcAnnotation = AnnotationUtils.findAnnotation(this.getClass(), InfusionsoftRpc.class);
+        if(rpcAnnotation == null){
             throw new IllegalArgumentException("Must provide the return XML RPC service and method using annotation @InfusionsoftRpc on class " + this.getClass().getName());
         }
+        rpcName = buildRpcName(rpcAnnotation.service(), rpcAnnotation.method());
+
     }
 
     protected InfusionsoftXmlRpcServiceOperation(String service, String method){
