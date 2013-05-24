@@ -1,11 +1,17 @@
 package com.dietsodasoftware.yail.xmlrpc.service;
 
 import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
+import com.dietsodasoftware.yail.xmlrpc.client.annotations.ArgumentValidator;
 import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * To subclass this, you must either proivde the @InfusionsoftRpc annotation or provide service/method values.  Or the ctor will throw.
@@ -14,6 +20,7 @@ import java.util.List;
  */
 public abstract class InfusionsoftXmlRpcServiceOperation<T> {
 
+    private static Map<Class<?>, Method> validatorMethods = new ConcurrentHashMap<Class<?>, Method>();
     private final String rpcName;
     protected InfusionsoftXmlRpcServiceOperation(){
 
@@ -23,6 +30,20 @@ public abstract class InfusionsoftXmlRpcServiceOperation<T> {
         }
         rpcName = buildRpcName(rpcAnnotation.service(), rpcAnnotation.method());
 
+        synchronized (this.getClass()){
+            Method validatorMethod = validatorMethods.get(this.getClass());
+            if(validatorMethod == null){
+
+                for(Method method: ReflectionUtils.getUniqueDeclaredMethods(this.getClass())){
+                    final ArgumentValidator annotation = AnnotationUtils.findAnnotation(method, ArgumentValidator.class);
+                    if(validatorMethod == null && annotation != null){
+                        validatorMethod = method;
+                        validatorMethods.put(this.getClass(), method);
+                    }
+                }
+
+            }
+        }
     }
 
     protected InfusionsoftXmlRpcServiceOperation(String service, String method){
@@ -68,6 +89,19 @@ public abstract class InfusionsoftXmlRpcServiceOperation<T> {
 
 	public final String getRpcName(){
         return rpcName;
+    }
+
+    public final void validateArguments() throws InfusionsoftParameterValidationException{
+        final Method validatorMethod = validatorMethods.get(this.getClass());
+        if(validatorMethod != null) {
+            try {
+                validatorMethod.invoke(this);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Validation method isn't visible", e);
+            } catch (InvocationTargetException e) {
+                throw new InfusionsoftParameterValidationException("Error validating operation", e);
+            }
+        }
     }
 
 	public abstract T parseResult(Object rawResponse) throws InfusionsoftResponseParsingException, InfusionsoftAuthorizationFailureException;

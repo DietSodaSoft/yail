@@ -1,5 +1,6 @@
 package com.dietsodasoftware.yail.xmlrpc.client;
 
+import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
 import com.dietsodasoftware.yail.xmlrpc.service.authentication.AuthenticationServiceAuthenticateForTemporaryKey;
 import org.joda.time.Duration;
@@ -7,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertEquals;
@@ -42,7 +42,7 @@ public class VendorKeyAuthenticatingRefreshedApiKeyProviderTest {
     }
 
     @Test
-    public void testUninitializedProviderRequestsApiKey() throws InfusionsoftXmlRpcException {
+    public void testUninitializedProviderRequestsApiKey() throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
 
         assertTrue(provider.shouldRefreshApiKey());
 
@@ -52,7 +52,7 @@ public class VendorKeyAuthenticatingRefreshedApiKeyProviderTest {
     }
 
     @Test
-    public void testMaxDurationNotElapsedDoesNotRefresh() throws InfusionsoftXmlRpcException {
+    public void testMaxDurationNotElapsedDoesNotRefresh() throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
         final String firstExpectedKey = "first";
         final String secondExpectedKey = "second";
 
@@ -82,7 +82,7 @@ public class VendorKeyAuthenticatingRefreshedApiKeyProviderTest {
     }
 
     @Test
-    public void testMaxDurationExceededRefreshes() throws InfusionsoftXmlRpcException {
+    public void testMaxDurationExceededRefreshes() throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
         final String firstExpectedKey = "first";
         final String secondExpectedKey = "second";
 

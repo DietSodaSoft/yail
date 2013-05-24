@@ -1,5 +1,6 @@
 package com.dietsodasoftware.yail.xmlrpc.client;
 
+import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
 import com.dietsodasoftware.yail.xmlrpc.service.authentication.AuthenticationServiceAuthenticateForTemporaryKey;
 import org.joda.time.DateTime;
@@ -39,7 +40,11 @@ class VendorKeyAuthenticatingRefreshedApiKeyProvider implements YailClient.ApiKe
         if(shouldRefreshApiKey()){
             synchronized (refreshLock){
                 if(shouldRefreshApiKey()){
-                    currentApiKey = requestFreshApiKey(client);
+                    try {
+                        currentApiKey = requestFreshApiKey(client);
+                    } catch (InfusionsoftParameterValidationException e) {
+                        throw new RuntimeException("Invalid client throws an invalid argument exception", e);
+                    }
                     lastRefreshTimestamp = DateTime.now();
                 }
             }
@@ -65,7 +70,7 @@ class VendorKeyAuthenticatingRefreshedApiKeyProvider implements YailClient.ApiKe
     }
 
     // should be called with the refreshLock obtained.
-    private String requestFreshApiKey(YailClient client) throws InfusionsoftXmlRpcException {
+    private String requestFreshApiKey(YailClient client) throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
 
         final AuthenticationServiceAuthenticateForTemporaryKey keyAuth = new AuthenticationServiceAuthenticateForTemporaryKey(vendorKey, username, password);
         return client.call(keyAuth);

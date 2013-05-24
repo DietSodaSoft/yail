@@ -2,6 +2,7 @@ package com.dietsodasoftware.yail.xmlrpc.client;
 
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionOperation;
+import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
@@ -64,9 +65,11 @@ public class YailClient {
         return apiKeyProvider.getApiKey(this);
 	}
 
-	public <T> T call(InfusionsoftXmlRpcServiceOperation<T> operation) throws InfusionsoftXmlRpcException {
+	public <T> T call(InfusionsoftXmlRpcServiceOperation<T> operation) throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
 		
 		final List<?> parameters = operation.getXmlRpcParameters(this);
+
+        operation.validateArguments();
 
         try {
             final Object rawResult = infusionApp.execute(operation.getRpcName(), parameters);

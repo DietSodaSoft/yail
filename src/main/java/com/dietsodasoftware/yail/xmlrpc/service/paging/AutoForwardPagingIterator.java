@@ -4,6 +4,7 @@ import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionResults;
+import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
 
 import java.util.Iterator;
@@ -77,6 +78,8 @@ public class AutoForwardPagingIterator<MT extends Model, RT  extends Infusionsof
                     currentResultsLength = results.length();
                 } catch (InfusionsoftXmlRpcException e) {
                     throw new RuntimeException("Unable to fetch Infusionsoft result set", e);
+                } catch (InfusionsoftParameterValidationException e) {
+                    throw new RuntimeException("Invalid arguments paging through results", e);
                 }
             }
 
