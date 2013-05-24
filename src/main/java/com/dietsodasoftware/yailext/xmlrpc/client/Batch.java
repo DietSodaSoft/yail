@@ -91,37 +91,47 @@ public class Batch {
         this.status = Status.RUNNING;
 
         // re-read the iterator to see if new operations came in during execution
-        while(operations.iterator().hasNext()){
+        while(operations.iterator().hasNext() || preemptiveOperation != null){
 
-            final Iterator<BatchedOperation> iterator = operations.iterator();
-            operations.clear();
-
-            while(iterator.hasNext()) {
+            while(preemptiveOperation != null){
                 if(halt.get()){
                     this.status = Status.ABEND;
                     return;
                 }
 
-                final BatchedOperation operation = iterator.next();
+                final BatchedOperation preemptiveOperation = this.preemptiveOperation;
+                this.preemptiveOperation = null;
 
-                if(preemptiveOperation != null){
+                performOperation(client, preemptiveOperation);
+            }
+
+            final Iterator<BatchedOperation> iterator = operations.iterator();
+            operations.clear();
+
+            while(iterator.hasNext()) {
+
+                while(preemptiveOperation != null){
+                    if(halt.get()){
+                        this.status = Status.ABEND;
+                        return;
+                    }
+
                     final BatchedOperation preemptiveOperation = this.preemptiveOperation;
                     this.preemptiveOperation = null;
 
                     performOperation(client, preemptiveOperation);
                 }
 
+                if(halt.get()){
+                    this.status = Status.ABEND;
+                    return;
+                }
+
+                final BatchedOperation operation = iterator.next();
                 performOperation(client, operation);
 
             }
 
-        }
-
-        if(preemptiveOperation != null){
-            final BatchedOperation preemptiveOperation = this.preemptiveOperation;
-            this.preemptiveOperation = null;
-
-            performOperation(client, preemptiveOperation);
         }
 
         this.status = Status.FINISHED;
