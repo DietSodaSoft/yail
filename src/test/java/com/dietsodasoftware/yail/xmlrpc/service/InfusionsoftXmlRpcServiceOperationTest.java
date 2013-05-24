@@ -10,10 +10,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 /**
- * Created with IntelliJ IDEA.
- * User: wendel.schultz
- * Date: 5/24/13
- * Time: 1:49 AM
  */
 public class InfusionsoftXmlRpcServiceOperationTest {
 
