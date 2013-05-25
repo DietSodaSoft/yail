@@ -17,8 +17,8 @@ import com.dietsodasoftware.yail.xmlrpc.utils.DigestionUtils;
 @InfusionsoftRpc(service = "DataService", method = "authenticateUser")
 public class AuthenticationServiceAuthenticateUser extends SimpleRpcServiceOperation<Integer> {
 
-    public AuthenticationServiceAuthenticateUser(String username, String password) {
-        super((Object)username, DigestionUtils.getMD5ForString(password));
+    private AuthenticationServiceAuthenticateUser(String username, String hashword) {
+        super((Object)username, hashword);
     }
 
     @Override
@@ -28,5 +28,14 @@ public class AuthenticationServiceAuthenticateUser extends SimpleRpcServiceOpera
         }
 
         return (Integer)rawResponse;
+    }
+
+    public static AuthenticationServiceAuthenticateUser usingPlainTextPassword(String username, String password){
+        final String hashword = DigestionUtils.getMD5ForString(password);
+        return usingHashedPassword(username, password);
+    }
+
+    public static AuthenticationServiceAuthenticateUser usingHashedPassword(String username, String password){
+        return new AuthenticationServiceAuthenticateUser(username, password);
     }
 }
