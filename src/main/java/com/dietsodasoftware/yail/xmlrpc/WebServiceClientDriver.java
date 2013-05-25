@@ -27,8 +27,6 @@ import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceUpdateCustomFiel
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceUtils;
 import com.dietsodasoftware.yail.xmlrpc.service.paging.ForwardPagingBound;
 import com.dietsodasoftware.yail.xmlrpc.utils.InfusionsoftDateTimeService;
-import com.dietsodasoftware.yailext.task.customfields.CustomFieldDescription;
-import com.dietsodasoftware.yailext.task.customfields.UpsertCustomFieldTask;
 import net.fortuna.ical4j.model.Calendar;
 import org.joda.time.LocalDateTime;
 
