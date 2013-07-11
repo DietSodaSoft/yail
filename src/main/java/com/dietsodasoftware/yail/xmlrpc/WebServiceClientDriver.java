@@ -24,6 +24,7 @@ import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceLoadOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation.Like;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceUpdateCustomFieldOperation;
+import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceUpdateOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceUtils;
 import com.dietsodasoftware.yail.xmlrpc.service.paging.ForwardPagingBound;
 import com.dietsodasoftware.yail.xmlrpc.utils.InfusionsoftDateTimeService;
@@ -76,6 +77,8 @@ public class WebServiceClientDriver {
         }
 		final YailClient client = profile.getClient();
 
+        exerciseUpdate(client, true);
+
         exerciseVendorKeyToken(client, vendorKey, casUsername, casPassword);
 
         exerciseUpdateCustomField(client);
@@ -101,6 +104,27 @@ public class WebServiceClientDriver {
         exerciseAddContactService(client);
         exerciseAddProductService(client);
     }
+
+    private static void exerciseUpdate(final YailClient client, boolean commit) throws InfusionsoftParameterValidationException, InfusionsoftXmlRpcException {
+        final int id = 333;
+        final String newName = "Carrots";
+
+        final CustomField updates = CustomField.builder()
+                .setFieldValue(CustomField.Field.Label, newName)
+                .build();
+
+        final DataServiceUpdateOperation update = new DataServiceUpdateOperation(id, updates);
+
+        if(commit){
+            final Integer updated = client.call(update);
+            System.out.println("Updated field: " + updated + ", was " + id);
+        }
+
+        final DataServiceLoadOperation<CustomField, CustomField> loader = new DataServiceLoadOperation<CustomField, CustomField>(CustomField.class, id);
+        final CustomField loaded = client.call(loader);
+        System.out.println("Load custom field: " + loaded);
+    }
+
 
     private static void exerciseUpdateCustomField(YailClient client) throws InfusionsoftParameterValidationException, InfusionsoftXmlRpcException {
         final int fieldId = 124;
