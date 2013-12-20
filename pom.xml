@@ -14,6 +14,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.url>https://bitbucket.org/dietsoda/yail</project.url>
     </properties>
 
     <dependencies>
@@ -76,7 +77,63 @@
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                 </configuration>
             </plugin>
+
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.2</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>hgchangeset</goal>
+                            <goal>create</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!--
+                     doCheck and doUpdate actually talk to repository if it's true,
+                     Check would check that there are no local changes.
+                     Update would update it
+                    -->
+                    <doCheck>false</doCheck>
+                    <doUpdate>false</doUpdate>
+
+                    <!--
+                    Generate sequence build number based on:
+                    build number and timestamp
+                    -->
+                    <format>Build: #{0} ({1,date,yyyy-MM-dd HH:mm:ss})</format>
+                    <items>
+                        <item>buildNumber\d*</item>
+                        <item>timestamp</item>
+                        <item>changeSet</item>
+                        <item>changeSetDate</item>
+                    </items>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <archive>
+                        <!-- will put the entries into META-INF/MANIFEST.MF file -->
+                        <manifestEntries>
+                            <Implementation-Url>${project.url}</Implementation-Url>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                            <Implementation-Build>${buildNumber}</Implementation-Build>
+                            <Implementation-SCM-Revision>${changeSet} committed ${changeSetDate}</Implementation-SCM-Revision>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
         </plugins>
+
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
