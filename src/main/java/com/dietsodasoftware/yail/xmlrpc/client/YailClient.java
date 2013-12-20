@@ -26,11 +26,13 @@ public class YailClient {
 	static final String APP_LOCATION = "infusionsoft.com";
     private static final String XMLRPC_PATH = "/api/xmlrpc";
     private final ApiKeyProvider apiKeyProvider;
+    private final YailUserAgent userAgent;
 
 	private final XmlRpcClient infusionApp;
     private final String authUrl;
 
     YailClient(String appName, String appLocation, ApiKeyProvider apiKeyProvider){
+        this.userAgent = new YailUserAgent();
         this.apiKeyProvider = apiKeyProvider;
 
         final String appUrl = "https://" + appName + "." + appLocation + XMLRPC_PATH;
@@ -47,7 +49,8 @@ public class YailClient {
 
 
 		final XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
-		
+        config.setUserAgent(userAgent.getUserAgentString());
+
 		try {
 			config.setServerURL(new URL(appUrl));
 		} catch (MalformedURLException e) {
@@ -66,7 +69,7 @@ public class YailClient {
 	}
 
 	public <T> T call(InfusionsoftXmlRpcServiceOperation<T> operation) throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
-		
+
 		final List<?> parameters = operation.getXmlRpcParameters(this);
 
         operation.validateArguments();
