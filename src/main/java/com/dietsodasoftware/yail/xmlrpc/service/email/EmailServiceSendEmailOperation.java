@@ -119,7 +119,7 @@ public class EmailServiceSendEmailOperation extends SimpleRpcServiceOperation<Bo
         return this;
     }
 
-    public EmailServiceSendEmailOperation addContact(Long contactId){
+    public EmailServiceSendEmailOperation addContact(Integer contactId){
         if(contactId != null){
             contactIds.add(contactId.intValue());
         }

@@ -99,7 +99,7 @@
                      Update would update it
                     -->
                     <doCheck>false</doCheck>
-                    <doUpdate>false</doUpdate>
+                    <doUpdate>true</doUpdate>
 
                     <!--
                     Generate sequence build number based on:
