@@ -1,0 +1,3 @@
+mvn release:prepare
+mvn release:perform
+hg commit buildNumber.properties -m "release build number"
