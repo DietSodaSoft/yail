@@ -4,13 +4,13 @@
 
     <groupId>com.dietsodasoftware</groupId>
     <artifactId>yail-XmlRpcJavaClient</artifactId>
-    <version>0.7.11</version>
+    <version>0.7.11-SNAPSHOT</version>
 
     <scm>
         <connection>scm:hg:ssh://hg@bitbucket.org/dietsoda/yail</connection>
         <url>http://hg.dietsodasoftware.com/yail/src</url>
-      <tag>v0.7.11</tag>
-  </scm>
+      <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
