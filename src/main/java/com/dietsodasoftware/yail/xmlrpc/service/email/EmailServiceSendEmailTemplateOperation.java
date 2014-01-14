@@ -16,7 +16,7 @@ import java.util.List;
 @InfusionsoftRpc(service = "APIEmailService", method = "sendTemplate")
 public class EmailServiceSendEmailTemplateOperation extends SimpleRpcServiceOperation<Boolean> {
     private final Long templateId;
-    private List<Long> contactIds = new LinkedList<Long>();
+    private List<Integer> contactIds = new LinkedList<Integer>();
 
     public EmailServiceSendEmailTemplateOperation(Long templateId) {
         this.templateId = templateId;
@@ -24,8 +24,16 @@ public class EmailServiceSendEmailTemplateOperation extends SimpleRpcServiceOper
 
     public EmailServiceSendEmailTemplateOperation addContact(Contact contact){
         if(contact != null && contact.getFieldValue(Contact.Field.Id) != null){
-            final Long id = contact.getFieldValue(Contact.Field.Id);
+            final Integer id = contact.getFieldValue(Contact.Field.Id);
             contactIds.add(id);
+        }
+
+        return this;
+    }
+
+    public EmailServiceSendEmailTemplateOperation addContact(Integer contactId){
+        if(contactId != null){
+            contactIds.add(contactId.intValue());
         }
 
         return this;
@@ -35,8 +43,7 @@ public class EmailServiceSendEmailTemplateOperation extends SimpleRpcServiceOper
     protected List<Object> getOperationParameters() {
         final List<Object> parameters = new LinkedList<Object>();
 
-        final String contactIdsString = StringUtils.join(contactIds, ",");
-        parameters.add(contactIdsString);
+        parameters.add(contactIds.toArray());
 
         return parameters;
     }
