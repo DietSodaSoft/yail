@@ -1,6 +1,7 @@
 package com.dietsodasoftware.yail.xmlrpc.service;
 
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
+import com.dietsodasoftware.yail.xmlrpc.utils.ModelUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -54,7 +55,7 @@ public class InfusionsoftModelCollectionResults<T extends Model> implements Iter
 	}
 	
 
-	private class ResultsIterator<IT> implements Iterator<IT>{
+	private class ResultsIterator<IT extends Model> implements Iterator<IT>{
 		private final int resultSetCount;
 		private final AtomicInteger index = new AtomicInteger(0);
 		private final Constructor<IT> ctor;
@@ -96,17 +97,8 @@ public class InfusionsoftModelCollectionResults<T extends Model> implements Iter
 			if(next == null){
 				return null;
 			}
-			try {
-				return ctor.newInstance(Collections.unmodifiableMap(next));
-			} catch (IllegalArgumentException e) {
-				throw new RuntimeException("Unable to create instance of " + modelClass + ".", e);
-			} catch (InstantiationException e) {
-				throw new RuntimeException("Unable to create instance of " + modelClass + ".", e);
-			} catch (IllegalAccessException e) {
-				throw new RuntimeException("Unable to create instance of " + modelClass + ".", e);
-			} catch (InvocationTargetException e) {
-				throw new RuntimeException("Unable to create instance of " + modelClass + ".", e);
-			}
+
+            return ModelUtils.newInstance(ctor, next);
 		}
 
 		@Override
