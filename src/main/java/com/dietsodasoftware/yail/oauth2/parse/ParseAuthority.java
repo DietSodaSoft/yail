@@ -1,7 +1,6 @@
 package com.dietsodasoftware.yail.oauth2.parse;
 
-import com.dietsodasoftware.yail.oauth2.authority.BrowserAuthority;
-import com.dietsodasoftware.yail.oauth2.client.InfusionsoftOauthToken;
+import com.dietsodasoftware.yail.oauth2.authority.BrowserAuthorityBridge;
 import com.dietsodasoftware.yail.oauth2.client.OAuthAuthenticationHandler;
 import com.dietsodasoftware.yail.oauth2.client.OauthAuthenticationAuthority;
 import com.dietsodasoftware.yail.oauth2.client.OauthAuthenticationException;
@@ -27,6 +26,9 @@ public class ParseAuthority implements OauthAuthenticationAuthority {
     private String clientId;
     private Scope[] scopes;
 
+    private String username;
+    private String password;
+
     private int maxAttempts = 5;
     private long initialDelaySeconds = 5;
     private long delaySeconds = 3;
@@ -40,8 +42,11 @@ public class ParseAuthority implements OauthAuthenticationAuthority {
 
     @Override
     public void attemptAuthorization(OAuthAuthenticationHandler handler) throws IOException, OauthAuthenticationException {
-        final BrowserAuthority browser = new BrowserAuthority(clientId, scopes);
-        browser.attemptAuthorization(null);
+        final BrowserAuthorityBridge browser = new BrowserAuthorityBridge(clientId, scopes);
+        if(username != null && password != null){
+            browser.usingBasicAuth(username, password);
+        }
+        browser.showBrowser();
 
         final String requestUuid = browser.getRequestUuid();
         final ParseTokenResourceService tokenService = new ParseTokenResourceService(parse);
@@ -65,6 +70,9 @@ public class ParseAuthority implements OauthAuthenticationAuthority {
         private Long initialDelaySeconds;
         private Long delaySeconds;
         private Integer maxAttempts;
+
+        private String username;
+        private String password;
 
         private Builder(){}
 
@@ -98,6 +106,13 @@ public class ParseAuthority implements OauthAuthenticationAuthority {
             return this;
         }
 
+        public Builder withBasicAuth(String username, String password){
+            this.username = username;
+            this.password = password;
+
+            return this;
+        }
+
 
         public ParseAuthority build(ParseConfiguration configuration){
             final ParseAuthority auth = new ParseAuthority(configuration);
@@ -120,6 +135,9 @@ public class ParseAuthority implements OauthAuthenticationAuthority {
             if(maxAttempts != null){
                 auth.maxAttempts = maxAttempts;
             }
+
+            auth.username = username;
+            auth.password = password;
 
             return auth;
         }
