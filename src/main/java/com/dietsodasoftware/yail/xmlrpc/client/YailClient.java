@@ -1,5 +1,6 @@
 package com.dietsodasoftware.yail.xmlrpc.client;
 
+import com.dietsodasoftware.yail.oauth2.client.InfusionsoftOauthToken;
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
@@ -26,23 +27,38 @@ public class YailClient {
 	static final String APP_LOCATION = "infusionsoft.com";
     private static final String XMLRPC_PATH = "/api/xmlrpc";
     private final ApiKeyProvider apiKeyProvider;
-    private final YailUserAgent userAgent;
+    private final YailUserAgent userAgent = new YailUserAgent();
 
 	private final XmlRpcClient infusionApp;
     private final String authUrl;
 
+    // https://api.infusionsoft.com/crm/xmlrpc/v1?access_token=ACCESSTOKEN
+    private static final String OAUTH_ENDPOINT = "api.infusionsoft.com";
+    private static final String OAUTH_XMLRPC_PATH = "/crm/xmlrpc/v1";
+    private static final String PARAMETER_ACCESS_TOKEN = "access_token";
+    private final InfusionsoftOauthToken oauthToken;
+
     YailClient(String appName, String appLocation, ApiKeyProvider apiKeyProvider){
-        this.userAgent = new YailUserAgent();
         this.apiKeyProvider = apiKeyProvider;
 
         final String appUrl = "https://" + appName + "." + appLocation + XMLRPC_PATH;
         this.infusionApp = initXmlRpcClient(appUrl);
 
         authUrl = "https://" + CAS_AUTH_LOCATION;
+        oauthToken = null;
     }
-	
+
 	YailClient(String appName, ApiKeyProvider apiKeyProvider){
         this(appName, APP_LOCATION, apiKeyProvider);
+    }
+
+    YailClient(InfusionsoftOauthToken token){
+        this.oauthToken = token;
+        this.apiKeyProvider = new FixedApiKeyProvider(token.getToken());
+        authUrl = null;
+
+        final String appUrl = "https://" + OAUTH_ENDPOINT + OAUTH_XMLRPC_PATH + "?" + PARAMETER_ACCESS_TOKEN + "=" + token.getToken();
+        infusionApp = initXmlRpcClient(appUrl);
     }
 
     private XmlRpcClient initXmlRpcClient(String appUrl){
