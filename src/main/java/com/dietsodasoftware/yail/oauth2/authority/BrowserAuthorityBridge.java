@@ -25,12 +25,13 @@ import java.util.concurrent.TimeUnit;
  * User: wendel.schultz
  * Date: 4/12/14
  */
-public class BrowserAuthority implements OauthAuthenticationAuthority {
+public class BrowserAuthorityBridge {
 
     private static final String DEFAULT_OAUTH_ENDPOINT = "https://signin.infusionsoft.com";
     private static final String AUTHORIZATION_PATH = "/app/oauth/authorize";
 
-    private static final String SUCCESSFUL_AUTHENTICATION_REDIRECT_LOCATION = "http://www.dietsodasoftware.com/infusionsoft/oauth2.php";
+//    private static final String SUCCESSFUL_AUTHENTICATION_REDIRECT_LOCATION = "http://www.dietsodasoftware.com/infusionsoft/oauth2.php";
+    private static final String SUCCESSFUL_AUTHENTICATION_REDIRECT_LOCATION = "https://dietsoda.parseapp.com/infusionsoft-oauth2";
 
     private static final String URL_ENCODING = "UTF8";
     private static final String AUTH_PARAMETER_CLIENT_ID = "client_id";
@@ -44,34 +45,48 @@ public class BrowserAuthority implements OauthAuthenticationAuthority {
     private final String clientId;
 
     private final String uuid;
-    private final URI authorizationUri;
+    private final String authorizationUri;
+
+    private String username;
+    private String password;
 
     private OAuthAuthenticationHandler authenticationHandler;
 
-    public BrowserAuthority(String clientId, Scope... scopes){
+    public BrowserAuthorityBridge(String authorizationRedirectUri, String clientId, Scope... scopes){
         if(scopes == null){ throw new IllegalArgumentException("Must provide scopes to authorize against"); }
         if(clientId == null){ throw new IllegalArgumentException("Must provide client ID"); }
+        if(authorizationRedirectUri == null) { throw new IllegalArgumentException("Must provide redirect URI"); }
 
         this.clientId = clientId;
         this.scopeList = Arrays.asList(scopes);
 
         uuid = UUID.randomUUID().toString();
-        authorizationUri = createAuthorityUri(uuid);
+        authorizationUri =  authorizationRedirectUri;
     }
 
+    public BrowserAuthorityBridge(String clientId, Scope... scopes){
+        this(SUCCESSFUL_AUTHENTICATION_REDIRECT_LOCATION, clientId, scopes);
+    }
+
+    public BrowserAuthorityBridge usingBasicAuth(String username, String password){
+        this.username = username;
+        this.password = password;
+
+        return this;
+    }
 
     /**
-     *  Kick off a native default browser.
+     *  Kick off a platform-native default browser.
      *
-     * @param handler ignored.
-     * @throws IOException
-     * @throws OauthAuthenticationException
+     *  Non-blocking.
+     *
+     * @throws IOException if the native platform can't show the browser.
      */
-    @Override
-    public void attemptAuthorization(OAuthAuthenticationHandler handler) throws IOException, OauthAuthenticationException {
+    public void showBrowser() throws IOException {
+        final URI redirectUri = createAuthorityUri(authorizationUri, uuid);
         final Desktop desktop = Desktop.getDesktop();
 
-        desktop.browse(authorizationUri);
+        desktop.browse(redirectUri);
     }
 
     public String getRequestUuid(){
@@ -80,9 +95,18 @@ public class BrowserAuthority implements OauthAuthenticationAuthority {
 
 
 
-    private URI createAuthorityUri(String stateParameter){
+    private URI createAuthorityUri(String successfulRedirectUri, String stateParameter){
 
-        final URI redirectURI = URI.create(SUCCESSFUL_AUTHENTICATION_REDIRECT_LOCATION);
+        final URI redirectURI;
+        try {
+            final URIBuilder builder = new URIBuilder(successfulRedirectUri);
+            if(username != null && password != null){
+                builder.setUserInfo(username, password);
+            }
+            redirectURI = builder.build();
+        } catch (URISyntaxException x) {
+            throw new IllegalArgumentException(x.getMessage(), x);
+        }
 
         final String scopesParam;
         if(scopeList.contains(Scope.Full)){
