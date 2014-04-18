@@ -24,7 +24,7 @@ public class TokenCodeStateResource {
     private final ParseConfiguration parseConfiguration;
 
     private static final String PARSE_ENDPOINT = "https://api.parse.com";
-    private static final String TOKEN_STATE_PATH = "/1/classes/ds_token_states";
+    private static final String TOKEN_STATE_PATH = "/1/classes/DSTokenState";
 
     public TokenCodeStateResource(ParseConfiguration parseConfiguration) {
         this.parseConfiguration = parseConfiguration;
