@@ -64,11 +64,15 @@ public class ParseTokenStatePollingTask implements Runnable {
         final TokenCodeState tokenCodeState = tokenCodeStateResource.readTokenState(targetUuid);
 
         if(tokenCodeState != null){
-            final ScopeContext scope = fromTokenCodeState(tokenCodeState);
+            try{
+                final ScopeContext scope = fromTokenCodeState(tokenCodeState);
 
-            authenticationHandler.onAuthentication(scope);
-            attemptCount.addAndGet(maxAttempts);
-            myFuture.cancel(false);
+                authenticationHandler.onAuthentication(scope);
+                myFuture.cancel(false);
+            } finally {
+                // if the callback throws, I deem this unauthentiated
+                attemptCount.addAndGet(maxAttempts);
+            }
         }
     }
 
