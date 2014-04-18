@@ -2,6 +2,7 @@ package com.dietsodasoftware.yail.xmlrpc.service;
 
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
 import com.dietsodasoftware.yail.xmlrpc.model.NamedField;
+import com.dietsodasoftware.yail.xmlrpc.utils.ModelUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -17,14 +18,21 @@ import java.util.Map;
 public abstract class InfusionsoftModelOperation<MT extends Model, RT> extends InfusionsoftXmlRpcServiceOperation<RT>  {
     private final String tableName;
     private final Class<MT> modelTypeClass;
+    private final Class<RT> returnTypeClass;
 
     private final static String [] customFieldScrubCharacters = new String[]{
             " ", ",", "'"
     };
 
     protected InfusionsoftModelOperation(Class<MT> modelTypeClass){
+        this(modelTypeClass, null);
+    }
+
+
+    protected InfusionsoftModelOperation(Class<MT> modelTypeClass, Class<RT> returnTypeClass){
 
         this.modelTypeClass = modelTypeClass;
+        this.returnTypeClass = returnTypeClass;
         this.tableName = Model.getTableNameForModel(modelTypeClass);
 
     }
@@ -39,6 +47,9 @@ public abstract class InfusionsoftModelOperation<MT extends Model, RT> extends I
 
     @Override
     public RT parseResult(Object rawResponse) {
+        if(returnTypeClass.isAssignableFrom(Model.class) && rawResponse instanceof Map){
+            return (RT) createModelInstance((Map<String, Object>) rawResponse);
+        }
         return (RT)rawResponse;
     }
 
@@ -51,17 +62,7 @@ public abstract class InfusionsoftModelOperation<MT extends Model, RT> extends I
     }
 
     protected MT createModelInstance(Map<String, Object> modelData){
-        try {
-            return Model.getModelMapConstructor(getModelTypeClass()).newInstance(modelData);
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Unable to determine named fields for Model " + getModelTypeClass().getName() + ".", e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException("Unable to determine named fields for Model " + getModelTypeClass().getName() + ".", e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Unable to determine named fields for Model " + getModelTypeClass().getName() + ".", e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException("Unable to determine named fields for Model " + getModelTypeClass().getName() + ".", e);
-        }
+        return ModelUtils.newInstance(getModelTypeClass(), modelData);
     }
 
 

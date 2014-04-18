@@ -1,6 +1,7 @@
 package com.dietsodasoftware.yail.xmlrpc.model;
 
 import com.dietsodasoftware.yail.xmlrpc.client.annotations.TableName;
+import com.dietsodasoftware.yail.xmlrpc.utils.ModelUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -12,12 +13,41 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Model {
-	
+
+    private final Map<String, NamedField> complexTypes;
 	private final Map<String, Object> values;
 	public Model(Map<String, Object> model){
-		values = Collections.unmodifiableMap(model);
+        complexTypes = getComplexTypes();
+
+        if(complexTypes == null) throw new IllegalStateException("Must provide at least empty complex type mapping");
+
+        final Map<String, Object> fieldValues = new HashMap<String, Object>();
+        for(String name: model.keySet()){
+            final Object value = model.get(name);
+            fieldValues.put(name, unmarshallField(name, value));
+        }
+		values = Collections.unmodifiableMap(fieldValues);
 	}
-	
+
+    // For simple types, simply return the value.
+    private final <T> T unmarshallField(String name, Object value){
+        final Object resolved;
+
+        final NamedField complexField = complexTypes.get(name);
+        if(complexField == null){
+            resolved = value;
+        } else {
+            resolved = new Model.Builder(complexField.typeClass(), (Map<String,Object>) value).build();
+        }
+
+        return (T) resolved;
+    }
+
+    // override this if the object has nested complex types
+    protected Map<String, NamedField> getComplexTypes(){
+        return Collections.emptyMap();
+    }
+
 	public <T> T getFieldValue(NamedField field){
 		return (T) values.get(field.name());
 	}
@@ -71,6 +101,17 @@ public abstract class Model {
     public static class Builder<M extends Model>{
         private final Map<String, Object> values = new HashMap<String, Object>();
         private final Class<M> modelClass;
+
+        public Builder(M prototype){
+            this((Class<M>) prototype.getClass(), prototype.getStruct());
+        }
+
+        public Builder(Class<M> clazz, Map<String, Object> values){
+            this(clazz);
+
+            values.putAll(values);
+        }
+
         public Builder(Class<M> modelClass){
             this.modelClass = modelClass;
         }
@@ -86,16 +127,7 @@ public abstract class Model {
         }
 
         public M build(){
-            final Constructor<M> mapConstructor = getModelMapConstructor(modelClass);
-            try {
-                return mapConstructor.newInstance(values);
-            } catch (InstantiationException e) {
-                throw new RuntimeException("Unable to create new instance of " + modelClass, e);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException("Unable to create new instance of " + modelClass, e);
-            } catch (InvocationTargetException e) {
-                throw new RuntimeException("Unable to create new instance of " + modelClass, e);
-            }
+            return ModelUtils.newInstance(modelClass, values);
         }
     }
 
