@@ -53,7 +53,7 @@ public class Oauth2FlowDemo {
                 .withClientId(DietSodaUtils.MASHERY_CLIENT_ID)
                 .withScopes(Scope.Full)
                 .withScheduledExecutorService(executorService)
-                .withMaxAttempts(10)
+                .withMaxAttempts(100)
                 .build(parse);
 
 
