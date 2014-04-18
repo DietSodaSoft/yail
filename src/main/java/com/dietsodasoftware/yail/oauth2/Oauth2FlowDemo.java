@@ -7,6 +7,12 @@ import com.dietsodasoftware.yail.oauth2.client.Scope;
 import com.dietsodasoftware.yail.oauth2.parse.DietSodaUtils;
 import com.dietsodasoftware.yail.oauth2.parse.ParseAuthority;
 import com.dietsodasoftware.yail.oauth2.parse.ParseConfiguration;
+import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
+import com.dietsodasoftware.yail.xmlrpc.client.YailProfile;
+import com.dietsodasoftware.yail.xmlrpc.model.Contact;
+import com.dietsodasoftware.yail.xmlrpc.model.Contact.Field;
+import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation;
+import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation.Compare;
 
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
@@ -48,7 +54,6 @@ public class Oauth2FlowDemo {
                 .withScopes(Scope.Full)
                 .withScheduledExecutorService(executorService)
                 .withMaxAttempts(10)
-//                .withBasicAuth("bologna", "sandwiches")
                 .build(parse);
 
 
@@ -58,6 +63,27 @@ public class Oauth2FlowDemo {
 
         // use this token as "API Key" in XMLRPC calls AND ?auth_token=<> URL parameter
         System.out.println("Got a auth token: " + token.getToken());
+
+        if(token == null){
+            //FAIL
+        } else {
+            final YailProfile profile = YailProfile.usingOAuth2Token(token);
+            final YailClient client = profile.getClient();
+
+            queryContact(client);
+        }
+    }
+
+    private void queryContact(YailClient client){
+        final DataServiceQueryOperation<Contact> query = new DataServiceQueryOperation<Contact>(Contact.class)
+                .fieldCompare(Field.Id, Compare.gt, "0")
+                .setLimit(10)
+                .orderBy(Field.LastName)
+                .ascending();
+
+        for(Contact contact: client.autoPage(query)){
+            System.out.println("Contact: " + contact);
+        }
 
     }
 
