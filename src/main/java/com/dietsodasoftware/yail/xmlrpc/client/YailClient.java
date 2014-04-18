@@ -1,6 +1,7 @@
 package com.dietsodasoftware.yail.xmlrpc.client;
 
 import com.dietsodasoftware.yail.oauth2.client.InfusionsoftOauthToken;
+import com.dietsodasoftware.yail.oauth2.client.annotations.RequiresOAuth;
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
@@ -13,7 +14,9 @@ import com.dietsodasoftware.yail.xmlrpc.service.paging.ForwardPagingRequest;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
+import org.springframework.core.annotation.AnnotationUtils;
 
+import java.lang.annotation.Annotation;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -86,6 +89,7 @@ public class YailClient {
 
 	public <T> T call(InfusionsoftXmlRpcServiceOperation<T> operation) throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
 
+        verifyOperationAuthentication(operation);
 		final List<?> parameters = operation.getXmlRpcParameters(this);
 
         operation.validateArguments();
@@ -99,6 +103,16 @@ public class YailClient {
             throw new InfusionsoftXmlRpcException("Unable to parse XmlRpc response", e);
         }
 	}
+
+    private <T> void verifyOperationAuthentication(InfusionsoftXmlRpcServiceOperation<T> operation) {
+
+        final RequiresOAuth requiresOAuth = AnnotationUtils.findAnnotation(operation.getClass(), RequiresOAuth.class);
+        if(requiresOAuth != null){
+            if(oauthToken == null){
+                throw new RuntimeException("Operation " + operation.getClass().getName() + " requires a profile authenticated using OAuth");
+            }
+        }
+    }
 
     public <MT  extends Model, RT extends InfusionsoftModelCollectionOperation<?, MT>> Iterable<MT> autoPage(ForwardPagingRequest<MT, RT> operation){
         return new AutoForwardPagingIterator<MT, RT>(this, operation);
