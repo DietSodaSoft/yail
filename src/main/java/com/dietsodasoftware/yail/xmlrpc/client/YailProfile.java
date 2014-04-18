@@ -1,5 +1,6 @@
 package com.dietsodasoftware.yail.xmlrpc.client;
 
+import com.dietsodasoftware.yail.oauth2.client.InfusionsoftOauthToken;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.authentication.AuthenticationServiceAuthenticateForTemporaryKey;
 import com.dietsodasoftware.yail.xmlrpc.utils.DigestionUtils;
@@ -48,11 +49,22 @@ public class YailProfile {
 	private final String appName;
     private final String location;
 
+    private final InfusionsoftOauthToken token;
+
     YailProfile(String appName, String location, YailClient.ApiKeyProvider apiKeyProvider){
         this.apiKeyProvider = apiKeyProvider;
 		this.appName = appName;
         this.location = location;
+        this.token = null;
 	}
+
+    YailProfile(InfusionsoftOauthToken token){
+        this.token = token;
+
+        this.apiKeyProvider = null;
+        this.appName = null;
+        this.location = null;
+    }
 	
 	public static YailProfile usingApiKey(String appName, String apiKey){
         return atLocationUsingApiKey(appName, YailClient.APP_LOCATION, apiKey);
@@ -69,6 +81,10 @@ public class YailProfile {
         return atLocationUsingVendorKey(appName, YailClient.APP_LOCATION, vendorKey, username, password);
     }
 
+    public static YailProfile usingOAuth2Token(InfusionsoftOauthToken token){
+        return new YailProfile(token);
+    }
+
     public static YailProfile atLocationUsingVendorKey(String appName, String location, String vendorKey, final String username, final String password){
         final String hashword = DigestionUtils.getMD5ForString(password);
         final YailClient.ApiKeyProvider keys = new VendorKeyAuthenticatingRefreshedApiKeyProvider(vendorKey, username, password);
@@ -76,7 +92,11 @@ public class YailProfile {
     }
 
     public YailClient getClient(){
-		return new YailClient(appName, location, apiKeyProvider);
+        if(token == null){
+            return new YailClient(appName, location, apiKeyProvider);
+        } else {
+            return new YailClient(token);
+        }
 	}
 
 }
