@@ -43,7 +43,7 @@ public class InfusionsoftUserInfo {
         return (String) modelMap.get(KEY_DISPLAY_NAME);
     }
 
-    public String getCasUsername(){
+    public String getUsername(){
         return (String) modelMap.get(KEY_CAS_USERNAME);
     }
 
