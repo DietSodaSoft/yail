@@ -24,6 +24,10 @@ public class DataServiceGetUserInfoOperation extends InfusionsoftXmlRpcServiceOp
         return Collections.emptyList();
     }
 
+    protected boolean includeApiKey(){
+        return false;
+    }
+
     @Override
     public InfusionsoftUserInfo parseResult(Object rawResponse) throws InfusionsoftResponseParsingException, InfusionsoftAuthorizationFailureException {
         final Map<String, Object> modelMap = (Map<String, Object>) rawResponse;
