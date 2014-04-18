@@ -1,5 +1,6 @@
 package com.dietsodasoftware.yail.xmlrpc.service.contact;
 
+import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact;
 import com.dietsodasoftware.yail.xmlrpc.model.NamedField;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelOperation;
@@ -14,6 +15,7 @@ import java.util.Map;
  * Date: 4/19/13
  * Time: 11:16 PM
  */
+@InfusionsoftRpc(service = "ContactService", method = "load")
 public class ContactServiceLoadOperation extends InfusionsoftModelOperation<Contact, Contact> {
 
     private final Integer contactId;
@@ -27,10 +29,8 @@ public class ContactServiceLoadOperation extends InfusionsoftModelOperation<Cont
 
     @Override
     protected List<?> getOperationParameters() {
-        final List<Object> params = ListFactory.quickLinkedList(
-                contactId,
-                getAllModelReturnFieldNames()
-        );
+        final List<Object> params = ListFactory.quickLinkedList();
+        params.add(contactId);
         if(returnFields.isEmpty()){
             params.add(getAllModelReturnFieldNames());
         } else {
