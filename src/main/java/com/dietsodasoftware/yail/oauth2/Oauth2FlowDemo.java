@@ -11,6 +11,10 @@ import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
 import com.dietsodasoftware.yail.xmlrpc.client.YailProfile;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact.Field;
+import com.dietsodasoftware.yail.xmlrpc.model.InfusionsoftUserInfo;
+import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
+import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
+import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceGetUserInfoOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation.Compare;
 
@@ -25,7 +29,7 @@ import java.util.concurrent.ThreadFactory;
  */
 public class Oauth2FlowDemo {
 
-    public static void main(String[] args) throws IOException, OauthAuthenticationException, InterruptedException {
+    public static void main(String[] args) throws IOException, OauthAuthenticationException, InterruptedException, InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
 
         new Oauth2FlowDemo().authorize();
 
@@ -34,8 +38,8 @@ public class Oauth2FlowDemo {
     // authorize
     // https://signin.infusionsoft.com/app/oauth/authorize
     // http://tools.ietf.org/html/draft-ietf-oauth-v2-21#section-4.1.1
-    public void authorize() throws IOException, OauthAuthenticationException, InterruptedException {
-        final long timeoutSeconds = 120;
+    public void authorize() throws IOException, OauthAuthenticationException, InterruptedException, InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
+        final long timeoutSeconds = 45;
         final ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1, new ThreadFactory() {
             @Override
             public Thread newThread(Runnable r) {
@@ -70,6 +74,8 @@ public class Oauth2FlowDemo {
             final YailProfile profile = YailProfile.usingOAuth2Token(token);
             final YailClient client = profile.getClient();
 
+            getUserInfo(client);
+
             queryContact(client);
         }
     }
@@ -85,6 +91,13 @@ public class Oauth2FlowDemo {
             System.out.println("Contact: " + contact);
         }
 
+    }
+
+    private void getUserInfo(YailClient client) throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
+        final DataServiceGetUserInfoOperation op = new DataServiceGetUserInfoOperation();
+
+        final InfusionsoftUserInfo info = client.call(op);
+        System.out.println("User info: " + info);
     }
 
     // token
