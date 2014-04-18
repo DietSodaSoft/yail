@@ -75,7 +75,7 @@ public class InfusionsoftOauthAuthenticator {
         final DelegatingInfusionsoftOauthToken delegate = new DelegatingInfusionsoftOauthToken();
         final Object waitLock = new Object();
 
-        authority.attemptAuthorization(new OAuthAuthenticationHandler() {
+        final OAuthAuthenticationHandler handler = new OAuthAuthenticationHandler() {
             @Override
             public void onAuthentication(ScopeContext scopeContext) throws IOException {
                 if(scopeContext == null){ throw new IllegalArgumentException("Cannot authenticate without a scope context"); }
@@ -134,8 +134,9 @@ public class InfusionsoftOauthAuthenticator {
                 }
 
             }
-        });
+        };
 
+        authority.attemptAuthorization(handler);
         synchronized (waitLock){
             waitLock.wait(timeoutSeconds * 1000);
         }
