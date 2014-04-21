@@ -41,7 +41,7 @@ implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
 
     }
 
-    public DataServiceQueryCountOperation<MT> createCountOperation(){
+    public DataServiceQueryCountOperation<MT> createQueryCountOperation(){
         return new DataServiceQueryCountOperation<MT>(queryFilter);
     }
 

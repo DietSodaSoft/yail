@@ -169,8 +169,7 @@ public class WebServiceClientDriver {
                 .fieldLike(Contact.Field.FirstName, "A", Like.after)
                 .build()
                 ;
-		final DataServiceQueryOperation<Contact> finder = 
-				new DataServiceQueryOperation<Contact>(filter);
+		final DataServiceQueryOperation<Contact> finder = filter.createQueryOperation();
 //		             .addReturnFieldName(Contact.Field.Id)
 //                     .addReturnFieldName(Contact.Field.DateCreated)
 //                     .addReturnFieldName(Contact.Field.FirstName)
