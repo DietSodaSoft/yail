@@ -34,7 +34,7 @@ public abstract class InfusionsoftModelCollectionOperation<BT, MT extends Model>
 	}
 	
 	public BT addCustomReturnFieldName(String customFieldName){
-		return addReturnFieldName("_" + scrubCustomFieldName(customFieldName));
+		return addReturnFieldName("_" + Model.scrubCustomFieldName(customFieldName));
 	}
 
 	/** for paging, not public use */

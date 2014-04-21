@@ -3,6 +3,7 @@ package com.dietsodasoftware.yail.xmlrpc;
 import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
 import com.dietsodasoftware.yail.xmlrpc.client.YailProfile;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact;
+import com.dietsodasoftware.yail.xmlrpc.model.Contact.Field;
 import com.dietsodasoftware.yail.xmlrpc.model.ContactAction;
 import com.dietsodasoftware.yail.xmlrpc.model.CustomField;
 import com.dietsodasoftware.yail.xmlrpc.model.Product;
@@ -21,8 +22,11 @@ import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceFindByFieldOpera
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceGetAppSettingOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceGetAppointmentCalOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceLoadOperation;
+import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryCountOperation;
+import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryFilter;
+import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryFilter.Builder.Compare;
+import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryFilter.Builder.Like;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation;
-import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation.Like;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceUpdateCustomFieldOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceUpdateOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceUtils;
@@ -161,14 +165,22 @@ public class WebServiceClientDriver {
     }
 
 	private static void exerciseFindByQuery(YailClient client) throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
+        final DataServiceQueryFilter<Contact> filter = DataServiceQueryFilter.builder(Contact.class)
+                .fieldLike(Contact.Field.FirstName, "A", Like.after)
+                .build()
+                ;
 		final DataServiceQueryOperation<Contact> finder = 
-				new DataServiceQueryOperation<Contact>(Contact.class)
-		             .fieldLike(Contact.Field.FirstName, "A", Like.after)
+				new DataServiceQueryOperation<Contact>(filter);
 //		             .addReturnFieldName(Contact.Field.Id)
 //                     .addReturnFieldName(Contact.Field.DateCreated)
 //                     .addReturnFieldName(Contact.Field.FirstName)
 //                     .addReturnFieldName(Contact.Field.LastName)
                      ;
+
+        final DataServiceQueryCountOperation<Contact> counter = new DataServiceQueryCountOperation<Contact>(filter);
+
+        final Integer count = client.call(counter);
+        System.out.println("Query identifies " + count + " contacts");
 
         System.out.println("FindByQuery: " );
         for(Contact contact: client.call(finder)){
@@ -176,9 +188,12 @@ public class WebServiceClientDriver {
         }
 
         final String theTag = "7/24 Conference";
+        final DataServiceQueryFilter<TagAssignment> tagFilter = DataServiceQueryFilter.builder(TagAssignment.class)
+                .fieldEquals(TagAssignment.Field.ContactGroup, theTag)
+                .build()
+                ;
         final DataServiceQueryOperation<TagAssignment> tagged =
-                new DataServiceQueryOperation<TagAssignment>(TagAssignment.class)
-                .fieldEquals(TagAssignment.Field.ContactGroup, theTag);
+                new DataServiceQueryOperation<TagAssignment>(tagFilter);
 
 
         System.out.println("From tag : " + theTag);
@@ -222,18 +237,24 @@ public class WebServiceClientDriver {
         System.out.println("End date:   " + theEndDateBinding);
         System.out.println("Today:      " + today);
 
-        final DataServiceQueryOperation<User> verify = new DataServiceQueryOperation<User>(User.class)
+        final DataServiceQueryFilter<User> userFilter = DataServiceQueryFilter.builder(User.class)
                 .fieldEquals(User.Field.Id, "1")
+                .build()
+                ;
+        final DataServiceQueryOperation<User> verify = new DataServiceQueryOperation<User>(userFilter)
                 .addReturnFieldName(User.Field.LastName);
 
         final User u = client.call(verify).iterator().next();
         System.out.println("User: " + u.getStruct());
 
-        final DataServiceQueryOperation<ContactAction> findByDate = new DataServiceQueryOperation<ContactAction>(ContactAction.class)
+        final DataServiceQueryFilter<ContactAction> caFilter = DataServiceQueryFilter.builder(ContactAction.class)
                 .fieldEquals(ContactAction.Field.IsAppointment, 1)
-//                .fieldCompare(ContactAction.Field.ActionDate, DataServiceQueryOperation.Compare.gt, theStartDateBinding)
-//                .fieldCompare(ContactAction.Field.ActionDate, DataServiceQueryOperation.Compare.lt, theEndDateBinding)
-                .fieldCompare(ContactAction.Field.ActionDate, DataServiceQueryOperation.Compare.gte, theStartDateBinding)
+//                .fieldCompare(ContactAction.Field.ActionDate, Compare.gt, theStartDateBinding)
+//                .fieldCompare(ContactAction.Field.ActionDate, Compare.lt, theEndDateBinding)
+                .fieldCompare(ContactAction.Field.ActionDate, Compare.gte, theStartDateBinding)
+                .build()
+                ;
+        final DataServiceQueryOperation<ContactAction> findByDate = new DataServiceQueryOperation<ContactAction>(caFilter)
 //                .addReturnFieldName(ContactAction.Field.Id)
 //                .addReturnFieldName(ContactAction.Field.ActionDescription)
 //                .addReturnFieldName(ContactAction.Field.ActionDate)
@@ -374,7 +395,7 @@ public class WebServiceClientDriver {
         final Map<String, Object> contactData = new HashMap<String, Object>();
         contactData.put(Contact.Field.FirstName.name(), "WebServiceClientDriverDemoFirstName");
         contactData.put(Contact.Field.LastName.name(), "DemoLastName");
-        contactData.put(Contact.Field.Email.name(),"whatever@whatever.com");
+        contactData.put(Contact.Field.Email.name(), "whatever@whatever.com");
         contactData.put(Contact.Field.Company.name(),"Acme Rockets Inc");
 
         final Contact contact = new Contact(contactData);

@@ -4,6 +4,8 @@ import com.dietsodasoftware.yail.xmlrpc.model.Contact;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +18,7 @@ public class DataServiceQueryOperationTest {
 
     @Before
     public void before(){
-        query = new DataServiceQueryOperation<Contact>(Contact.class);
+        query = new DataServiceQueryOperation<Contact>(DataServiceQueryFilter.builder(Contact.class).build());
     }
 
     @Test(expected = InfusionsoftParameterValidationException.class)

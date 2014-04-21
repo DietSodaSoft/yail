@@ -15,8 +15,10 @@ import com.dietsodasoftware.yail.xmlrpc.model.InfusionsoftUserInfo;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceGetUserInfoOperation;
+import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryCountOperation;
+import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryFilter;
+import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryFilter.Builder.Compare;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation;
-import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation.Compare;
 
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
@@ -74,18 +76,26 @@ public class Oauth2FlowDemo {
             final YailProfile profile = YailProfile.usingOAuth2Token(token);
             final YailClient client = profile.getClient();
 
-            getUserInfo(client);
+//            getUserInfo(client);
 
             queryContact(client);
         }
     }
 
-    private void queryContact(YailClient client){
-        final DataServiceQueryOperation<Contact> query = new DataServiceQueryOperation<Contact>(Contact.class)
+    private void queryContact(YailClient client) throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
+        final DataServiceQueryFilter<Contact> filter = DataServiceQueryFilter.builder(Contact.class)
                 .fieldCompare(Field.Id, Compare.gt, "0")
+                .build()
+                ;
+        final DataServiceQueryOperation<Contact> query = new DataServiceQueryOperation<Contact>(filter)
                 .setLimit(10)
                 .orderBy(Field.LastName)
                 .ascending();
+
+        final DataServiceQueryCountOperation<Contact> counter = new DataServiceQueryCountOperation(filter);
+        final Integer count = client.call(counter);
+
+        System.out.println("Count of stuff: " + count);
 
         for(Contact contact: client.autoPage(query)){
             System.out.println("Contact: " + contact);
