@@ -18,41 +18,14 @@ import java.util.Map;
 public class DataServiceQueryOperation<MT extends Model> extends InfusionsoftModelCollectionOperation<DataServiceQueryOperation<MT>,MT>
 implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
 
-	public DataServiceQueryOperation(Class<MT> clazz) {
-		super(clazz);
+	public DataServiceQueryOperation(DataServiceQueryFilter<MT> queryFilter) {
+		super(queryFilter.getModelClass());
+
+        this.queryFilter = queryFilter;
 	}
 
-	public enum Like{
-		before("%%%s"), after("%s%%"), surrounding("%%%s%%");
-		
-		private final String pattern;
-		private Like(String pattern){
-			this.pattern = pattern;
-		}
-		
-		String getParameterValue(String compareTo){
-			return String.format(pattern, compareTo);
-		}
-	}
+    private final DataServiceQueryFilter queryFilter;
 
-    public enum Compare{
-        gt("~>~"),
-        lt("~<~"),
-        gte("~>=~"),
-        lte("~<=~")
-        ;
-
-        private final String compareString;
-        private Compare(String compareString){
-            this.compareString = compareString;
-        }
-    }
-	
-	private static final String NULL = "~null~";
-	
-	// required params
-	private final Map<String, Object> parameterValues = new HashMap<String, Object>();
-	
 	private Boolean ascending;
 	private String orderBy;
 
@@ -67,55 +40,9 @@ implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
         }
 
     }
-	
 
-	private DataServiceQueryOperation<MT> fieldEquals(String fieldName, Object value){
-		parameterValues.put(fieldName, value);
-		return this;
-	}
-	
-	private DataServiceQueryOperation<MT> fieldIsNull(String fieldName){
-		parameterValues.put(fieldName, NULL);
-		return this;
-	}
-	
-	private DataServiceQueryOperation<MT> fieldLike(String fieldName, String value, Like like){
-		parameterValues.put(fieldName, like.getParameterValue(value));
-		return this;
-	}
-
-    public DataServiceQueryOperation<MT> fieldEquals(NamedField field, Object value){
-        return fieldEquals(field.name(), value);
-    }
-
-    public DataServiceQueryOperation<MT> fieldIsNull(NamedField field){
-        return fieldIsNull(field.name());
-    }
-
-    public DataServiceQueryOperation<MT> fieldLike(NamedField field, String value, Like like){
-        return fieldLike(field.name(), value, like);
-    }
-
-    public DataServiceQueryOperation<MT> customFieldEquals(String fieldName, Object value){
-		return fieldEquals("_" + scrubCustomFieldName(fieldName), value);
-	}
-	
-	public DataServiceQueryOperation<MT> customFieldIsNull(String fieldName){
-		return fieldIsNull("_" + scrubCustomFieldName(fieldName));
-	}
-	
-	public DataServiceQueryOperation<MT> customFieldLike(String fieldName, String value, Like like){
-		return fieldLike("_" + scrubCustomFieldName(fieldName), value, like);
-	}
-
-    public DataServiceQueryOperation<MT> fieldCompare(NamedField field, Compare compare, String value){
-        fieldEquals(field.name(), compare.compareString + value);
-        return this;
-    }
-
-    public DataServiceQueryOperation<MT> customFieldCompare(String field, Compare compare, String value){
-        fieldEquals("_" + scrubCustomFieldName(field), compare.compareString + value);
-        return this;
+    public DataServiceQueryCountOperation<MT> createCountOperation(){
+        return new DataServiceQueryCountOperation<MT>(queryFilter);
     }
 
     public DataServiceQueryOperation<MT> orderBy(NamedField field){
@@ -124,7 +51,7 @@ implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
     }
 
     public DataServiceQueryOperation<MT> orderByCustomField(String field){
-        this.orderBy = "_" + scrubCustomFieldName(field);
+        this.orderBy = "_" + Model.scrubCustomFieldName(field);
         return this;
     }
 
@@ -140,14 +67,13 @@ implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
 
 
     public DataServiceQueryOperation<MT> nextPage(){
-        final DataServiceQueryOperation<MT> op = new DataServiceQueryOperation<MT>(getModelTypeClass())
+        final DataServiceQueryOperation<MT> op = new DataServiceQueryOperation<MT>(queryFilter)
                 .setLimit(getLimit())
                 .setPage(getPage() + 1)
                 .setReturnFieldNames(getReturnFieldNames());
 
         op.orderBy = orderBy;
         op.ascending = ascending;
-        op.parameterValues.putAll(parameterValues);
 
         return op;
     }
@@ -164,14 +90,13 @@ implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
         } else {
             page = 0;
         }
-        final DataServiceQueryOperation<MT> op = new DataServiceQueryOperation<MT>(getModelTypeClass())
+        final DataServiceQueryOperation<MT> op = new DataServiceQueryOperation<MT>(queryFilter)
                 .setLimit(getLimit())
                 .setPage(page)
                 .setReturnFieldNames(getReturnFieldNames());
 
         op.orderBy = orderBy;
         op.ascending = ascending;
-        op.parameterValues.putAll(parameterValues);
 
         return op;
     }
@@ -185,7 +110,7 @@ implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
                 getTableName(),
                 getLimit(),
                 getPage(),
-                parameterValues,
+                queryFilter.getFilterParameters(),
                 getReturnFieldNames()
         );
 

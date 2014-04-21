@@ -20,10 +20,6 @@ public abstract class InfusionsoftModelOperation<MT extends Model, RT> extends I
     private final Class<MT> modelTypeClass;
     private final Class<RT> returnTypeClass;
 
-    private final static String [] customFieldScrubCharacters = new String[]{
-            " ", ",", "'"
-    };
-
     protected InfusionsoftModelOperation(Class<MT> modelTypeClass){
         this(modelTypeClass, null);
     }
@@ -47,7 +43,7 @@ public abstract class InfusionsoftModelOperation<MT extends Model, RT> extends I
 
     @Override
     public RT parseResult(Object rawResponse) {
-        if(returnTypeClass.isAssignableFrom(Model.class) && rawResponse instanceof Map){
+        if(returnTypeClass != null && returnTypeClass.isAssignableFrom(Model.class) && rawResponse instanceof Map){
             return (RT) createModelInstance((Map<String, Object>) rawResponse);
         }
         return (RT)rawResponse;
@@ -65,16 +61,5 @@ public abstract class InfusionsoftModelOperation<MT extends Model, RT> extends I
         return ModelUtils.newInstance(getModelTypeClass(), modelData);
     }
 
-
-    protected String scrubCustomFieldName(String customField){
-        if(customField == null){
-            return null;
-        }
-
-        for(String scrub: customFieldScrubCharacters){
-            customField = customField.replaceAll(scrub, "");
-        }
-        return customField;
-    }
 
 }

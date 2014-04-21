@@ -2,6 +2,7 @@ package com.dietsodasoftware.yail.xmlrpc.service.contact;
 
 import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact;
+import com.dietsodasoftware.yail.xmlrpc.model.Model;
 import com.dietsodasoftware.yail.xmlrpc.model.NamedField;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelOperation;
 import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
@@ -59,7 +60,7 @@ public class ContactServiceLoadOperation extends InfusionsoftModelOperation<Cont
     }
 
     public ContactServiceLoadOperation addCustomReturnFieldName(String customFieldName){
-        return addReturnFieldName("_" + scrubCustomFieldName(customFieldName));
+        return addReturnFieldName("_" + Model.scrubCustomFieldName(customFieldName));
     }
 
 

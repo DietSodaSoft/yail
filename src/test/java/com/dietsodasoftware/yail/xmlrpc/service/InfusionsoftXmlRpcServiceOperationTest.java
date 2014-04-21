@@ -3,6 +3,7 @@ package com.dietsodasoftware.yail.xmlrpc.service;
 import com.dietsodasoftware.yail.xmlrpc.client.annotations.ArgumentValidator;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact;
 import com.dietsodasoftware.yail.xmlrpc.model.ContactAction;
+import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryFilter;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation;
 import org.junit.Test;
 
@@ -15,13 +16,13 @@ public class InfusionsoftXmlRpcServiceOperationTest {
 
     private static class ContactQuery extends DataServiceQueryOperation<Contact>{
         public ContactQuery() {
-            super(Contact.class);
+            super(DataServiceQueryFilter.builder(Contact.class).build());
         }
     }
 
     private static class ContactActionQuery extends DataServiceQueryOperation<ContactAction>{
         public ContactActionQuery(){
-            super(ContactAction.class);
+            super(DataServiceQueryFilter.builder(ContactAction.class).build());
         }
 
         @ArgumentValidator

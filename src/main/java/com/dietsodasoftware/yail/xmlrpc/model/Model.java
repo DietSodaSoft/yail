@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Model {
+    private final static String [] customFieldScrubCharacters = new String[]{
+            " ", ",", "'"
+    };
 
     private final Map<String, NamedField> complexTypes;
 	private final Map<String, Object> values;
@@ -130,5 +133,18 @@ public abstract class Model {
             return ModelUtils.newInstance(modelClass, values);
         }
     }
+
+    public static String scrubCustomFieldName(String customField){
+        if(customField == null){
+            return null;
+        }
+
+        for(String scrub: customFieldScrubCharacters){
+            customField = customField.replaceAll(scrub, "");
+        }
+        return customField;
+    }
+
+
 
 }
