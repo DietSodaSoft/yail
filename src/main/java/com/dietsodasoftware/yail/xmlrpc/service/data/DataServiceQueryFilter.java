@@ -123,11 +123,11 @@ public class DataServiceQueryFilter<MT extends Model> {
         return new Builder(modelClass);
     }
 
-    public DataServiceQueryCountOperation<MT> createQueryCountOperation(){
+    public DataServiceQueryCountOperation<MT> count(){
         return new DataServiceQueryCountOperation<MT>(this);
     }
 
-    public DataServiceQueryOperation<MT> createQueryOperation(){
+    public DataServiceQueryOperation<MT> query(){
         return new DataServiceQueryOperation<MT>(this);
     }
 }

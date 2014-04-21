@@ -87,7 +87,7 @@ public class Oauth2FlowDemo {
                 .fieldCompare(Field.Id, Compare.gt, "0")
                 .build()
                 ;
-        final DataServiceQueryOperation<Contact> query = new DataServiceQueryOperation<Contact>(filter)
+        final DataServiceQueryOperation<Contact> query = filter.query()
                 .setLimit(10)
                 .orderBy(Field.LastName)
                 .ascending();

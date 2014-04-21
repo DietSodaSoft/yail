@@ -3,7 +3,6 @@ package com.dietsodasoftware.yail.xmlrpc;
 import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
 import com.dietsodasoftware.yail.xmlrpc.client.YailProfile;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact;
-import com.dietsodasoftware.yail.xmlrpc.model.Contact.Field;
 import com.dietsodasoftware.yail.xmlrpc.model.ContactAction;
 import com.dietsodasoftware.yail.xmlrpc.model.CustomField;
 import com.dietsodasoftware.yail.xmlrpc.model.Product;
@@ -169,7 +168,7 @@ public class WebServiceClientDriver {
                 .fieldLike(Contact.Field.FirstName, "A", Like.after)
                 .build()
                 ;
-		final DataServiceQueryOperation<Contact> finder = filter.createQueryOperation();
+		final DataServiceQueryOperation<Contact> finder = filter.query();
 //		             .addReturnFieldName(Contact.Field.Id)
 //                     .addReturnFieldName(Contact.Field.DateCreated)
 //                     .addReturnFieldName(Contact.Field.FirstName)
@@ -191,8 +190,7 @@ public class WebServiceClientDriver {
                 .fieldEquals(TagAssignment.Field.ContactGroup, theTag)
                 .build()
                 ;
-        final DataServiceQueryOperation<TagAssignment> tagged =
-                new DataServiceQueryOperation<TagAssignment>(tagFilter);
+        final DataServiceQueryOperation<TagAssignment> tagged = tagFilter.query();
 
 
         System.out.println("From tag : " + theTag);
@@ -240,7 +238,7 @@ public class WebServiceClientDriver {
                 .fieldEquals(User.Field.Id, "1")
                 .build()
                 ;
-        final DataServiceQueryOperation<User> verify = new DataServiceQueryOperation<User>(userFilter)
+        final DataServiceQueryOperation<User> verify = userFilter.query()
                 .addReturnFieldName(User.Field.LastName);
 
         final User u = client.call(verify).iterator().next();
@@ -253,7 +251,7 @@ public class WebServiceClientDriver {
                 .fieldCompare(ContactAction.Field.ActionDate, Compare.gte, theStartDateBinding)
                 .build()
                 ;
-        final DataServiceQueryOperation<ContactAction> findByDate = new DataServiceQueryOperation<ContactAction>(caFilter)
+        final DataServiceQueryOperation<ContactAction> findByDate = caFilter.query()
 //                .addReturnFieldName(ContactAction.Field.Id)
 //                .addReturnFieldName(ContactAction.Field.ActionDescription)
 //                .addReturnFieldName(ContactAction.Field.ActionDate)

@@ -18,7 +18,7 @@ import java.util.Map;
 public class DataServiceQueryOperation<MT extends Model> extends InfusionsoftModelCollectionOperation<DataServiceQueryOperation<MT>,MT>
 implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
 
-	public DataServiceQueryOperation(DataServiceQueryFilter<MT> queryFilter) {
+	protected DataServiceQueryOperation(DataServiceQueryFilter<MT> queryFilter) {
 		super(queryFilter.getModelClass());
 
         this.queryFilter = queryFilter;
