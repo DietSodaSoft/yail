@@ -92,9 +92,7 @@ public class Oauth2FlowDemo {
                 .orderBy(Field.LastName)
                 .ascending();
 
-        final DataServiceQueryCountOperation<Contact> counter = query.createQueryCountOperation();
-        final Integer count = client.call(counter);
-
+        final Integer count = client.call(filter.count());
         System.out.println("Count of stuff: " + count);
 
         for(Contact contact: client.autoPage(query)){
