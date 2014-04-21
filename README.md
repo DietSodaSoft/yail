@@ -38,7 +38,7 @@ You can get right to work using version 0.7.13 or greater by including it in you
         ...
         <properties>
             ...
-            <com.dietsodasoftware.yail-version>0.7.13</com.dietsodasoftware.yail-version>
+            <com.dietsodasoftware.yail-version>0.8.0</com.dietsodasoftware.yail-version>
             ...
         </properties>
 
@@ -68,7 +68,7 @@ Currently, there are several ways to authenticate:
 *  Using an app user's username/password
 *  Using a vendor's key
 *  Using an app's API key
-*  Using Infusionsoft ID (CAS isn't publicly available just yet)
+*  Using OAuth (more documentation forthcoming)
 
 A profile is meant to be stored securely in the app somewhere so that a user provides config once and they are good to
 go by virtue of using the profile as a factory for YailClients which are able to connect using the appropriate tokens.
@@ -101,7 +101,7 @@ Read more in the [wiki](wiki/design/Operations).
 
 ##ENOUGH FOREPLAY!!  Let's see this thing in action.
 
-The heart and soul of how this works is **`YailClient.call()`**.  It is really simple; the crux of it looks like this:
+The heart and soul of how this works is **`YailClient.call()`**.  It is really simple; the crux of the implementation looks like this:
 
 	public <T> T call(InfusionsoftXmlRpcServiceOperation<T> operation) throws XmlRpcException{
 
@@ -206,17 +206,24 @@ Currently, well over half of the models are codified and are still under constru
 
 ### DataService.query
 
-Query is a bit like findByField, but much more powerful.  You can cascade restrictions on different fields, even including
-a primitive 'like' syntax.  The usual return fields, page number, page limit and returned collection applies.
+Query is a bit like findByField, but much more powerful.  You can cascade restrictions on different fields using a
+DataServiceQueryFilter, even including a primitive 'like' syntax.  The filter object can then provide for you a Query
+operation to then appropriately set the usual return fields, page number, page limit and returned collection applies.
+Alternatively, the same filter object can return a Operation which will return an integer: the total count of records
+matching that filter.  This is useful to know how many "pages" to expect.
 
         // find all contacts with a first name starting with 'A'
-		final DataServiceQueryOperation<Contact> finder =
-				new DataServiceQueryOperation<Contact>(Contact.class)
+        final DataServiceQueryFilter<Contact> filter = DataServiceQueryFilter.builder(Contact.class)
 		             .fieldLike(Contact.Field.FirstName, "A", Like.after)
-		             .customFieldLike("DogName", "Ral", Like.after;
+		             .customFieldLike("DogName", "Ral", Like.after);
+
+        final Integer count = client.call(filter.count());
+        System.out.println("FindByQuery count: " + count);
+
+		final DataServiceQueryOperation<Contact> finder = filter.query();
 
         System.out.println("FindByQuery: " );
-        for(Contact contact: client.call(finder)){
+        for(Contact contact: client.autoPage(finder)){
             System.out.println(contact);
         }
 
