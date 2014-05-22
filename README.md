@@ -216,7 +216,7 @@ matching that filter.  This is useful to know how many "pages" to expect.
         final DataServiceQueryFilter<Contact> filter = DataServiceQueryFilter.builder(Contact.class)
 		             .fieldLike(Contact.Field.FirstName, "A", Like.after)
 		             .customFieldLike("DogName", "Ral", Like.after)
-                             .build();
+                     .build();
 
         final Integer count = client.call(filter.count());
         System.out.println("FindByQuery count: " + count);
