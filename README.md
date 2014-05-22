@@ -215,7 +215,8 @@ matching that filter.  This is useful to know how many "pages" to expect.
         // find all contacts with a first name starting with 'A'
         final DataServiceQueryFilter<Contact> filter = DataServiceQueryFilter.builder(Contact.class)
 		             .fieldLike(Contact.Field.FirstName, "A", Like.after)
-		             .customFieldLike("DogName", "Ral", Like.after);
+		             .customFieldLike("DogName", "Ral", Like.after)
+                             .build();
 
         final Integer count = client.call(filter.count());
         System.out.println("FindByQuery count: " + count);
@@ -226,6 +227,8 @@ matching that filter.  This is useful to know how many "pages" to expect.
         for(Contact contact: client.autoPage(finder)){
             System.out.println(contact);
         }
+
+
 
 
 ### DataService.getAppointmentCal
