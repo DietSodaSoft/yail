@@ -3,6 +3,7 @@ package com.dietsodasoftware.yail.xmlrpc;
 import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
 import com.dietsodasoftware.yail.xmlrpc.client.YailProfile;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact;
+import com.dietsodasoftware.yail.xmlrpc.model.Contact.Field;
 import com.dietsodasoftware.yail.xmlrpc.model.ContactAction;
 import com.dietsodasoftware.yail.xmlrpc.model.CustomField;
 import com.dietsodasoftware.yail.xmlrpc.model.Product;
@@ -65,7 +66,7 @@ public class WebServiceClientDriver {
 
         final boolean useVendorKey = false;
 		final YailProfile profile;
-        if(useVendorKey){
+        if(false){
             if(location == null){
                 profile = YailProfile.usingVendorKey(appName, vendorKey, casUsername, casPassword);
             } else {
@@ -79,6 +80,10 @@ public class WebServiceClientDriver {
             }
         }
 		final YailClient client = profile.getClient();
+
+        exerciseFindByDateQuery(client);
+
+        if(true) return;
 
         exerciseUpdate(client, true);
 
@@ -106,6 +111,16 @@ public class WebServiceClientDriver {
 
         exerciseAddContactService(client);
         exerciseAddProductService(client);
+    }
+
+    private static void exerciseFindByDateQuery(final YailClient client) throws InfusionsoftParameterValidationException, InfusionsoftXmlRpcException {
+        final DataServiceQueryFilter<Contact> contactSearch = DataServiceQueryFilter.builder(Contact.class)
+                .dateIsBefore(Field.DateCreated, "2013-11-18 16:00:00")
+                .build();
+
+        for(Contact contact: client.autoPage(contactSearch.query())){
+            System.out.println(contact);
+        }
     }
 
     private static void exerciseUpdate(final YailClient client, boolean commit) throws InfusionsoftParameterValidationException, InfusionsoftXmlRpcException {
@@ -414,4 +429,5 @@ public class WebServiceClientDriver {
         final Integer newId = client.call(add);
         System.out.println("The new Product's ID: " + newId);
     }
+
 }
