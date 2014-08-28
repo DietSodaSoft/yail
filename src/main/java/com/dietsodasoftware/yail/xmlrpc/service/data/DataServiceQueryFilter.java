@@ -2,6 +2,7 @@ package com.dietsodasoftware.yail.xmlrpc.service.data;
 
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
 import com.dietsodasoftware.yail.xmlrpc.model.NamedField;
+import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -47,6 +48,26 @@ public class DataServiceQueryFilter<MT extends Model> {
             private final String compareString;
             private Compare(String compareString){
                 this.compareString = compareString;
+            }
+        }
+
+        public enum DateCompare {
+            since("since"),
+            before("before");
+
+            private final String magicString;
+
+            DateCompare(String magicString) {
+                this.magicString = magicString;
+            }
+
+            private String value(Map<String, Object> parameters){
+                final Object value = parameters.get(name());
+                if(value == null){
+                    return null;
+                }
+
+                return value.toString();
             }
         }
 
@@ -101,6 +122,34 @@ public class DataServiceQueryFilter<MT extends Model> {
 
         public DataServiceQueryFilter.Builder customFieldCompare(String field, Compare compare, String value){
             fieldEquals("_" + Model.scrubCustomFieldName(field), compare.compareString + value);
+            return this;
+        }
+
+        public Builder dateIsBefore(NamedField field, Object value){
+            return dateIsBefore(field.name(), value);
+        }
+
+        private Builder dateIsBefore(String field, Object value){
+            final Object dateCompare = parameterValues.get(field);
+            if(dateCompare != null && !(dateCompare instanceof Map)){
+                throw new IllegalArgumentException(new InfusionsoftParameterValidationException("Can only compare against a given field once in a query"));
+            }
+
+            final Map<String, Object> dateRange;
+            if(dateCompare == null){
+                dateRange = new HashMap<String, Object>();
+                parameterValues.put(field, dateRange);
+            } else {
+                dateRange = (Map<String, Object>) dateCompare;
+            }
+
+
+            final String beforeValue = DateCompare.before.value(parameterValues);
+            if(beforeValue != null){
+                throw new IllegalArgumentException(new InfusionsoftParameterValidationException("Already comparing field before a date"));
+            }
+
+            dateRange.put(DateCompare.before.name(), value);
             return this;
         }
 
