@@ -114,12 +114,37 @@ public class WebServiceClientDriver {
     }
 
     private static void exerciseFindByDateQuery(final YailClient client) throws InfusionsoftParameterValidationException, InfusionsoftXmlRpcException {
-        final DataServiceQueryFilter<Contact> contactSearch = DataServiceQueryFilter.builder(Contact.class)
+        final DataServiceQueryFilter<Contact> contactSearchBeforeDate = DataServiceQueryFilter.builder(Contact.class)
                 .dateIsBefore(Field.DateCreated, "2013-11-18 16:00:00")
                 .build();
 
-        for(Contact contact: client.autoPage(contactSearch.query())){
-            System.out.println(contact);
+        for(Contact contact: client.autoPage(contactSearchBeforeDate.query())){
+            System.out.println("BeforeDateSearch: " + contact);
+        }
+
+        final DataServiceQueryFilter<Contact> contactSearchAfterDate = DataServiceQueryFilter.builder(Contact.class)
+                .dateIsAfter(Field.DateCreated, "2013-11-18 15:00:00")
+                .build();
+
+        for (Contact contact : client.autoPage(contactSearchAfterDate.query())) {
+            System.out.println("AfterDateSearch: " + contact);
+        }
+
+        final DataServiceQueryFilter<Contact> contactSearchBetweenDates1 = DataServiceQueryFilter.builder(Contact.class)
+                .dateIsAfter(Field.DateCreated, "2013-11-18 15:00:00")
+                .dateIsBefore(Field.DateCreated, "2013-11-18 17:00:00")
+                .build();
+
+        for (Contact contact : client.autoPage(contactSearchBetweenDates1.query())) {
+            System.out.println("BetweenDateSearch1: " + contact);
+        }
+
+        final DataServiceQueryFilter<Contact> contactSearchBetweenDates2 = DataServiceQueryFilter.builder(Contact.class)
+                .dateIsBetween(Field.DateCreated, "2013-11-18 17:00:00", "2013-11-18 15:00:00")
+                .build();
+
+        for (Contact contact : client.autoPage(contactSearchBetweenDates2.query())) {
+            System.out.println("BetweenDateSearch2: " + contact);
         }
     }
 

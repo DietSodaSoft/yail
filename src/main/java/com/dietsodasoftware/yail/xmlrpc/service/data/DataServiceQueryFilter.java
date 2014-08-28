@@ -153,6 +153,67 @@ public class DataServiceQueryFilter<MT extends Model> {
             return this;
         }
 
+        public Builder dateIsAfter(NamedField field, Object value) {
+            return dateIsAfter(field.name(), value);
+        }
+
+        private Builder dateIsAfter(String field, Object value) {
+            final Object dateCompare = parameterValues.get(field);
+            if(dateCompare != null && !(dateCompare instanceof Map)){
+                throw new IllegalArgumentException(new InfusionsoftParameterValidationException("Can only compare against a given field once in a query"));
+            }
+
+            final Map<String, Object> dateRange;
+            if(dateCompare == null){
+                dateRange = new HashMap<String, Object>();
+                parameterValues.put(field, dateRange);
+            } else {
+                dateRange = (Map<String, Object>) dateCompare;
+            }
+
+
+            final String afterValue = DateCompare.since.value(parameterValues);
+            if(afterValue != null){
+                throw new IllegalArgumentException(new InfusionsoftParameterValidationException("Already comparing field after a date"));
+            }
+
+            dateRange.put(DateCompare.since.name(), value);
+            return this;
+        }
+
+        public Builder dateIsBetween(NamedField field, Object beforeDate, Object afterDate) {
+            return dateIsBetween(field.name(), beforeDate, afterDate);
+        }
+
+        private Builder dateIsBetween(String field, Object beforeDate, Object afterDate) {
+            if (beforeDate == null || afterDate == null) {
+                throw new IllegalArgumentException(new InfusionsoftParameterValidationException("Can't compare between two values if you don't give them to me"));
+
+            }
+            final Object dateCompare = parameterValues.get(field);
+            if (dateCompare != null && !(dateCompare instanceof Map)) {
+                throw new IllegalArgumentException(new InfusionsoftParameterValidationException("Can only compare against a given field once in a query"));
+            }
+
+            final Map<String, Object> dateRange;
+            if (dateCompare == null) {
+                dateRange = new HashMap<String, Object>();
+                parameterValues.put(field, dateRange);
+            } else {
+                dateRange = (Map<String, Object>) dateCompare;
+            }
+
+            final String beforeValue = DateCompare.before.value(parameterValues);
+            final String afterValue = DateCompare.since.value(parameterValues);
+            if (afterValue != null || beforeValue != null) {
+                throw new IllegalArgumentException(new InfusionsoftParameterValidationException("Already comparing field after a date"));
+            }
+
+            dateRange.put(DateCompare.since.name(), afterDate);
+            dateRange.put(DateCompare.before.name(), beforeDate);
+            return this;
+        }
+
         public <MT extends Model> DataServiceQueryFilter build(){
             return new DataServiceQueryFilter(modelClass, parameterValues);
         }
