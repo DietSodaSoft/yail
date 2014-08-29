@@ -146,6 +146,14 @@ public class WebServiceClientDriver {
         for (Contact contact : client.autoPage(contactSearchBetweenDates2.query())) {
             System.out.println("BetweenDateSearch2: " + contact);
         }
+
+        final DataServiceQueryFilter<Contact> customFieldDateSearch = DataServiceQueryFilter.builder(Contact.class)
+                .customFieldDateIsBefore("TheDateofDates", "2014-08-14 14:00:00")
+                .build();
+
+        for (Contact contact : client.autoPage(customFieldDateSearch.query())) {
+            System.out.println("CustomFieldBeforeSearch: " + contact);
+        }
     }
 
     private static void exerciseUpdate(final YailClient client, boolean commit) throws InfusionsoftParameterValidationException, InfusionsoftXmlRpcException {

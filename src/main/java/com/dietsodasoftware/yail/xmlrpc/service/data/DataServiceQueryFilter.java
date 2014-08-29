@@ -125,6 +125,10 @@ public class DataServiceQueryFilter<MT extends Model> {
             return this;
         }
 
+        public Builder customFieldDateIsBefore(String field, Object value) {
+            return dateIsBefore("_" + Model.scrubCustomFieldName(field), value);
+        }
+
         public Builder dateIsBefore(NamedField field, Object value){
             return dateIsBefore(field.name(), value);
         }
