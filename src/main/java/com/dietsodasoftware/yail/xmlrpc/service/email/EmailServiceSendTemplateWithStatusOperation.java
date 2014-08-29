@@ -33,8 +33,8 @@ public class EmailServiceSendTemplateWithStatusOperation extends InfusionsoftXml
     @Override
     public List<SendTemplateWithStatusResult> parseResult(Object rawResponse) throws InfusionsoftResponseParsingException, InfusionsoftAuthorizationFailureException {
         if(rawResponse != null){
-            List<SendTemplateWithStatusResult> results = new ArrayList<SendTemplateWithStatusResult>();
             Object[] rawResponses = (Object[])rawResponse;
+            List<SendTemplateWithStatusResult> results = new ArrayList<SendTemplateWithStatusResult>(rawResponses.length);
             for(Object rawResp : rawResponses ) {
                 Map<String,String> struct = (Map<String,String>)rawResp;
                 results.add(new SendTemplateWithStatusResult(struct));

@@ -9,6 +9,9 @@ import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * https://developer.infusionsoft.com/docs/read/Invoice_Service#addOrderItem
+ */
 @InfusionsoftRpc(service = "InvoiceService", method = "addOrderItem")
 public class InvoiceServiceAddOrderItemOperation extends InfusionsoftXmlRpcServiceOperation<Boolean> {
 

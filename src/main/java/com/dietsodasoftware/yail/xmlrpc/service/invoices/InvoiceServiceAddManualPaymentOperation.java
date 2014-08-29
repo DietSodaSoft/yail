@@ -10,6 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 
+/**
+ * https://developer.infusionsoft.com/docs/read/Invoice_Service#addManualPayment
+ */
 @InfusionsoftRpc(service = "InvoiceService", method = "addManualPayment")
 public class InvoiceServiceAddManualPaymentOperation extends InfusionsoftXmlRpcServiceOperation<Boolean> {
 
