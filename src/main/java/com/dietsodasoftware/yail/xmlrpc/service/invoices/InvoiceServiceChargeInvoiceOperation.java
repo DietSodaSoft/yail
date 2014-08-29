@@ -10,6 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * https://developer.infusionsoft.com/docs/read/Invoice_Service#chargeInvoice
+ */
 @InfusionsoftRpc(service = "InvoiceService", method = "chargeInvoice")
 public class InvoiceServiceChargeInvoiceOperation extends InfusionsoftXmlRpcServiceOperation<ChargeInvoiceResult> {
 

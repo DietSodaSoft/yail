@@ -9,6 +9,9 @@ import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * https://developer.infusionsoft.com/docs/read/Invoice_Service#createBlankOrder
+ */
 @InfusionsoftRpc(service = "InvoiceService", method = "createBlankOrder")
 public class InvoiceServiceCreateBlankOrderOperation extends InfusionsoftXmlRpcServiceOperation<Integer> {
 

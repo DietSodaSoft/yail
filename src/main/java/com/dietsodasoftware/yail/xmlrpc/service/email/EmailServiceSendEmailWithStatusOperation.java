@@ -37,16 +37,17 @@ public class EmailServiceSendEmailWithStatusOperation extends InfusionsoftXmlRpc
 
 
     @Override
-    public List<SendEmailWithStatusResult> parseResult(Object rawResponse) throws InfusionsoftResponseParsingException, InfusionsoftAuthorizationFailureException {if(rawResponse != null){
-        List<SendEmailWithStatusResult> results = new ArrayList<SendEmailWithStatusResult>();
-        Object[] rawResponses = (Object[])rawResponse;
-        for(Object rawResp : rawResponses ) {
-            Map<String,String> struct = (Map<String,String>)rawResp;
-            results.add(new SendEmailWithStatusResult(struct));
-        }
-        return results;
-    } else {
-        return null;
+    public List<SendEmailWithStatusResult> parseResult(Object rawResponse) throws InfusionsoftResponseParsingException, InfusionsoftAuthorizationFailureException {
+        if(rawResponse != null){
+            Object[] rawResponses = (Object[])rawResponse;
+            List<SendEmailWithStatusResult> results = new ArrayList<SendEmailWithStatusResult>(rawResponses.length);
+            for(Object rawResp : rawResponses ) {
+                Map<String,String> struct = (Map<String,String>)rawResp;
+                results.add(new SendEmailWithStatusResult(struct));
+            }
+            return results;
+        } else {
+            return null;
     }
     }
 }
