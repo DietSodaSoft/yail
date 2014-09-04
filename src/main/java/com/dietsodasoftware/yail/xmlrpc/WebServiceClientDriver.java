@@ -9,6 +9,7 @@ import com.dietsodasoftware.yail.xmlrpc.model.CustomField;
 import com.dietsodasoftware.yail.xmlrpc.model.Product;
 import com.dietsodasoftware.yail.xmlrpc.model.TagAssignment;
 import com.dietsodasoftware.yail.xmlrpc.model.User;
+import com.dietsodasoftware.yail.xmlrpc.model.customfields.SimpleOperationCustomField;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionResults;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingException;
@@ -147,8 +148,9 @@ public class WebServiceClientDriver {
             System.out.println("BetweenDateSearch2: " + contact);
         }
 
+
         final DataServiceQueryFilter<Contact> customFieldDateSearch = DataServiceQueryFilter.builder(Contact.class)
-                .customFieldDateIsBefore("TheDateofDates", "2014-08-14 14:00:00")
+                .dateIsBefore(new SimpleOperationCustomField("TheDateofDates"), "2014-08-14 14:00:00")
                 .build();
 
         for (Contact contact : client.autoPage(customFieldDateSearch.query())) {

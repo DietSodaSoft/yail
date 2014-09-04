@@ -2,6 +2,7 @@ package com.dietsodasoftware.yail.xmlrpc.service.data;
 
 import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
+import com.dietsodasoftware.yail.xmlrpc.model.customfields.OperationCustomField;
 import com.dietsodasoftware.yail.xmlrpc.model.NamedField;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelOperation;
 import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
@@ -28,8 +29,8 @@ public class DataServiceLoadOperation<MT extends Model, RT> extends Infusionsoft
         this.returnFields = new LinkedList<String>();
     }
 
-    public DataServiceLoadOperation<MT, RT> addCustomReturnFieldName(String field){
-        return addReturnFieldName("_" + field);
+    public DataServiceLoadOperation<MT, RT> addReturnFieldName(OperationCustomField field){
+        return addReturnFieldName(field.getApiArgument());
     }
 
     public DataServiceLoadOperation<MT, RT> addReturnFieldName(NamedField field){

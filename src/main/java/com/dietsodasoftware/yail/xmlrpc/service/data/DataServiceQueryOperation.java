@@ -3,15 +3,14 @@ package com.dietsodasoftware.yail.xmlrpc.service.data;
 import com.dietsodasoftware.yail.xmlrpc.client.annotations.ArgumentValidator;
 import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
+import com.dietsodasoftware.yail.xmlrpc.model.customfields.OperationCustomField;
 import com.dietsodasoftware.yail.xmlrpc.model.NamedField;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 import com.dietsodasoftware.yail.xmlrpc.service.paging.ForwardPagingRequest;
 import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @InfusionsoftRpc(service = "DataService", method = "query")
@@ -50,8 +49,8 @@ implements ForwardPagingRequest<MT, DataServiceQueryOperation<MT>> {
         return this;
     }
 
-    public DataServiceQueryOperation<MT> orderByCustomField(String field){
-        this.orderBy = "_" + Model.scrubCustomFieldName(field);
+    public DataServiceQueryOperation<MT> orderBy(OperationCustomField field){
+        this.orderBy = field.getApiArgument();
         return this;
     }
 

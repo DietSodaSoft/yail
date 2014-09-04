@@ -2,6 +2,7 @@ package com.dietsodasoftware.yail.xmlrpc.service.data;
 
 import com.dietsodasoftware.yail.xmlrpc.client.annotations.InfusionsoftRpc;
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
+import com.dietsodasoftware.yail.xmlrpc.model.customfields.OperationCustomField;
 import com.dietsodasoftware.yail.xmlrpc.model.NamedField;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionOperation;
 import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
@@ -29,8 +30,8 @@ public class DataServiceFindByFieldOperation<MT extends Model> extends Infusions
 		return this;
 	}
 	
-	public DataServiceFindByFieldOperation<MT> setCustomFieldCriteria(String fieldName, Object fieldValue){
-        return setFieldCriteria("_" + Model.scrubCustomFieldName(fieldName), fieldValue);
+	public DataServiceFindByFieldOperation<MT> setFieldCriteria(OperationCustomField field, Object fieldValue){
+        return setFieldCriteria(field.getApiArgument(), fieldValue);
 	}
 	
 	public DataServiceFindByFieldOperation<MT> nextPage(){
