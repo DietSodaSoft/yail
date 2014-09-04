@@ -228,7 +228,13 @@ matching that filter.  This is useful to know how many "pages" to expect.
             System.out.println(contact);
         }
 
+Or, if you use the [YAIL CustomField SDK Generator](https://bitbucket.org/dietsoda/yail-customfield-sdk), you get compile-time support for custom field definitions:
 
+        final NamedCustomField customFieldDefintion = com.yourcompany.customfieldsdk.CustomContact.Field.DogName;
+        final DataServiceQueryFilter<Contact> filter = DataServiceQueryFilter.builder(Contact.class)
+		             .fieldLike(Contact.Field.FirstName, "A", Like.after)
+		             .fieldLike(customFieldDefinition, "Ral", Like.after)
+                     .build();
 
 
 ### DataService.getAppointmentCal
