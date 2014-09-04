@@ -4,14 +4,14 @@
 
     <groupId>com.dietsodasoftware</groupId>
     <artifactId>yail-XmlRpcJavaClient</artifactId>
-    <version>0.8.3-SNAPSHOT</version>
+    <version>0.9.0</version>
 
     <name>YAIL Infusionsoft SDK</name>
 
     <scm>
         <connection>scm:hg:ssh://hg@bitbucket.org/dietsoda/yail</connection>
         <url>http://hg.dietsodasoftware.com/yail/src</url>
-      <tag>HEAD</tag>
+      <tag>v0.9.0</tag>
     </scm>
 
     <properties>
