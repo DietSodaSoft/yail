@@ -6,6 +6,8 @@
     <artifactId>yail-XmlRpcJavaClient</artifactId>
     <version>0.8.2-SNAPSHOT</version>
 
+    <name>YAIL Infusionsoft SDK</name>
+
     <scm>
         <connection>scm:hg:ssh://hg@bitbucket.org/dietsoda/yail</connection>
         <url>http://hg.dietsodasoftware.com/yail/src</url>
@@ -162,6 +164,7 @@
                     <archive>
                         <!-- will put the entries into META-INF/MANIFEST.MF file -->
                         <manifestEntries>
+                            <Implementation-Project-Description>${project.name}, (c) 2013-2014 Diet Soda Software</Implementation-Project-Description>
                             <Implementation-Url>${project.url}</Implementation-Url>
                             <Implementation-Version>${project.version}</Implementation-Version>
                             <Implementation-Build>${buildNumber}</Implementation-Build>
