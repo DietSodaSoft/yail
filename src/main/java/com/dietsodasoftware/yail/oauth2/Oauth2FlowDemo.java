@@ -11,6 +11,8 @@ import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
 import com.dietsodasoftware.yail.xmlrpc.client.YailProfile;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact.Field;
+import com.dietsodasoftware.yail.xmlrpc.model.ContactAction;
+import com.dietsodasoftware.yail.xmlrpc.model.CreditCard;
 import com.dietsodasoftware.yail.xmlrpc.model.InfusionsoftUserInfo;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
@@ -18,6 +20,7 @@ import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceGetUserInfoOpera
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryCountOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryFilter;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryFilter.Builder.Compare;
+import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryFilter.Builder.Like;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation;
 
 import java.io.IOException;
@@ -37,9 +40,6 @@ public class Oauth2FlowDemo {
 
     }
 
-    // authorize
-    // https://signin.infusionsoft.com/app/oauth/authorize
-    // http://tools.ietf.org/html/draft-ietf-oauth-v2-21#section-4.1.1
     public void authorize() throws IOException, OauthAuthenticationException, InterruptedException, InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
         final long timeoutSeconds = 45;
         final ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1, new ThreadFactory() {
@@ -65,53 +65,51 @@ public class Oauth2FlowDemo {
 
         final InfusionsoftOauthAuthenticator auth = new InfusionsoftOauthAuthenticator();
 
+        // use this token as "API Key" in XMLRPC calls AND ?auth_token=<> URL parameter
         final InfusionsoftOauthToken token = auth.authorize2(parseAuthority, DietSodaUtils.MASHERY_CLIENT_ID, DietSodaUtils.MASHERY_CLIENT_SECRET, timeoutSeconds);
 
-        // use this token as "API Key" in XMLRPC calls AND ?auth_token=<> URL parameter
-        System.out.println("Got a auth token: " + token.getToken());
-
-        if(token == null){
-            //FAIL
+        if(token == null || token.getToken() == null){
+            System.err.println("Did not get a token");
         } else {
+            System.out.println("Got a auth token: " + token.getToken().substring(0, 5) + "...");
             final YailProfile profile = YailProfile.usingOAuth2Token(token);
             final YailClient client = profile.getClient();
-
-//            getUserInfo(client);
 
             queryContact(client);
         }
     }
 
     private void queryContact(YailClient client) throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
-        final DataServiceQueryFilter<Contact> filter = DataServiceQueryFilter.builder(Contact.class)
-                .fieldCompare(Field.Id, Compare.gt, "0")
-                .build()
-                ;
-        final DataServiceQueryOperation<Contact> query = filter.query()
-                .setLimit(10)
-                .orderBy(Field.LastName)
-                .ascending();
 
-        final Integer count = client.call(filter.count());
-        System.out.println("Count of stuff: " + count);
+        // Exercise: find all contacts with a first name starting with "B" and get thier appointments ordered by start date
+        final DataServiceQueryFilter<Contact> modelFilter;
+
+        modelFilter = DataServiceQueryFilter.builder(Contact.class)
+                .fieldLike(Field.FirstName, "B", Like.after)
+                .fieldLike(Field.LastName, "D", Like.surrounding)
+                .fieldIsNull(Field.Address1Type)
+                .build();
+
+        final Integer contactCount = client.call(modelFilter.count());
+
+        System.out.print("Count: " + contactCount);
+        final DataServiceQueryOperation<Contact> query = modelFilter.query()
+                .setLimit(30)
+                .ascending()
+                .orderBy(Field.AccountId);
+
+        final DataServiceQueryOperation<Contact> page2 = query.nextPage();
 
         for(Contact contact: client.autoPage(query)){
-            System.out.println("Contact: " + contact);
+
+            final DataServiceQueryFilter<ContactAction> appointments;
+            appointments = DataServiceQueryFilter.builder(ContactAction.class)
+                    .fieldEquals(Field.Id, contact.getFieldValue(Field.Id))
+                    .build();
+            for (ContactAction appt: client.autoPage(appointments.query())){
+                System.out.println("       Contact appt: " + appt );
+            }
         }
-
     }
-
-    private void getUserInfo(YailClient client) throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
-        final DataServiceGetUserInfoOperation op = new DataServiceGetUserInfoOperation();
-
-        final InfusionsoftUserInfo info = client.call(op);
-        System.out.println("User info: " + info);
-    }
-
-    // token
-    // https://api.infusionsoft.com/token
-    // http://tools.ietf.org/html/draft-ietf-oauth-v2-21#section-4.1.3
-    // do the biz
-    // https://api.infusionsoft.com/crm/xmlrpc/v1?access_token=ACCESSTOKEN
 
 }

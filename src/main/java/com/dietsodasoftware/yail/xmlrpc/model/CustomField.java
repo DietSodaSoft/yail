@@ -5,6 +5,7 @@ import com.dietsodasoftware.yail.xmlrpc.client.annotations.TableName;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,12 +36,29 @@ public class CustomField extends Model {
             this.modelTypeDbId = modelTypeDbId;
         }
 
+        private static Map<String, Model> modelNames = new HashMap<String, Model>();
+        private static Map<Integer, Model> modelDbIds = new HashMap<Integer, Model>();
+        static {
+            for(Model model: Model.values()){
+                modelNames.put(model.modelTypeDbName, model);
+                modelDbIds.put(model.modelTypeDbId, model);
+            }
+        }
+
         public Integer getModelTypeDbId(){
             return modelTypeDbId;
         }
 
         public String getModelTypeDbName(){
             return modelTypeDbName;
+        }
+
+        public static Model forDbName(String dbName){
+            return modelNames.get(dbName);
+        }
+
+        public static Model forDbId(Integer id){
+            return modelDbIds.get(id);
         }
     }
 
@@ -69,6 +87,16 @@ public class CustomField extends Model {
                 User(22),
                 Drilldown(23);
 
+        private static Map<String, FormFieldFormatting> formatNames = new HashMap<String, FormFieldFormatting>();
+        private static Map<Integer, FormFieldFormatting> formatDbIds = new HashMap<Integer, FormFieldFormatting>();
+        static {
+            for(FormFieldFormatting format: FormFieldFormatting.values()){
+                formatNames.put(format.dataFormFieldTypeName, format);
+                formatDbIds.put(format.dataFormFieldTypeDbId, format);
+            }
+        }
+
+
         private final Integer dataFormFieldTypeDbId;
         private final String dataFormFieldTypeName;
         private FormFieldFormatting(Integer typeDbId){
@@ -76,7 +104,11 @@ public class CustomField extends Model {
         }
 
         private FormFieldFormatting(Integer typeDbId, String typeDbName){
-            this.dataFormFieldTypeName = typeDbName;
+            if(typeDbName == null){
+                this.dataFormFieldTypeName = name();
+            } else {
+                this.dataFormFieldTypeName = typeDbName;
+            }
             this.dataFormFieldTypeDbId = typeDbId;
         }
 
@@ -90,7 +122,14 @@ public class CustomField extends Model {
             }
             return dataFormFieldTypeName;
         }
-    }
+
+        public static FormFieldFormatting forDbName(String dbName){
+            return formatNames.get(dbName);
+        }
+
+        public static FormFieldFormatting forDbId(Integer id){
+            return formatDbIds.get(id);
+        }    }
 
     public CustomField(Map<String, Object> model) {
         super(model);
@@ -140,5 +179,15 @@ public class CustomField extends Model {
 
     public static Builder<CustomField> builder(){
         return new Builder<CustomField>(CustomField.class);
+    }
+
+    public FormFieldFormatting getFieldFormat(){
+        final Integer formId = getFieldValue(Field.DataType);
+        return FormFieldFormatting.forDbId(formId);
+    }
+
+    public Model getEntityModel(){
+        final Integer modelId = getFieldValue(Field.DataType);
+        return Model.forDbId(modelId);
     }
 }

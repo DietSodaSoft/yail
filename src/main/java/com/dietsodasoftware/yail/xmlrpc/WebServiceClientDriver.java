@@ -3,11 +3,13 @@ package com.dietsodasoftware.yail.xmlrpc;
 import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
 import com.dietsodasoftware.yail.xmlrpc.client.YailProfile;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact;
+import com.dietsodasoftware.yail.xmlrpc.model.Contact.Field;
 import com.dietsodasoftware.yail.xmlrpc.model.ContactAction;
 import com.dietsodasoftware.yail.xmlrpc.model.CustomField;
 import com.dietsodasoftware.yail.xmlrpc.model.Product;
 import com.dietsodasoftware.yail.xmlrpc.model.TagAssignment;
 import com.dietsodasoftware.yail.xmlrpc.model.User;
+import com.dietsodasoftware.yail.xmlrpc.model.customfields.SimpleOperationCustomField;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftModelCollectionResults;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingException;
@@ -65,7 +67,7 @@ public class WebServiceClientDriver {
 
         final boolean useVendorKey = false;
 		final YailProfile profile;
-        if(useVendorKey){
+        if(false){
             if(location == null){
                 profile = YailProfile.usingVendorKey(appName, vendorKey, casUsername, casPassword);
             } else {
@@ -79,6 +81,10 @@ public class WebServiceClientDriver {
             }
         }
 		final YailClient client = profile.getClient();
+
+        exerciseFindByDateQuery(client);
+
+        if(true) return;
 
         exerciseUpdate(client, true);
 
@@ -106,6 +112,50 @@ public class WebServiceClientDriver {
 
         exerciseAddContactService(client);
         exerciseAddProductService(client);
+    }
+
+    private static void exerciseFindByDateQuery(final YailClient client) throws InfusionsoftParameterValidationException, InfusionsoftXmlRpcException {
+        final DataServiceQueryFilter<Contact> contactSearchBeforeDate = DataServiceQueryFilter.builder(Contact.class)
+                .dateIsBefore(Field.DateCreated, "2013-11-18 16:00:00")
+                .build();
+
+        for(Contact contact: client.autoPage(contactSearchBeforeDate.query())){
+            System.out.println("BeforeDateSearch: " + contact);
+        }
+
+        final DataServiceQueryFilter<Contact> contactSearchAfterDate = DataServiceQueryFilter.builder(Contact.class)
+                .dateIsAfter(Field.DateCreated, "2013-11-18 15:00:00")
+                .build();
+
+        for (Contact contact : client.autoPage(contactSearchAfterDate.query())) {
+            System.out.println("AfterDateSearch: " + contact);
+        }
+
+        final DataServiceQueryFilter<Contact> contactSearchBetweenDates1 = DataServiceQueryFilter.builder(Contact.class)
+                .dateIsAfter(Field.DateCreated, "2013-11-18 15:00:00")
+                .dateIsBefore(Field.DateCreated, "2013-11-18 17:00:00")
+                .build();
+
+        for (Contact contact : client.autoPage(contactSearchBetweenDates1.query())) {
+            System.out.println("BetweenDateSearch1: " + contact);
+        }
+
+        final DataServiceQueryFilter<Contact> contactSearchBetweenDates2 = DataServiceQueryFilter.builder(Contact.class)
+                .dateIsBetween(Field.DateCreated, "2013-11-18 17:00:00", "2013-11-18 15:00:00")
+                .build();
+
+        for (Contact contact : client.autoPage(contactSearchBetweenDates2.query())) {
+            System.out.println("BetweenDateSearch2: " + contact);
+        }
+
+
+        final DataServiceQueryFilter<Contact> customFieldDateSearch = DataServiceQueryFilter.builder(Contact.class)
+                .dateIsBefore(new SimpleOperationCustomField("TheDateofDates"), "2014-08-14 14:00:00")
+                .build();
+
+        for (Contact contact : client.autoPage(customFieldDateSearch.query())) {
+            System.out.println("CustomFieldBeforeSearch: " + contact);
+        }
     }
 
     private static void exerciseUpdate(final YailClient client, boolean commit) throws InfusionsoftParameterValidationException, InfusionsoftXmlRpcException {
@@ -414,4 +464,5 @@ public class WebServiceClientDriver {
         final Integer newId = client.call(add);
         System.out.println("The new Product's ID: " + newId);
     }
+
 }
