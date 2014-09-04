@@ -1,6 +1,7 @@
 package com.dietsodasoftware.yail.xmlrpc.service;
 
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
+import com.dietsodasoftware.yail.xmlrpc.model.customfields.OperationCustomField;
 import com.dietsodasoftware.yail.xmlrpc.model.NamedField;
 
 import java.util.Collection;
@@ -33,8 +34,8 @@ public abstract class InfusionsoftModelCollectionOperation<BT, MT extends Model>
 		return addReturnFieldName(field.name());
 	}
 	
-	public BT addCustomReturnFieldName(String customFieldName){
-		return addReturnFieldName("_" + Model.scrubCustomFieldName(customFieldName));
+	public BT addReturnFieldName(OperationCustomField field){
+		return addReturnFieldName(field.getApiArgument());
 	}
 
 	/** for paging, not public use */

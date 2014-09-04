@@ -1,6 +1,7 @@
 package com.dietsodasoftware.yail.xmlrpc.service.data;
 
 import com.dietsodasoftware.yail.xmlrpc.model.Model;
+import com.dietsodasoftware.yail.xmlrpc.model.customfields.OperationCustomField;
 import com.dietsodasoftware.yail.xmlrpc.model.NamedField;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 
@@ -103,16 +104,16 @@ public class DataServiceQueryFilter<MT extends Model> {
             return fieldLike(field.name(), value, like);
         }
 
-        public DataServiceQueryFilter.Builder customFieldEquals(String fieldName, Object value){
-            return fieldEquals("_" + Model.scrubCustomFieldName(fieldName), value);
+        public DataServiceQueryFilter.Builder fieldEquals(OperationCustomField field, Object value){
+            return fieldEquals(field.getApiArgument(), value);
         }
 
-        public DataServiceQueryFilter.Builder customFieldIsNull(String fieldName){
-            return fieldIsNull("_" + Model.scrubCustomFieldName(fieldName));
+        public DataServiceQueryFilter.Builder fieldIsNull(OperationCustomField field){
+            return fieldIsNull(field.getApiArgument());
         }
 
-        public DataServiceQueryFilter.Builder customFieldLike(String fieldName, String value, Like like){
-            return fieldLike("_" + Model.scrubCustomFieldName(fieldName), value, like);
+        public DataServiceQueryFilter.Builder fieldLike(OperationCustomField field, String value, Like like){
+            return fieldLike(field.getApiArgument(), value, like);
         }
 
         public DataServiceQueryFilter.Builder fieldCompare(NamedField field, Compare compare, String value){
@@ -120,13 +121,13 @@ public class DataServiceQueryFilter<MT extends Model> {
             return this;
         }
 
-        public DataServiceQueryFilter.Builder customFieldCompare(String field, Compare compare, String value){
-            fieldEquals("_" + Model.scrubCustomFieldName(field), compare.compareString + value);
+        public DataServiceQueryFilter.Builder fieldCompare(OperationCustomField field, Compare compare, String value){
+            fieldEquals(field.getApiArgument(), compare.compareString + value);
             return this;
         }
 
-        public Builder customFieldDateIsBefore(String field, Object value) {
-            return dateIsBefore("_" + Model.scrubCustomFieldName(field), value);
+        public Builder dateIsBefore(OperationCustomField field, Object value) {
+            return dateIsBefore(field.getApiArgument(), value);
         }
 
         public Builder dateIsBefore(NamedField field, Object value){
