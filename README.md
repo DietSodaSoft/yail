@@ -38,7 +38,7 @@ You can get right to work using version 0.7.13 or greater by including it in you
         ...
         <properties>
             ...
-            <com.dietsodasoftware.yail-version>0.8.1</com.dietsodasoftware.yail-version>
+            <com.dietsodasoftware.yail-version>0.9.0</com.dietsodasoftware.yail-version>
             ...
         </properties>
 
@@ -215,7 +215,7 @@ matching that filter.  This is useful to know how many "pages" to expect.
         // find all contacts with a first name starting with 'A'
         final DataServiceQueryFilter<Contact> filter = DataServiceQueryFilter.builder(Contact.class)
 		             .fieldLike(Contact.Field.FirstName, "A", Like.after)
-		             .customFieldLike("DogName", "Ral", Like.after)
+		             .fieldLike(new SimpleOperationCustomField("DogName"), "Ral", Like.after)
                      .build();
 
         final Integer count = client.call(filter.count());
@@ -228,7 +228,13 @@ matching that filter.  This is useful to know how many "pages" to expect.
             System.out.println(contact);
         }
 
+Or, if you use the [YAIL CustomField SDK Generator](https://bitbucket.org/dietsoda/yail-customfield-sdk), you get compile-time support for custom field definitions:
 
+        final NamedCustomField customFieldDefintion = com.yourcompany.customfieldsdk.CustomContact.Field.DogName;
+        final DataServiceQueryFilter<Contact> filter = DataServiceQueryFilter.builder(Contact.class)
+		             .fieldLike(Contact.Field.FirstName, "A", Like.after)
+		             .fieldLike(customFieldDefinition, "Ral", Like.after)
+                     .build();
 
 
 ### DataService.getAppointmentCal
