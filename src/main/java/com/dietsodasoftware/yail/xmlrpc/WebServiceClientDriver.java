@@ -2,6 +2,7 @@ package com.dietsodasoftware.yail.xmlrpc;
 
 import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
 import com.dietsodasoftware.yail.xmlrpc.client.YailProfile;
+import com.dietsodasoftware.yail.xmlrpc.config.YailPropertiesConfiguration;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact.Field;
 import com.dietsodasoftware.yail.xmlrpc.model.ContactAction;
@@ -37,49 +38,20 @@ import net.fortuna.ical4j.model.Calendar;
 import org.joda.time.LocalDateTime;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;
 import java.util.TimeZone;
 
 public class WebServiceClientDriver {
 
     private static final String APP_PROPERTIES_NAME = "app.properties";
-    private static final String PROP_APP_NAME = "com.dietsodasoftware.yail.appname";
-    private static final String PROP_APP_APIKEY = "com.dietsodasoftware.yail.apikey";
-    private static final String PROP_APP_LOCATION = "com.dietsodasoftware.yail.location";
-    private static final String PROP_DSS_VENDOR_KEY = "com.dietsodasoftware.yail.vendorkey";
-    private static final String PROP_CAS_USERNAME_KEY = "com.dietsodasoftware.yail.cas-username";
-    private static final String PROP_CAS_PASSWORD_KEY = "com.dietsodasoftware.yail.cas-password";
 
     public static void main(String [] args) throws InfusionsoftXmlRpcException, InfusionsoftResponseParsingException, IOException, InfusionsoftParameterValidationException {
 
-        final Properties props = readAppProperties();
-        final String appName = props.getProperty(PROP_APP_NAME);
-        final String apiKey = props.getProperty(PROP_APP_APIKEY + "." + appName);
-        final String location = props.getProperty(PROP_APP_LOCATION + "." + appName);
-        final String casUsername = props.getProperty(PROP_CAS_USERNAME_KEY);
-        final String casPassword = props.getProperty(PROP_CAS_PASSWORD_KEY);
-        final String vendorKey = props.getProperty(PROP_DSS_VENDOR_KEY);
-
-        final boolean useVendorKey = false;
-		final YailProfile profile;
-        if(false){
-            if(location == null){
-                profile = YailProfile.usingVendorKey(appName, vendorKey, casUsername, casPassword);
-            } else {
-                profile = YailProfile.atLocationUsingVendorKey(appName, location, vendorKey, casUsername, casPassword);
-            }
-        } else {
-            if(location == null){
-                profile = YailProfile.usingApiKey(appName, apiKey);
-            } else {
-                profile = YailProfile.atLocationUsingApiKey(appName, location, apiKey);
-            }
-        }
+        final YailPropertiesConfiguration yailConfiguration = new YailPropertiesConfiguration(APP_PROPERTIES_NAME);
+		final YailProfile profile = yailConfiguration.createProfile();
 		final YailClient client = profile.getClient();
 
         exerciseFindByDateQuery(client);
@@ -88,7 +60,10 @@ public class WebServiceClientDriver {
 
         exerciseUpdate(client, true);
 
-        exerciseVendorKeyToken(client, vendorKey, casUsername, casPassword);
+        final String vendorKey = yailConfiguration.getVendorKey();
+        final String username = yailConfiguration.getUsername();
+        final String password = yailConfiguration.getPassword();
+        exerciseVendorKeyToken(client, vendorKey, username, password);
 
         exerciseUpdateCustomField(client);
 
@@ -108,7 +83,7 @@ public class WebServiceClientDriver {
 
         exerciseDataServiceGetAppointmentCal(client);
 
-        exerciseUsernamePasswordAuthentication(client, vendorKey, casUsername, casPassword);
+        exerciseUsernamePasswordAuthentication(client, vendorKey, username, password);
 
         exerciseAddContactService(client);
         exerciseAddProductService(client);
@@ -150,7 +125,7 @@ public class WebServiceClientDriver {
 
 
         final DataServiceQueryFilter<Contact> customFieldDateSearch = DataServiceQueryFilter.builder(Contact.class)
-                .dateIsBefore(new SimpleOperationCustomField("TheDateofDates"), "2014-08-14 14:00:00")
+                .dateIsBefore(new SimpleOperationCustomField("DaysUntilNextEvent0"), "2014-08-14 14:00:00")
                 .build();
 
         for (Contact contact : client.autoPage(customFieldDateSearch.query())) {
@@ -428,14 +403,6 @@ public class WebServiceClientDriver {
         final AuthenticationServiceAuthenticateForTemporaryKey keyAuth = new AuthenticationServiceAuthenticateForTemporaryKey(vendorKey, username, password);
         final String temporaryKey = client.call(keyAuth);
         System.out.println("Temporary key: " + temporaryKey);
-    }
-
-    private static final Properties readAppProperties() throws IOException {
-        final Properties props = new Properties();
-        final InputStream is = WebServiceClientDriver.class.getClassLoader().getResourceAsStream(APP_PROPERTIES_NAME);
-        props.load(is);
-
-        return props;
     }
 
     private static void exerciseAddContactService(YailClient client) throws InfusionsoftXmlRpcException, InfusionsoftParameterValidationException {
