@@ -11,8 +11,8 @@
     <scm>
         <connection>scm:hg:ssh://hg@bitbucket.org/dietsoda/yail</connection>
         <developerConnection>scm:hg:ssh://hg@bitbucket.org/dietsoda/yail</developerConnection>
-        <url>http://hg.dietsodasoftware.com/yail/src</url>
-      <tag>HEAD</tag>
+        <url>https://bitbucket.org/dietsoda/yail</url>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
