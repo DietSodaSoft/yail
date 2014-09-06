@@ -3,5 +3,6 @@
 .*.iml
 target
 tmp
+buildNumber.properties
 src/main/resources/app.properties
 

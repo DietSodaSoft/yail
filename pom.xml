@@ -147,9 +147,8 @@
                     Generate sequence build number based on:
                     build number and timestamp
                     -->
-                    <format>Build: #{0} ({1,date,yyyy-MM-dd HH:mm:ss})</format>
+                    <format>Build: {0,date,yyyy-MM-dd HH:mm:ss}</format>
                     <items>
-                        <item>buildNumber\d*</item>
                         <item>timestamp</item>
                         <item>changeSet</item>
                         <item>changeSetDate</item>
@@ -169,7 +168,7 @@
                             <Implementation-Url>${project.url}</Implementation-Url>
                             <Implementation-Version>${project.version}</Implementation-Version>
                             <Implementation-Build>${buildNumber}</Implementation-Build>
-                            <Implementation-SCM-Revision>${changeSet} committed ${changeSetDate}</Implementation-SCM-Revision>
+                            <Implementation-SCM-Revision>change ${changeSet} committed ${changeSetDate}</Implementation-SCM-Revision>
                         </manifestEntries>
                     </archive>
                 </configuration>
