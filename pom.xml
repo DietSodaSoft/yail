@@ -19,6 +19,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.url>https://bitbucket.org/dietsoda/yail</project.url>
 
+        <maven.compiler.plugin-version>3.1</maven.compiler.plugin-version>
         <org.apache.httpcomponents-version>4.2.5</org.apache.httpcomponents-version>
         <com.fasterxml.jackson-version>2.3.2</com.fasterxml.jackson-version>
     </properties>
@@ -110,7 +111,18 @@
     </dependencies>
 
     <build>
+        <!-- drone.io requires explicitly setting source/target Java version -->
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin-version}</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
