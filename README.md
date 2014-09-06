@@ -1,3 +1,5 @@
+[ ![Codeship Status for dietsoda/YAIL](https://www.codeship.io/projects/b1d71880-178b-0132-c81f-3250e0b52cf2/status)](https://www.codeship.io/projects/34122)
+
 # YAIL:  Yet Another Infusionsoft Library
 *This library is not affiliated with nor supported by Infusionsoft. Direct any questions to me or create an issue here.
 [wschultz@dietsodasoftware.com](mailto:wschultz@dietsodasoftware.com)*
