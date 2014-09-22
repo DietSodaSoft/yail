@@ -4,14 +4,45 @@ public class AddOrderItemArguments {
     private AddOrderItemArguments(){
     }
 
+    public enum OrderItemType {
+        Shipping("Shipping", 1),
+        Tax("Contact", 2),
+        Service_Misc("Service & Misc", 3),
+        Product("Product", 4),
+        Upsell_Product("Upsell Product", 5),
+        Finance_Charge("Finance Charge", 6),
+        Special("Special", 7),
+        Program("Program", 8),
+        Subscription_Plan("Subscription Plan", 9),
+        Special_Free_Trial_Days("Special: Free Trial Days", 10),
+        Special_Order_Total("Special: Order Total", 11),
+        Special_Product("Special: Product", 12),
+        Special_Category("Special: Category", 13),
+        Special_Shipping("Special: Shipping", 14);
+
+        private final Integer orderItemTypeDbId;
+        private final String orderItemTypeDbName;
+        private OrderItemType(String orderItemTypeDbName, Integer orderItemTypeDbId){
+            this.orderItemTypeDbName = orderItemTypeDbName;
+            this.orderItemTypeDbId = orderItemTypeDbId;
+        }
+
+        public Integer getOrderItemTypeDbId(){
+            return orderItemTypeDbId;
+        }
+
+        public String getOrderItemTypeDbName(){
+            return orderItemTypeDbName;
+        }
+    }
+
     int invoiceId;
     int productId;
-    int type;
+    OrderItemType type;
     double price;
     int quantity;
     String title;
     String description;
-
 
     public static Builder builder(){
         return new Builder();
@@ -37,7 +68,7 @@ public class AddOrderItemArguments {
             return this;
         }
 
-        public Builder type(int type){
+        public Builder type(OrderItemType type){
             args.type = type;
             return this;
         }

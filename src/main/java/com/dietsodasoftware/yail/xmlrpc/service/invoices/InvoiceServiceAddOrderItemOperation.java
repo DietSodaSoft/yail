@@ -23,7 +23,6 @@ public class InvoiceServiceAddOrderItemOperation extends InfusionsoftXmlRpcServi
 
     @Override
     protected List<?> getOperationParameters() {
-        final List<Object> args = new LinkedList<Object>();
         return ListFactory.quickUnmodifiableLinkedList(
                 arguments.invoiceId,
                 arguments.productId,

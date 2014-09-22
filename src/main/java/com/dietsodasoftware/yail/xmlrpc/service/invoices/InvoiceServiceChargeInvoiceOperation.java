@@ -24,7 +24,6 @@ public class InvoiceServiceChargeInvoiceOperation extends InfusionsoftXmlRpcServ
 
     @Override
     protected List<?> getOperationParameters() {
-        final List<Object> args = new LinkedList<Object>();
         return ListFactory.quickUnmodifiableLinkedList(
                 arguments.invoiceId,
                 arguments.notes,

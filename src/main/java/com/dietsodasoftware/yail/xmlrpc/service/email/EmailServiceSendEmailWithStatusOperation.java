@@ -6,10 +6,7 @@ import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingExcep
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
 import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @InfusionsoftRpc(service = "APIEmailService", method = "sendEmailWithStatus")
@@ -23,7 +20,6 @@ public class EmailServiceSendEmailWithStatusOperation extends InfusionsoftXmlRpc
 
     @Override
     protected List<?> getOperationParameters() {
-        final List<Object> args = new LinkedList<Object>();
         return ListFactory.quickUnmodifiableLinkedList(
                 arguments.fromAddress,
                 arguments.toAddresses,
@@ -34,7 +30,6 @@ public class EmailServiceSendEmailWithStatusOperation extends InfusionsoftXmlRpc
                 arguments.htmlBody
         );
     }
-
 
     @Override
     public List<SendEmailWithStatusResult> parseResult(Object rawResponse) throws InfusionsoftResponseParsingException, InfusionsoftAuthorizationFailureException {
@@ -47,7 +42,7 @@ public class EmailServiceSendEmailWithStatusOperation extends InfusionsoftXmlRpc
             }
             return results;
         } else {
-            return null;
+            return Collections.emptyList();
     }
     }
 }

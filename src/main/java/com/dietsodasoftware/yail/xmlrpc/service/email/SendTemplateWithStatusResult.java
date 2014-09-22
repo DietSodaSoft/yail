@@ -6,7 +6,7 @@ public class SendTemplateWithStatusResult {
     private enum Fields {
         Successful,
         ContactId,
-        Message;
+        Message
 
     }
     private final Map<String, String> rawResult;
@@ -14,7 +14,7 @@ public class SendTemplateWithStatusResult {
         this.rawResult = rawResult;
     }
 
-    public String getSuccessStatus(){
+    public String getIsSuccessful(){
         return rawResult.get(Fields.Successful.name());
     }
 

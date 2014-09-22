@@ -6,7 +6,7 @@ public class SendEmailWithStatusResult {
     private enum Fields {
         Successful,
         Email,
-        Message;
+        Message
 
     }
     private final Map<String, String> rawResult;
@@ -14,7 +14,7 @@ public class SendEmailWithStatusResult {
         this.rawResult = rawResult;
     }
 
-    public String getSuccessStatus(){
+    public String getIsSuccesful(){
         return rawResult.get(Fields.Successful.name());
     }
 
