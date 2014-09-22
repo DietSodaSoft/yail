@@ -6,11 +6,16 @@ package com.dietsodasoftware.yail.oauth2.parse;
  */
 public class DietSodaUtils {
 
-    public static final String MASHERY_CLIENT_ID = "Your mashery application client ID here";
-    public static final String MASHERY_CLIENT_SECRET = "Your mashery client secret here";
+    // this is for Chris' proofing
+//    public static final String MASHERY_CLIENT_ID = "7xz748dqbcctj4whx2kkm4kh";
+//    public static final String MASHERY_CLIENT_SECRET = "RJUEKgUNVC";
 
-    private static final String PARSE_APPLICATION_ID = "Your own Parse.com application ID here";
-    private static final String PARSE_API_KEY = "Your own Parse.com API Key";
+    // my creds
+    public static final String MASHERY_CLIENT_ID = "nwhg42jrzr9498zdxkup9ww9";
+    public static final String MASHERY_CLIENT_SECRET = "qdUMG7cFcM";
+
+    private static final String PARSE_APPLICATION_ID = "z8NmDvVsa7WPBpqsQGXtrqZRyVlokCNoEb40BdOE";
+    private static final String PARSE_API_KEY = "m1KOhmEbRcPlCkvGHiPKN71Y2H1zPeXZnACaB9H6";
 
     public static ParseConfiguration parse(){
         return new ParseConfiguration(PARSE_APPLICATION_ID, PARSE_API_KEY);

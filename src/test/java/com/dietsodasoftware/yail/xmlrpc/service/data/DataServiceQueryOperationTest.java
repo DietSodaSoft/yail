@@ -1,6 +1,7 @@
 package com.dietsodasoftware.yail.xmlrpc.service.data;
 
 import com.dietsodasoftware.yail.xmlrpc.model.Contact;
+import com.dietsodasoftware.yail.xmlrpc.model.customfields.SimpleOperationCustomField;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,12 +29,12 @@ public class DataServiceQueryOperationTest {
 
     @Test(expected = InfusionsoftParameterValidationException.class)
     public void testOrderByRequiresAscending() throws InfusionsoftParameterValidationException {
-        query.orderByCustomField("field").validateArguments();
+        query.orderBy(new SimpleOperationCustomField("field")).validateArguments();
     }
 
     @Test
     public void testOrderByAndAscendingAreBothSet() throws InfusionsoftParameterValidationException {
-        query.orderByCustomField("field").ascending().validateArguments();
+        query.orderBy(new SimpleOperationCustomField("field")).ascending().validateArguments();
     }
 
     @Test

@@ -4,18 +4,22 @@
 
     <groupId>com.dietsodasoftware</groupId>
     <artifactId>yail-XmlRpcJavaClient</artifactId>
-    <version>0.8.2-SNAPSHOT</version>
+    <version>0.9.6-SNAPSHOT</version>
+
+    <name>YAIL Infusionsoft SDK</name>
 
     <scm>
         <connection>scm:hg:ssh://hg@bitbucket.org/dietsoda/yail</connection>
-        <url>http://hg.dietsodasoftware.com/yail/src</url>
-      <tag>HEAD</tag>
+        <developerConnection>scm:hg:ssh://hg@bitbucket.org/dietsoda/yail</developerConnection>
+        <url>https://bitbucket.org/dietsoda/yail</url>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.url>https://bitbucket.org/dietsoda/yail</project.url>
 
+        <maven.compiler.plugin-version>3.1</maven.compiler.plugin-version>
         <org.apache.httpcomponents-version>4.2.5</org.apache.httpcomponents-version>
         <com.fasterxml.jackson-version>2.3.2</com.fasterxml.jackson-version>
     </properties>
@@ -107,7 +111,18 @@
     </dependencies>
 
     <build>
+        <!-- drone.io requires explicitly setting source/target Java version -->
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin-version}</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
@@ -144,9 +159,8 @@
                     Generate sequence build number based on:
                     build number and timestamp
                     -->
-                    <format>Build: #{0} ({1,date,yyyy-MM-dd HH:mm:ss})</format>
+                    <format>Build: {0,date,yyyy-MM-dd HH:mm:ss}</format>
                     <items>
-                        <item>buildNumber\d*</item>
                         <item>timestamp</item>
                         <item>changeSet</item>
                         <item>changeSetDate</item>
@@ -162,10 +176,11 @@
                     <archive>
                         <!-- will put the entries into META-INF/MANIFEST.MF file -->
                         <manifestEntries>
+                            <Implementation-Project-Description>${project.name}, (c) 2013-2014 Diet Soda Software</Implementation-Project-Description>
                             <Implementation-Url>${project.url}</Implementation-Url>
                             <Implementation-Version>${project.version}</Implementation-Version>
                             <Implementation-Build>${buildNumber}</Implementation-Build>
-                            <Implementation-SCM-Revision>${changeSet} committed ${changeSetDate}</Implementation-SCM-Revision>
+                            <Implementation-SCM-Revision>change ${changeSet} committed ${changeSetDate}</Implementation-SCM-Revision>
                         </manifestEntries>
                     </archive>
                 </configuration>
