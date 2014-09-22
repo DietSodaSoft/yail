@@ -23,7 +23,6 @@ public class InvoiceServiceCreateBlankOrderOperation extends InfusionsoftXmlRpcS
 
     @Override
     protected List<?> getOperationParameters() {
-        final List<Object> args = new LinkedList<Object>();
         return ListFactory.quickUnmodifiableLinkedList(
                 arguments.invoiceId,
                 arguments.title,

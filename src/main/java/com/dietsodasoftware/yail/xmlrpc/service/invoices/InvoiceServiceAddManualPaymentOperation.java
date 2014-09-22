@@ -24,7 +24,6 @@ public class InvoiceServiceAddManualPaymentOperation extends InfusionsoftXmlRpcS
 
     @Override
     protected List<?> getOperationParameters() {
-        final List<Object> args = new LinkedList<Object>();
         return ListFactory.quickUnmodifiableLinkedList(
                 arguments.invoiceId,
                 arguments.amt,

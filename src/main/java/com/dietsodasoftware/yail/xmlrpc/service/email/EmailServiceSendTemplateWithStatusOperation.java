@@ -6,10 +6,7 @@ import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftResponseParsingExcep
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcServiceOperation;
 import com.dietsodasoftware.yail.xmlrpc.utils.ListFactory;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @InfusionsoftRpc(service = "APIEmailService", method = "sendTemplateWithStatus")
 public class EmailServiceSendTemplateWithStatusOperation extends InfusionsoftXmlRpcServiceOperation<List<SendTemplateWithStatusResult>> {
@@ -22,7 +19,6 @@ public class EmailServiceSendTemplateWithStatusOperation extends InfusionsoftXml
 
     @Override
     protected List<?> getOperationParameters() {
-        final List<Object> args = new LinkedList<Object>();
         return ListFactory.quickUnmodifiableLinkedList(
                 arguments.contactList,
                 arguments.templateId
@@ -41,7 +37,7 @@ public class EmailServiceSendTemplateWithStatusOperation extends InfusionsoftXml
             }
             return results;
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 }

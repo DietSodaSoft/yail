@@ -2,12 +2,15 @@ package com.dietsodasoftware.yail.xmlrpc.service.invoices;
 
 import java.util.Map;
 
+/**
+ * https://developer.infusionsoft.com/docs/read/Invoice_Service#chargeInvoice
+ */
 public class ChargeInvoiceResult {
     private enum Fields {
         Successful,
         Code,
         RefNum,
-        Message;
+        Message
 
     }
     private final Map<String, String> rawResult;
