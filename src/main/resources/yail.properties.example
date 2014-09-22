@@ -1,0 +1,18 @@
+# Either provide API key credentials or Vendor key credentials.  Optionally specify where to find the instance.
+
+#  Legacy: API Key
+#  Specify the app name and its API key
+#  All API key properties are prefixed the same, followed by the appname the key is good for
+#  This allows multiple app keys to live in the same (insecure) file.
+#com.dietsodasoftware.yail.appname=nc17
+#com.dietsodasoftware.yail.apikey.nc17 = abcdefghijklmnopqrstuvwxyz
+#com.dietsodasoftware.yail.apikey.pg13 = zyxwvutsrqponmlkjihgfedcba
+
+#  Legacy: Vendor Key
+#  Specify your vendor key and somehow get the username and password
+#com.dietsodasoftware.yail.vendorkey = abcdefghijklmnopqrstuvwxyz
+#com.dietsodasoftware.yail.account-central-username=jon.doe@yourcompany.com
+#com.dietsodasoftware.yail.account-central-password=jdpassword
+
+#  Optional: Specify where the instance lives
+#com.dietsodasoftware.yail.location.nc17=nc17.infusionsoft.com
