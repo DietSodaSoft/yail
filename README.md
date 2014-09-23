@@ -16,7 +16,7 @@ Check out the [Release Notes](wiki/Release Notes) for what has been happening la
 
 ## Getting Started
 
-You can get right to work using version 0.7.13 or greater by including it in your maven project:
+You can get right to work using version 0.9.6 or greater by including it in your maven project:
 
         <repositories>
             ...
@@ -40,7 +40,7 @@ You can get right to work using version 0.7.13 or greater by including it in you
         ...
         <properties>
             ...
-            <com.dietsodasoftware.yail-version>0.9.0</com.dietsodasoftware.yail-version>
+            <com.dietsodasoftware.yail-version>0.9.6</com.dietsodasoftware.yail-version>
             ...
         </properties>
 
