@@ -1,6 +1,7 @@
 package com.dietsodasoftware.yail.oauth2.take1.client;
 
 import com.dietsodasoftware.yail.oauth2.client.InfusionsoftOauthToken;
+import com.dietsodasoftware.yail.oauth2.client.scopes.Scope;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
