@@ -3,7 +3,7 @@ package com.dietsodasoftware.yail.oauth2.take1;
 import com.dietsodasoftware.yail.oauth2.client.InfusionsoftOauthToken;
 import com.dietsodasoftware.yail.oauth2.take1.client.InfusionsoftOauthAuthenticator;
 import com.dietsodasoftware.yail.oauth2.take1.client.OauthAuthenticationException;
-import com.dietsodasoftware.yail.oauth2.take1.client.Scope;
+import com.dietsodasoftware.yail.oauth2.client.scopes.Scope;
 import com.dietsodasoftware.yail.oauth2.take1.parse.DietSodaUtils;
 import com.dietsodasoftware.yail.oauth2.take1.parse.ParseAuthority;
 import com.dietsodasoftware.yail.oauth2.take1.parse.ParseConfiguration;

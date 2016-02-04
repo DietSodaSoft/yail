@@ -2,7 +2,7 @@ package com.dietsodasoftware.yail.oauth2.take1.parse.authcode;
 
 import com.dietsodasoftware.yail.oauth2.take1.client.OAuthAuthenticationHandler;
 import com.dietsodasoftware.yail.oauth2.take1.client.OauthAuthenticationException;
-import com.dietsodasoftware.yail.oauth2.take1.client.Scope;
+import com.dietsodasoftware.yail.oauth2.client.scopes.Scope;
 import com.dietsodasoftware.yail.oauth2.take1.client.ScopeContext;
 
 import java.io.IOException;

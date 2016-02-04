@@ -1,5 +1,7 @@
 package com.dietsodasoftware.yail.oauth2.take1.client;
 
+import com.dietsodasoftware.yail.oauth2.client.scopes.Scope;
+
 import java.net.URI;
 import java.util.Collection;
 

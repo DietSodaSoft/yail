@@ -1,7 +1,7 @@
 package com.dietsodasoftware.yail.oauth2.take1.authority;
 
 import com.dietsodasoftware.yail.oauth2.take1.client.OAuthAuthenticationHandler;
-import com.dietsodasoftware.yail.oauth2.take1.client.Scope;
+import com.dietsodasoftware.yail.oauth2.client.scopes.Scope;
 import edu.emory.mathcs.backport.java.util.Arrays;
 import org.apache.http.client.utils.URIBuilder;
 
