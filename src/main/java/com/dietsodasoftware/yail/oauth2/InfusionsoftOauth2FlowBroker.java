@@ -18,11 +18,12 @@ import org.apache.http.client.fluent.Response;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
 
+import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Base64;
+//import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -122,7 +123,9 @@ public class InfusionsoftOauth2FlowBroker {
 
         final String encoded;
         try {
-            encoded = Base64.getEncoder().encodeToString((clientId +":" + secret).getBytes("utf-8"));
+            encoded = DatatypeConverter.printBase64Binary((clientId +":" + secret).getBytes("utf-8"));
+//            Java 8:
+//            encoded = Base64.getEncoder().encodeToString((clientId +":" + secret).getBytes("utf-8"));
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("Java no longer understands its own utf-8 character encoding.");
         }
