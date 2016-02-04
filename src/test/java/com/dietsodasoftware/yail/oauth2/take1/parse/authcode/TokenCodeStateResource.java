@@ -1,15 +1,13 @@
-package com.dietsodasoftware.yail.oauth2.parse.authcode;
+package com.dietsodasoftware.yail.oauth2.take1.parse.authcode;
 
-import com.dietsodasoftware.yail.oauth2.parse.ParseConfiguration;
+import com.dietsodasoftware.yail.oauth2.take1.parse.ParseConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.fluent.Request;
-import org.apache.http.client.fluent.Response;
 import org.apache.http.client.utils.URIBuilder;
-import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.net.URI;

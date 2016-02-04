@@ -1,6 +1,5 @@
-package com.dietsodasoftware.yail.oauth2.parse;
+package com.dietsodasoftware.yail.oauth2.take1.parse;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;

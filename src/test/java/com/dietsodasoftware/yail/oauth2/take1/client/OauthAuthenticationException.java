@@ -1,4 +1,4 @@
-package com.dietsodasoftware.yail.oauth2.client;
+package com.dietsodasoftware.yail.oauth2.take1.client;
 
 /**
  * User: wendel.schultz

@@ -1,14 +1,8 @@
-package com.dietsodasoftware.yail.oauth2.authority;
+package com.dietsodasoftware.yail.oauth2.take1.authority;
 
-import com.dietsodasoftware.yail.oauth2.client.OAuthAuthenticationHandler;
-import com.dietsodasoftware.yail.oauth2.client.OauthAuthenticationAuthority;
-import com.dietsodasoftware.yail.oauth2.client.OauthAuthenticationException;
-import com.dietsodasoftware.yail.oauth2.client.Scope;
-import com.dietsodasoftware.yail.oauth2.client.ScopeContext;
-import com.dietsodasoftware.yail.oauth2.parse.authcode.ParseTokenStatePollingTask;
-import edu.emory.mathcs.backport.java.util.*;
+import com.dietsodasoftware.yail.oauth2.take1.client.OAuthAuthenticationHandler;
+import com.dietsodasoftware.yail.oauth2.take1.client.Scope;
 import edu.emory.mathcs.backport.java.util.Arrays;
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.awt.*;
@@ -17,9 +11,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 /**
  * User: wendel.schultz

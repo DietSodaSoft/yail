@@ -1,10 +1,9 @@
-package com.dietsodasoftware.yail.oauth2.parse.authcode;
+package com.dietsodasoftware.yail.oauth2.take1.parse.authcode;
 
-import com.dietsodasoftware.yail.oauth2.client.OAuthAuthenticationHandler;
-import com.dietsodasoftware.yail.oauth2.client.OauthAuthenticationException;
-import com.dietsodasoftware.yail.oauth2.client.Scope;
-import com.dietsodasoftware.yail.oauth2.client.ScopeContext;
-import org.apache.http.client.utils.URIBuilder;
+import com.dietsodasoftware.yail.oauth2.take1.client.OAuthAuthenticationHandler;
+import com.dietsodasoftware.yail.oauth2.take1.client.OauthAuthenticationException;
+import com.dietsodasoftware.yail.oauth2.take1.client.Scope;
+import com.dietsodasoftware.yail.oauth2.take1.client.ScopeContext;
 
 import java.io.IOException;
 import java.net.URI;

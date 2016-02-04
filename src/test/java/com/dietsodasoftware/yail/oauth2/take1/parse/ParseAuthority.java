@@ -1,12 +1,12 @@
-package com.dietsodasoftware.yail.oauth2.parse;
+package com.dietsodasoftware.yail.oauth2.take1.parse;
 
-import com.dietsodasoftware.yail.oauth2.authority.BrowserAuthorityBridge;
-import com.dietsodasoftware.yail.oauth2.client.OAuthAuthenticationHandler;
-import com.dietsodasoftware.yail.oauth2.client.OauthAuthenticationAuthority;
-import com.dietsodasoftware.yail.oauth2.client.OauthAuthenticationException;
-import com.dietsodasoftware.yail.oauth2.client.Scope;
-import com.dietsodasoftware.yail.oauth2.parse.authcode.ParseTokenResourceService;
-import com.dietsodasoftware.yail.oauth2.parse.authcode.ParseTokenStatePollingTask;
+import com.dietsodasoftware.yail.oauth2.take1.authority.BrowserAuthorityBridge;
+import com.dietsodasoftware.yail.oauth2.take1.client.OAuthAuthenticationHandler;
+import com.dietsodasoftware.yail.oauth2.take1.client.OauthAuthenticationAuthority;
+import com.dietsodasoftware.yail.oauth2.take1.client.OauthAuthenticationException;
+import com.dietsodasoftware.yail.oauth2.take1.client.Scope;
+import com.dietsodasoftware.yail.oauth2.take1.parse.authcode.ParseTokenResourceService;
+import com.dietsodasoftware.yail.oauth2.take1.parse.authcode.ParseTokenStatePollingTask;
 
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;

@@ -1,4 +1,6 @@
-package com.dietsodasoftware.yail.oauth2.client;
+package com.dietsodasoftware.yail.oauth2.take1.client;
+
+import com.dietsodasoftware.yail.oauth2.client.InfusionsoftOauthToken;
 
 /**
  * User: wendel.schultz

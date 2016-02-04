@@ -1,25 +1,20 @@
-package com.dietsodasoftware.yail.oauth2;
+package com.dietsodasoftware.yail.oauth2.take1;
 
-import com.dietsodasoftware.yail.oauth2.client.InfusionsoftOauthAuthenticator;
 import com.dietsodasoftware.yail.oauth2.client.InfusionsoftOauthToken;
-import com.dietsodasoftware.yail.oauth2.client.OauthAuthenticationException;
-import com.dietsodasoftware.yail.oauth2.client.Scope;
-import com.dietsodasoftware.yail.oauth2.parse.DietSodaUtils;
-import com.dietsodasoftware.yail.oauth2.parse.ParseAuthority;
-import com.dietsodasoftware.yail.oauth2.parse.ParseConfiguration;
+import com.dietsodasoftware.yail.oauth2.take1.client.InfusionsoftOauthAuthenticator;
+import com.dietsodasoftware.yail.oauth2.take1.client.OauthAuthenticationException;
+import com.dietsodasoftware.yail.oauth2.take1.client.Scope;
+import com.dietsodasoftware.yail.oauth2.take1.parse.DietSodaUtils;
+import com.dietsodasoftware.yail.oauth2.take1.parse.ParseAuthority;
+import com.dietsodasoftware.yail.oauth2.take1.parse.ParseConfiguration;
 import com.dietsodasoftware.yail.xmlrpc.client.YailClient;
 import com.dietsodasoftware.yail.xmlrpc.client.YailProfile;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact;
 import com.dietsodasoftware.yail.xmlrpc.model.Contact.Field;
 import com.dietsodasoftware.yail.xmlrpc.model.ContactAction;
-import com.dietsodasoftware.yail.xmlrpc.model.CreditCard;
-import com.dietsodasoftware.yail.xmlrpc.model.InfusionsoftUserInfo;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftParameterValidationException;
 import com.dietsodasoftware.yail.xmlrpc.service.InfusionsoftXmlRpcException;
-import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceGetUserInfoOperation;
-import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryCountOperation;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryFilter;
-import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryFilter.Builder.Compare;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryFilter.Builder.Like;
 import com.dietsodasoftware.yail.xmlrpc.service.data.DataServiceQueryOperation;
 

@@ -1,6 +1,4 @@
-package com.dietsodasoftware.yail.oauth2.client;
-
-import org.apache.http.client.utils.URIBuilder;
+package com.dietsodasoftware.yail.oauth2.take1.client;
 
 import java.net.URI;
 import java.util.Collection;

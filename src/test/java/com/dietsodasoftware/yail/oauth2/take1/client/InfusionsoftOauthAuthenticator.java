@@ -1,17 +1,11 @@
-package com.dietsodasoftware.yail.oauth2.client;
+package com.dietsodasoftware.yail.oauth2.take1.client;
 
-import com.dietsodasoftware.yail.oauth2.parse.ParseConfiguration;
-import com.dietsodasoftware.yail.oauth2.parse.authcode.ParseTokenResourceService;
+import com.dietsodasoftware.yail.oauth2.client.InfusionsoftOauthToken;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.fasterxml.jackson.module.mrbean.MrBeanModule;
-import edu.emory.mathcs.backport.java.util.Arrays;
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.Header;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
@@ -19,9 +13,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.ContentType;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 
 /**
  * User: wendel.schultz

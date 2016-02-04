@@ -1,9 +1,7 @@
-package com.dietsodasoftware.yail.oauth2.parse.authcode;
+package com.dietsodasoftware.yail.oauth2.take1.parse.authcode;
 
-import com.dietsodasoftware.yail.oauth2.client.OAuthAuthenticationHandler;
-import com.dietsodasoftware.yail.oauth2.parse.ParseConfiguration;
-
-import java.net.URI;
+import com.dietsodasoftware.yail.oauth2.take1.client.OAuthAuthenticationHandler;
+import com.dietsodasoftware.yail.oauth2.take1.parse.ParseConfiguration;
 
 /**
  * User: wendel.schultz

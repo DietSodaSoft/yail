@@ -1,4 +1,4 @@
-package com.dietsodasoftware.yail.oauth2.parse.authcode;
+package com.dietsodasoftware.yail.oauth2.take1.parse.authcode;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

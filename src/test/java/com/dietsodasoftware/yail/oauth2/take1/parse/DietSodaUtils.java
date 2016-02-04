@@ -1,4 +1,4 @@
-package com.dietsodasoftware.yail.oauth2.parse;
+package com.dietsodasoftware.yail.oauth2.take1.parse;
 
 /**
  * User: wendel.schultz
