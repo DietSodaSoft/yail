@@ -1,0 +1,9 @@
+
+.idea
+.*.iml
+target
+tmp
+buildNumber.properties
+release_settings.xml
+src/main/resources/app.properties
+
