@@ -4,7 +4,7 @@
 
     <groupId>com.dietsodasoftware</groupId>
     <artifactId>yail-XmlRpcJavaClient</artifactId>
-    <version>0.9.8-SNAPSHOT</version>
+    <version>0.9.9-SNAPSHOT</version>
 
     <name>YAIL Infusionsoft SDK</name>
 
