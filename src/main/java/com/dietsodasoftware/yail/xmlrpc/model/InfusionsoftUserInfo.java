@@ -22,13 +22,13 @@ public class InfusionsoftUserInfo {
     }
 
     // guaranteed to not be null
-    public Long getGlobalUserId(){
-        return (Long) modelMap.get(KEY_GLOBAL_USER_ID);
+    public Integer getGlobalUserId(){
+        return (Integer) modelMap.get(KEY_GLOBAL_USER_ID);
     }
 
     // guaranteed to not be null
-    public Long getLocalUserId(){
-        return (Long) modelMap.get(KEY_LOCAL_USER_ID);
+    public Integer getLocalUserId(){
+        return (Integer) modelMap.get(KEY_LOCAL_USER_ID);
     }
 
     public String getAppAlias(){
