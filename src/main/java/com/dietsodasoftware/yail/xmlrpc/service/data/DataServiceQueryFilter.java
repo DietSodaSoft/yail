@@ -20,7 +20,7 @@ public class DataServiceQueryFilter<MT extends Model> {
         this.parameterValues = Collections.unmodifiableMap(parameterValues);
     }
 
-    public static class Builder<MT> {
+    public static class Builder<MT extends Model> {
         private final Class<MT> modelClass;
         private Builder(Class<MT> modelClass){
             this.modelClass = modelClass;
@@ -77,51 +77,51 @@ public class DataServiceQueryFilter<MT extends Model> {
         // required params
         private final Map<String, Object> parameterValues = new HashMap<String, Object>();
 
-        private DataServiceQueryFilter.Builder fieldEquals(String fieldName, Object value){
+        private Builder fieldEquals(String fieldName, Object value){
             parameterValues.put(fieldName, value);
             return this;
         }
 
-        private DataServiceQueryFilter.Builder fieldIsNull(String fieldName){
+        private Builder fieldIsNull(String fieldName){
             parameterValues.put(fieldName, NULL);
             return this;
         }
 
-        private DataServiceQueryFilter.Builder fieldLike(String fieldName, String value, Like like){
+        private Builder fieldLike(String fieldName, String value, Like like){
             parameterValues.put(fieldName, like.getParameterValue(value));
             return this;
         }
 
-        public DataServiceQueryFilter.Builder fieldEquals(NamedField field, Object value){
+        public Builder fieldEquals(NamedField field, Object value){
             return fieldEquals(field.name(), value);
         }
 
-        public DataServiceQueryFilter.Builder fieldIsNull(NamedField field){
+        public Builder fieldIsNull(NamedField field){
             return fieldIsNull(field.name());
         }
 
-        public DataServiceQueryFilter.Builder fieldLike(NamedField field, String value, Like like){
+        public Builder fieldLike(NamedField field, String value, Like like){
             return fieldLike(field.name(), value, like);
         }
 
-        public DataServiceQueryFilter.Builder fieldEquals(OperationCustomField field, Object value){
+        public Builder fieldEquals(OperationCustomField field, Object value){
             return fieldEquals(field.getApiArgument(), value);
         }
 
-        public DataServiceQueryFilter.Builder fieldIsNull(OperationCustomField field){
+        public Builder fieldIsNull(OperationCustomField field){
             return fieldIsNull(field.getApiArgument());
         }
 
-        public DataServiceQueryFilter.Builder fieldLike(OperationCustomField field, String value, Like like){
+        public Builder fieldLike(OperationCustomField field, String value, Like like){
             return fieldLike(field.getApiArgument(), value, like);
         }
 
-        public DataServiceQueryFilter.Builder fieldCompare(NamedField field, Compare compare, String value){
+        public Builder fieldCompare(NamedField field, Compare compare, String value){
             fieldEquals(field.name(), compare.compareString + value);
             return this;
         }
 
-        public DataServiceQueryFilter.Builder fieldCompare(OperationCustomField field, Compare compare, String value){
+        public Builder fieldCompare(OperationCustomField field, Compare compare, String value){
             fieldEquals(field.getApiArgument(), compare.compareString + value);
             return this;
         }
@@ -219,7 +219,7 @@ public class DataServiceQueryFilter<MT extends Model> {
             return this;
         }
 
-        public <MT extends Model> DataServiceQueryFilter build(){
+        public DataServiceQueryFilter<MT> build(){
             return new DataServiceQueryFilter(modelClass, parameterValues);
         }
     }
