@@ -26,7 +26,7 @@ public class InvoiceServiceAddOrderItemOperation extends InfusionsoftXmlRpcServi
         return ListFactory.quickUnmodifiableLinkedList(
                 arguments.invoiceId,
                 arguments.productId,
-                arguments.type,
+                arguments.type.getOrderItemTypeDbId(),
                 arguments.price,
                 arguments.quantity,
                 arguments.title,
